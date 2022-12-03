@@ -42,6 +42,6 @@ public class ClientDaoService {
 
     public Client findOne(int id) {
         Predicate<? super Client> predicate = client -> client.getClient_id().equals(id);
-        return clients.stream().filter(predicate).findFirst().get();
+        return clients.stream().filter(predicate).findFirst().orElse(null);
     }
 }

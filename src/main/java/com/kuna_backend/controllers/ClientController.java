@@ -27,7 +27,12 @@ public class ClientController {
     // GET Method / Client by ID
     @GetMapping(path = "/client/{id}")
     public Client retrieveClient (@PathVariable int id) {
-        return service.findOne(id);
+        Client client =  service. findOne(id);
+
+        if (client==null)
+            throw new ClientNotFoundException("id:" +id);
+
+        return client;
     }
 
     // POST Method /clients
