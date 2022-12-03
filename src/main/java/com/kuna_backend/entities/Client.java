@@ -2,7 +2,7 @@ package com.kuna_backend.entities;
 
 import java.time.LocalDateTime;
 
-public class client {
+public class Client {
     private Integer client_id;
     private String username;
     private String password_client;
@@ -17,7 +17,7 @@ public class client {
     private LocalDateTime created_at;
     private LocalDateTime modified_at;
 
-    public client(Integer client_id,
+    public Client(Integer client_id,
                   String username,
                   String password_client,
                   String first_name,
@@ -152,7 +152,7 @@ public class client {
 
     @Override
     public String toString() {
-        return "client{" +
+        return "Client{" +
                 "client_id=" + client_id +
                 ", username='" + username + '\'' +
                 ", password_client='" + password_client + '\'' +

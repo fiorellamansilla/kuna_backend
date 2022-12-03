@@ -2,7 +2,7 @@ package com.kuna_backend.entities;
 
 import java.time.LocalDateTime;
 
-public class order {
+public class Order {
     private Integer order_id;
     private Float order_amount;
     private String ship_name;
@@ -16,7 +16,7 @@ public class order {
     private LocalDateTime shipped_at;
     private String tracking_number;
 
-    public order(Integer order_id,
+    public Order(Integer order_id,
                  Float order_amount,
                  String ship_name,
                  String ship_address,
@@ -45,7 +45,7 @@ public class order {
 
     @Override
     public String toString() {
-        return "order{" +
+        return "Order{" +
                 "order_id=" + order_id +
                 ", order_amount=" + order_amount +
                 ", ship_name='" + ship_name + '\'' +

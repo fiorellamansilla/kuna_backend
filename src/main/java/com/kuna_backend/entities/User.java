@@ -2,7 +2,7 @@ package com.kuna_backend.entities;
 
 import java.time.LocalDateTime;
 
-public class user {
+public class User {
     private Integer id;
     private String username;
     private String password_hash;
@@ -12,7 +12,7 @@ public class user {
     private Boolean is_approved;
     private LocalDateTime created_at;
 
-    public user(Integer id,
+    public User(Integer id,
                 String username,
                 String password_hash,
                 String email, String country,
@@ -32,7 +32,7 @@ public class user {
 
     @Override
     public String toString() {
-        return "user{" +
+        return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password_hash='" + password_hash + '\'' +

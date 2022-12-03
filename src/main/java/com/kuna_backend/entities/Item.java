@@ -5,7 +5,7 @@ import com.kuna_backend.entities.enums.Size;
 
 import java.time.LocalDateTime;
 
-public class item {
+public class Item {
     private Integer item_id;
     private String name_item;
     private String desc_item;
@@ -20,7 +20,7 @@ public class item {
     private LocalDateTime modified_at;
     private LocalDateTime deleted_at;
 
-    public item(Integer item_id,
+    public Item(Integer item_id,
                 String name_item,
                 String desc_item,
                 Size size,
@@ -51,7 +51,7 @@ public class item {
 
     @Override
     public String toString() {
-        return "item{" +
+        return "Item{" +
                 "item_id=" + item_id +
                 ", name_item='" + name_item + '\'' +
                 ", desc_item='" + desc_item + '\'' +
