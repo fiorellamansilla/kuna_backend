@@ -44,4 +44,10 @@ public class ClientDaoService {
         Predicate<? super Client> predicate = client -> client.getClient_id().equals(id);
         return clients.stream().filter(predicate).findFirst().orElse(null);
     }
+
+    public void deleteById(int id) {
+        Predicate<? super Client> predicate = client -> client.getClient_id().equals(id);
+        clients.removeIf(predicate);
+    }
+
 }

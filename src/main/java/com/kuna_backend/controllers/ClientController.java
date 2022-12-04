@@ -18,24 +18,24 @@ public class ClientController {
         this.service = service;
     }
 
-    // GET Method / All Clients
+    // GET  /All Clients
     @GetMapping(path = "/client")
     public List<Client> retrieveAllClients(){
         return service.findAll();
     }
 
-    // GET Method / Client by ID
+    // GET a Client by ID
     @GetMapping(path = "/client/{id}")
     public Client retrieveClient (@PathVariable int id) {
         Client client =  service. findOne(id);
 
         if (client==null)
-            throw new ClientNotFoundException("id:" +id);
+            throw new ElementNotFoundException("id:" +id);
 
         return client;
     }
 
-    // POST Method /clients
+    // POST /client
     @PostMapping(path = "/client")
     public ResponseEntity<Client> createClient (@RequestBody Client client) {
         Client savedClient = service.save(client);
@@ -47,4 +47,13 @@ public class ClientController {
 
         return ResponseEntity.created(location).build();
     }
+
+    //DELETE one Client by ID
+
+    @DeleteMapping(path = "/client/{id}")
+    public void deleteClient (@PathVariable int id) {
+        service.deleteById(id);
+    }
+
+
 }
