@@ -30,6 +30,70 @@ public class User {
         this.created_at = created_at;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword_hash() {
+        return password_hash;
+    }
+
+    public void setPassword_hash(String password_hash) {
+        this.password_hash = password_hash;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public Boolean getIs_blocked() {
+        return is_blocked;
+    }
+
+    public void setIs_blocked(Boolean is_blocked) {
+        this.is_blocked = is_blocked;
+    }
+
+    public Boolean getIs_approved() {
+        return is_approved;
+    }
+
+    public void setIs_approved(Boolean is_approved) {
+        this.is_approved = is_approved;
+    }
+
+    public LocalDateTime getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
+    }
+
     @Override
     public String toString() {
         return "User{" +
