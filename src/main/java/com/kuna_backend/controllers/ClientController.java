@@ -18,13 +18,13 @@ public class ClientController {
         this.service = service;
     }
 
-    // GET  /All Clients
+    // GET  all Clients Endpoint
     @GetMapping(path = "/client")
     public List<Client> retrieveAllClients(){
         return service.findAll();
     }
 
-    // GET a Client by ID
+    // GET a Client by ID Endpoint
     @GetMapping(path = "/client/{id}")
     public Client retrieveClient (@PathVariable int id) {
         Client client =  service. findOne(id);
@@ -35,7 +35,7 @@ public class ClientController {
         return client;
     }
 
-    // POST /client
+    // POST a Client Endpoint
     @PostMapping(path = "/client")
     public ResponseEntity<Client> createClient (@RequestBody Client client) {
         Client savedClient = service.save(client);
@@ -48,7 +48,7 @@ public class ClientController {
         return ResponseEntity.created(location).build();
     }
 
-    //DELETE one Client by ID
+    //DELETE one Client by ID Endpoint
 
     @DeleteMapping(path = "/client/{id}")
     public void deleteClient (@PathVariable int id) {

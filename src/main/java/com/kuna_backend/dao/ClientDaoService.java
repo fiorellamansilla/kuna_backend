@@ -30,6 +30,7 @@ public class ClientDaoService {
                 LocalDateTime.now()));
     };
 
+    // GET all clients Method
     public List<Client> findAll() {
         return clients;
     }
@@ -40,11 +41,13 @@ public class ClientDaoService {
         return client;
     }
 
+    // GET one client by ID Method
     public Client findOne(int id) {
         Predicate<? super Client> predicate = client -> client.getClient_id().equals(id);
         return clients.stream().filter(predicate).findFirst().orElse(null);
     }
 
+    // DELETE client Method
     public void deleteById(int id) {
         Predicate<? super Client> predicate = client -> client.getClient_id().equals(id);
         clients.removeIf(predicate);

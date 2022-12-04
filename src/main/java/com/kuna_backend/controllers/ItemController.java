@@ -1,8 +1,6 @@
 package com.kuna_backend.controllers;
 
-import com.kuna_backend.dao.ClientDaoService;
 import com.kuna_backend.dao.ItemDaoService;
-import com.kuna_backend.entities.Client;
 import com.kuna_backend.entities.Item;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +18,13 @@ public class ItemController {
         this.service = service;
     }
 
-    // GET  /All Items
+    // GET All Items Endpoint
     @GetMapping(path = "/item")
     public List<Item> retrieveAllItems(){
         return service.findAll();
     }
 
-    // GET an Item by ID
+    // GET an Item by ID Endpoint
     @GetMapping(path = "/item/{id}")
     public Item retrieveItem (@PathVariable int id) {
         Item item =  service. findOne(id);
@@ -37,7 +35,7 @@ public class ItemController {
         return item;
     }
 
-    // POST /item
+    // POST an Item Endpoint
     @PostMapping(path = "/item")
     public ResponseEntity<Item> createItem (@RequestBody Item item) {
         Item savedItem = service.save(item);
@@ -50,8 +48,7 @@ public class ItemController {
         return ResponseEntity.created(location).build();
     }
 
-    //DELETE one Item by ID
-
+    //DELETE one Item by ID Endpoint
     @DeleteMapping(path = "/item/{id}")
     public void deleteItem (@PathVariable int id) {
         service.deleteById(id);
