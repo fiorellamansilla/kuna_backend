@@ -22,7 +22,7 @@ public class UserController {
         return service.findAll();
     }
 
-    // GET a User by ID Endpoint
+    // GET a User by ID / Endpoint
     @GetMapping(path = "/user/{id}")
     public User retrieveUser (@PathVariable int id) {
         User user =  service. findOne(id);
@@ -46,10 +46,24 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
-    //DELETE one User by ID Endpoint
+    //DELETE one User by ID /  Endpoint
     @DeleteMapping(path = "/user/{id}")
     public void deleteUser (@PathVariable int id) {
         service.deleteById(id);
+    }
+
+
+    // UPDATE one User by ID /  Endpoint
+    @PutMapping (path = "/user/{id}")
+    public ResponseEntity<User> updateUser (@RequestBody User user, @PathVariable int id) {
+        User updatedUser = service.findOne(id);
+
+        if (user==null)
+            throw new ElementNotFoundException("id:" +id);
+
+        service.save(updatedUser);
+
+        return ResponseEntity.ok(updatedUser);
     }
 
 }

@@ -1,4 +1,5 @@
 package com.kuna_backend.dao;
+
 import com.kuna_backend.entities.Client;
 import org.springframework.stereotype.Component;
 
@@ -35,16 +36,17 @@ public class ClientDaoService {
         return clients;
     }
 
-    public Client save(Client client) {
-        client.setClient_id(++clientsCount);
-        clients.add(client);
-        return client;
-    }
-
     // GET one client by ID Method
     public Client findOne(int id) {
         Predicate<? super Client> predicate = client -> client.getClient_id().equals(id);
         return clients.stream().filter(predicate).findFirst().orElse(null);
+    }
+
+    // POST a client Method
+    public Client save(Client client) {
+        client.setClient_id(++clientsCount);
+        clients.add(client);
+        return client;
     }
 
     // DELETE client Method
@@ -52,5 +54,7 @@ public class ClientDaoService {
         Predicate<? super Client> predicate = client -> client.getClient_id().equals(id);
         clients.removeIf(predicate);
     }
+
+
 
 }

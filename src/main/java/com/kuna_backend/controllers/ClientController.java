@@ -24,7 +24,7 @@ public class ClientController {
         return service.findAll();
     }
 
-    // GET a Client by ID Endpoint
+    // GET a Client by ID / Endpoint
     @GetMapping(path = "/client/{id}")
     public Client retrieveClient (@PathVariable int id) {
         Client client =  service. findOne(id);
@@ -48,11 +48,25 @@ public class ClientController {
         return ResponseEntity.created(location).build();
     }
 
-    //DELETE one Client by ID Endpoint
+    //DELETE one Client by ID / Endpoint
 
     @DeleteMapping(path = "/client/{id}")
     public void deleteClient (@PathVariable int id) {
         service.deleteById(id);
+    }
+
+
+    // UPDATE one Client by ID / Endpoint
+    @PutMapping (path = "/client/{id}")
+    public ResponseEntity<Client> updateClient (@RequestBody Client client, @PathVariable int id) {
+        Client updatedClient = service.findOne(id);
+
+        if (client==null)
+            throw new ElementNotFoundException("id:" +id);
+
+        service.save(updatedClient);
+
+        return ResponseEntity.ok(updatedClient);
     }
 
 }

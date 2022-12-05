@@ -24,7 +24,7 @@ public class ItemController {
         return service.findAll();
     }
 
-    // GET an Item by ID Endpoint
+    // GET an Item by ID / Endpoint
     @GetMapping(path = "/item/{id}")
     public Item retrieveItem (@PathVariable int id) {
         Item item =  service. findOne(id);
@@ -48,10 +48,24 @@ public class ItemController {
         return ResponseEntity.created(location).build();
     }
 
-    //DELETE one Item by ID Endpoint
+    //DELETE one Item by ID / Endpoint
     @DeleteMapping(path = "/item/{id}")
     public void deleteItem (@PathVariable int id) {
         service.deleteById(id);
+    }
+
+
+    // UPDATE one Item by ID / Endpoint
+    @PutMapping (path = "/item/{id}")
+    public ResponseEntity<Item> updateItem (@RequestBody Item item, @PathVariable int id) {
+        Item updatedItem = service.findOne(id);
+
+        if (item==null)
+            throw new ElementNotFoundException("id:" +id);
+
+        service.save(updatedItem);
+
+        return ResponseEntity.ok(updatedItem);
     }
 
 }

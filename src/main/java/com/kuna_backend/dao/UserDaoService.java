@@ -1,6 +1,5 @@
 package com.kuna_backend.dao;
 
-import com.kuna_backend.entities.Order;
 import com.kuna_backend.entities.User;
 import org.springframework.stereotype.Component;
 
@@ -32,16 +31,17 @@ public class UserDaoService {
         return users;
     }
 
-    public User save(User user) {
-        user.setId(++usersCount);
-        users.add(user);
-        return user;
-    }
-
     // Get one User by ID Method
     public User findOne(int id) {
         Predicate<? super User> predicate = user -> user.getId().equals(id);
         return users.stream().filter(predicate).findFirst().orElse(null);
+    }
+
+    // POST a client Method
+    public User save(User user) {
+        user.setId(++usersCount);
+        users.add(user);
+        return user;
     }
 
     // Delete User by Id Method

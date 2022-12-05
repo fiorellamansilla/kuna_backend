@@ -1,4 +1,5 @@
 package com.kuna_backend.dao;
+
 import com.kuna_backend.entities.Item;
 import com.kuna_backend.entities.enums.Color;
 import com.kuna_backend.entities.enums.Size;
@@ -37,16 +38,18 @@ public class ItemDaoService {
         return items;
     }
 
-    public Item save(Item item) {
-        item.setItem_id(++itemsCount);
-        items.add(item);
-        return item;
-    }
 
     // Get one Item by ID Method
     public Item findOne(int id) {
         Predicate<? super Item> predicate = item -> item.getItem_id().equals(id);
         return items.stream().filter(predicate).findFirst().orElse(null);
+    }
+
+    // POST a client Method
+    public Item save(Item item) {
+        item.setItem_id(++itemsCount);
+        items.add(item);
+        return item;
     }
 
     // Delete Item by Id Method

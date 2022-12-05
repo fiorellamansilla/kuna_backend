@@ -1,4 +1,5 @@
 package com.kuna_backend.dao;
+
 import com.kuna_backend.entities.Order;
 import org.springframework.stereotype.Component;
 
@@ -34,16 +35,18 @@ public class OrderDaoService {
         return orders;
     }
 
-    public Order save(Order order) {
-        order.setOrder_id(++ordersCount);
-        orders.add(order);
-        return order;
-    }
 
     // Get one Order by ID Method
     public Order findOne(int id) {
         Predicate<? super Order> predicate = order -> order.getOrder_id().equals(id);
         return orders.stream().filter(predicate).findFirst().orElse(null);
+    }
+
+    // POST a client Method
+    public Order save(Order order) {
+        order.setOrder_id(++ordersCount);
+        orders.add(order);
+        return order;
     }
 
     // Delete Order by Id Method

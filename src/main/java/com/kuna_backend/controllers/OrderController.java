@@ -24,7 +24,7 @@ public class OrderController {
         return service.findAll();
     }
 
-    // GET an Order by ID Endpoint
+    // GET an Order by ID / Endpoint
     @GetMapping(path = "/order/{id}")
     public Order retrieveOrder (@PathVariable int id) {
         Order order =  service. findOne(id);
@@ -48,10 +48,24 @@ public class OrderController {
         return ResponseEntity.created(location).build();
     }
 
-    //DELETE one Order by ID Endpoint
+    //DELETE one Order by ID / Endpoint
     @DeleteMapping(path = "/order/{id}")
     public void deleteOrder (@PathVariable int id) {
         service.deleteById(id);
+    }
+
+
+    // UPDATE one Order by ID /  Endpoint
+    @PutMapping (path = "/order/{id}")
+    public ResponseEntity<Order> updateOrder (@RequestBody Order order, @PathVariable int id) {
+        Order updatedOrder = service.findOne(id);
+
+        if (order==null)
+            throw new ElementNotFoundException("id:" +id);
+
+        service.save(updatedOrder);
+
+        return ResponseEntity.ok(updatedOrder);
     }
 
 }
