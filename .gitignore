@@ -1,4 +1,5 @@
 HELP.md
+docker
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
