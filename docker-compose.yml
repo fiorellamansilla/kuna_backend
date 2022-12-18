@@ -8,7 +8,7 @@ services:
     environment:
       - MYSQL_ROOT_HOST=%
       - MYSQL_DATABASE=kuna_db
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=19293119
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - ./docker/mysql_volume:/var/lib/mysql
