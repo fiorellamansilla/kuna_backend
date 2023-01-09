@@ -5,29 +5,29 @@ import java.time.LocalDateTime;
 public class User {
     private Integer id;
     private String username;
-    private String password_hash;
+    private String passwordHash;
     private String email;
     private String country;
-    private Boolean is_blocked;
-    private Boolean is_approved;
-    private LocalDateTime created_at;
+    private Boolean isBlocked;
+    private Boolean isApproved;
+    private LocalDateTime createdAt;
 
     public User(Integer id,
                 String username,
-                String password_hash,
+                String passwordHash,
                 String email, String country,
-                Boolean is_blocked,
-                Boolean is_approved,
-                LocalDateTime created_at)
+                Boolean isBlocked,
+                Boolean isApproved,
+                LocalDateTime createdAt)
     {
         this.id = id;
         this.username = username;
-        this.password_hash = password_hash;
+        this.passwordHash = passwordHash;
         this.email = email;
         this.country = country;
-        this.is_blocked = is_blocked;
-        this.is_approved = is_approved;
-        this.created_at = created_at;
+        this.isBlocked = isBlocked;
+        this.isApproved = isApproved;
+        this.createdAt = createdAt;
     }
 
     public Integer getId() {
@@ -46,12 +46,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword_hash() {
-        return password_hash;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword_hash(String password_hash) {
-        this.password_hash = password_hash;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getEmail() {
@@ -70,28 +70,28 @@ public class User {
         this.country = country;
     }
 
-    public Boolean getIs_blocked() {
-        return is_blocked;
+    public Boolean getIsBlocked() {
+        return isBlocked;
     }
 
-    public void setIs_blocked(Boolean is_blocked) {
-        this.is_blocked = is_blocked;
+    public void setIsBlocked(Boolean isBlocked) {
+        this.isBlocked = isBlocked;
     }
 
-    public Boolean getIs_approved() {
-        return is_approved;
+    public Boolean getIsApproved() {
+        return isApproved;
     }
 
-    public void setIs_approved(Boolean is_approved) {
-        this.is_approved = is_approved;
+    public void setIsApproved(Boolean isApproved) {
+        this.isApproved = isApproved;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -99,12 +99,12 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password_hash='" + password_hash + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
                 ", email='" + email + '\'' +
                 ", country='" + country + '\'' +
-                ", is_blocked=" + is_blocked +
-                ", is_approved=" + is_approved +
-                ", created_at=" + created_at +
+                ", isBlocked=" + isBlocked +
+                ", isApproved=" + isApproved +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }
