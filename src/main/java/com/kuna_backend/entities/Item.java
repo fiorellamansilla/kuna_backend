@@ -35,8 +35,8 @@ public class Item {
                 LocalDateTime deletedAt)
     {
         this.id = id;
-        this.name = Item.this.name;
-        this.desc = Item.this.desc;
+        this.name = name;
+        this.desc = desc;
         this.size = size;
         this.color = color;
         this.price = price;

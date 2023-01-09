@@ -4,40 +4,43 @@ import java.time.LocalDateTime;
 
 public class Order {
     private Integer id;
-    private Float orderAmount;
-    private String shipName;
-    private String shipAddress;
-    private String orderCity;
-    private String orderZip;
-    private String orderCountry;
-    private String orderPhone;
-    private String orderEmail;
+    private Float amount;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String city;
+    private String zipCode;
+    private String country;
+    private String phone;
+    private String email;
     private LocalDateTime orderedAt;
     private LocalDateTime shippedAt;
     private String trackingNumber;
 
     public Order(Integer id,
-                 Float orderAmount,
-                 String shipName,
-                 String shipAddress,
-                 String orderCity,
-                 String orderZip,
-                 String orderCountry,
-                 String orderPhone,
-                 String orderEmail,
+                 Float amount,
+                 String firstName,
+                 String lastName,
+                 String address,
+                 String city,
+                 String zipCode,
+                 String country,
+                 String phone,
+                 String email,
                  LocalDateTime orderedAt,
                  LocalDateTime shippedAt,
                  String trackingNumber)
     {
         this.id = Order.this.id;
-        this.orderAmount = orderAmount;
-        this.shipName = shipName;
-        this.shipAddress = shipAddress;
-        this.orderCity = orderCity;
-        this.orderZip = orderZip;
-        this.orderCountry = orderCountry;
-        this.orderPhone = orderPhone;
-        this.orderEmail = orderEmail;
+        this.amount = amount;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.phone = phone;
+        this.email = email;
         this.orderedAt = orderedAt;
         this.shippedAt = shippedAt;
         this.trackingNumber = trackingNumber;
@@ -51,68 +54,76 @@ public class Order {
         this.id = Order.this.id;
     }
 
-    public Float getOrderAmount() {
-        return orderAmount;
+    public Float getAmount() {
+        return amount;
     }
 
-    public void setOrderAmount(Float orderAmount) {
-        this.orderAmount = orderAmount;
+    public void setAmount(Float amount) {
+        this.amount = amount;
     }
 
-    public String getShipName() {
-        return shipName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setShipName(String shipName) {
-        this.shipName = shipName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getShipAddress() {
-        return shipAddress;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setShipAddress(String shipAddress) {
-        this.shipAddress = shipAddress;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getOrderCity() {
-        return orderCity;
+    public String getAddress() {
+        return address;
     }
 
-    public void setOrderCity(String orderCity) {
-        this.orderCity = orderCity;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getOrderZip() {
-        return orderZip;
+    public String getCity() {
+        return city;
     }
 
-    public void setOrderZip(String orderZip) {
-        this.orderZip = orderZip;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getOrderCountry() {
-        return orderCountry;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setOrderCountry(String orderCountry) {
-        this.orderCountry = orderCountry;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
-    public String getOrderPhone() {
-        return orderPhone;
+    public String getCountry() {
+        return country;
     }
 
-    public void setOrderPhone(String orderPhone) {
-        this.orderPhone = orderPhone;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String getOrderEmail() {
-        return orderEmail;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setOrderEmail(String orderEmail) {
-        this.orderEmail = orderEmail;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDateTime getOrderedAt() {
@@ -143,14 +154,15 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", orderAmount=" + orderAmount +
-                ", shipName='" + shipName + '\'' +
-                ", shipAddress='" + shipAddress + '\'' +
-                ", orderCity='" + orderCity + '\'' +
-                ", orderZip='" + orderZip + '\'' +
-                ", orderCountry='" + orderCountry + '\'' +
-                ", orderPhone='" + orderPhone + '\'' +
-                ", orderEmail='" + orderEmail + '\'' +
+                ", amount=" + amount +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", country='" + country + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 ", orderedAt=" + orderedAt +
                 ", shippedAt=" + shippedAt +
                 ", trackingNumber='" + trackingNumber + '\'' +
