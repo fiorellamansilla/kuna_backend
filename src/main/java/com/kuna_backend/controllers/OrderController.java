@@ -42,7 +42,7 @@ public class OrderController {
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedOrder.getOrder_id())
+                .buildAndExpand(savedOrder.getOrderId())
                 .toUri();
 
         return ResponseEntity.created(location).build();
