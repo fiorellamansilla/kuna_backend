@@ -31,7 +31,7 @@ public class Order {
                  LocalDateTime shippedAt,
                  String trackingNumber)
     {
-        this.id = Order.this.id;
+        this.id = id;
         this.amount = amount;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -46,11 +46,11 @@ public class Order {
         this.trackingNumber = trackingNumber;
     }
 
-    public Integer getOrderId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setOrderId(Integer id) {
+    public void setId(Integer id) {
         this.id = Order.this.id;
     }
 

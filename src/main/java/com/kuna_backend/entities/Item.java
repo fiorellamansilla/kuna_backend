@@ -49,11 +49,11 @@ public class Item {
         this.deletedAt = deletedAt;
     }
 
-    public Integer getItemId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setItemId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

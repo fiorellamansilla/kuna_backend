@@ -39,20 +39,20 @@ public class OrderDaoService {
 
     // Get one Order by ID Method
     public Order findOne(int id) {
-        Predicate<? super Order> predicate = order -> order.getOrderId().equals(id);
+        Predicate<? super Order> predicate = order -> order.getId().equals(id);
         return orders.stream().filter(predicate).findFirst().orElse(null);
     }
 
     // POST a client Method
     public Order save(Order order) {
-        order.setOrderId(++ordersCount);
+        order.setId(++ordersCount);
         orders.add(order);
         return order;
     }
 
     // Delete Order by Id Method
     public void deleteById(int id) {
-        Predicate<? super Order> predicate = order -> order.getOrderId().equals(id);
+        Predicate<? super Order> predicate = order -> order.getId().equals(id);
         orders.removeIf(predicate);
     }
 

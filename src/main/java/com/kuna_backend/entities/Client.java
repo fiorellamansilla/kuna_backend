@@ -36,7 +36,7 @@ public class Client {
                   LocalDateTime createdAt,
                   LocalDateTime modifiedAt)
     {
-        this.id = Client.this.id;
+        this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;

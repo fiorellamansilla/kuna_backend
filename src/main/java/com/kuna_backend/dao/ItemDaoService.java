@@ -41,20 +41,20 @@ public class ItemDaoService {
 
     // Get one Item by ID Method
     public Item findOne(int id) {
-        Predicate<? super Item> predicate = item -> item.getItemId().equals(id);
+        Predicate<? super Item> predicate = item -> item.getId().equals(id);
         return items.stream().filter(predicate).findFirst().orElse(null);
     }
 
     // POST a client Method
     public Item save(Item item) {
-        item.setItemId(++itemsCount);
+        item.setId(++itemsCount);
         items.add(item);
         return item;
     }
 
     // Delete Item by Id Method
     public void deleteById(int id) {
-        Predicate<? super Item> predicate = item -> item.getItemId().equals(id);
+        Predicate<? super Item> predicate = item -> item.getId().equals(id);
         items.removeIf(predicate);
     }
 
