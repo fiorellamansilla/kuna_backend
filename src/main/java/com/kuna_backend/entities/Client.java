@@ -10,10 +10,10 @@ public class Client {
     @Id
     private Integer id;
     private String username;
-    private String passwordClient;
+    private String password;
     private String firstName;
     private String lastName;
-    private String addressClient;
+    private String address;
     private String zipCode;
     private String city;
     private String country;
@@ -24,10 +24,10 @@ public class Client {
 
     public Client(Integer id,
                   String username,
-                  String passwordClient,
+                  String password,
                   String firstName,
                   String lastName,
-                  String addressClient,
+                  String address,
                   String zipCode,
                   String city,
                   String country,
@@ -38,10 +38,10 @@ public class Client {
     {
         this.id = Client.this.id;
         this.username = username;
-        this.passwordClient = passwordClient;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.addressClient = addressClient;
+        this.address = address;
         this.zipCode = zipCode;
         this.city = city;
         this.country = country;
@@ -67,12 +67,12 @@ public class Client {
         this.username = username;
     }
 
-    public String getPasswordClient() {
-        return passwordClient;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordClient(String passwordClient) {
-        this.passwordClient = passwordClient;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -91,12 +91,12 @@ public class Client {
         this.lastName = lastName;
     }
 
-    public String getAddressClient() {
-        return addressClient;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddressClient(String addressClient) {
-        this.addressClient = addressClient;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getZipCode() {
@@ -160,10 +160,10 @@ public class Client {
         return "Client{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", passwordClient='" + passwordClient + '\'' +
+                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", addressClient='" + addressClient + '\'' +
+                ", address='" + address + '\'' +
                 ", zipCode='" + zipCode + '\'' +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +

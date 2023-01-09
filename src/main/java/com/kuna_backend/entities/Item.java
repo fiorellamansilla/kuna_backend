@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 public class Item {
     private Integer id;
-    private String nameItem;
-    private String descItem;
+    private String name;
+    private String desc;
     private Size size;
     private Color color;
     private Float price;
@@ -21,8 +21,8 @@ public class Item {
     private LocalDateTime deletedAt;
 
     public Item(Integer id,
-                String nameItem,
-                String descItem,
+                String name,
+                String desc,
                 Size size,
                 Color color,
                 Float price,
@@ -35,8 +35,8 @@ public class Item {
                 LocalDateTime deletedAt)
     {
         this.id = id;
-        this.nameItem = nameItem;
-        this.descItem = descItem;
+        this.name = Item.this.name;
+        this.desc = Item.this.desc;
         this.size = size;
         this.color = color;
         this.price = price;
@@ -57,20 +57,20 @@ public class Item {
         this.id = id;
     }
 
-    public String getNameItem() {
-        return nameItem;
+    public String getName() {
+        return name;
     }
 
-    public void setNameItem(String nameItem) {
-        this.nameItem = nameItem;
+    public void setName(String name) {
+        this.name = Item.this.name;
     }
 
-    public String getDescItem() {
-        return descItem;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescItem(String descItem) {
-        this.descItem = descItem;
+    public void setDesc(String desc) {
+        this.desc = Item.this.desc;
     }
 
     public Size getSize() {
@@ -157,8 +157,8 @@ public class Item {
     public String toString() {
         return "Item{" +
                 "id=" + id +
-                ", nameItem='" + nameItem + '\'' +
-                ", descItem='" + descItem + '\'' +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
                 ", size=" + size +
                 ", color=" + color +
                 ", price=" + price +
