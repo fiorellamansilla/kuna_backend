@@ -42,7 +42,7 @@ public class ItemController {
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedItem.getItem_id())
+                .buildAndExpand(savedItem.getItemId())
                 .toUri();
 
         return ResponseEntity.created(location).build();
