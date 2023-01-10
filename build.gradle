@@ -15,6 +15,8 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '3.1.0'
+    implementation group: 'org.springframework.data', name: 'spring-data-jpa', version: '3.0.0'
 }
 
 tasks.named('test') {

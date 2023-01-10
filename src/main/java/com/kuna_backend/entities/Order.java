@@ -3,157 +3,169 @@ package com.kuna_backend.entities;
 import java.time.LocalDateTime;
 
 public class Order {
-    private Integer order_id;
-    private Float order_amount;
-    private String ship_name;
-    private String ship_address;
-    private String order_city;
-    private String order_zip;
-    private String order_country;
-    private String order_phone;
-    private String order_email;
-    private LocalDateTime ordered_at;
-    private LocalDateTime shipped_at;
-    private String tracking_number;
+    private Integer id;
+    private Float amount;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String city;
+    private String zipCode;
+    private String country;
+    private String phone;
+    private String email;
+    private LocalDateTime orderedAt;
+    private LocalDateTime shippedAt;
+    private String trackingNumber;
 
-    public Order(Integer order_id,
-                 Float order_amount,
-                 String ship_name,
-                 String ship_address,
-                 String order_city,
-                 String order_zip,
-                 String order_country,
-                 String order_phone,
-                 String order_email,
-                 LocalDateTime ordered_at,
-                 LocalDateTime shipped_at,
-                 String tracking_number)
+    public Order(Integer id,
+                 Float amount,
+                 String firstName,
+                 String lastName,
+                 String address,
+                 String city,
+                 String zipCode,
+                 String country,
+                 String phone,
+                 String email,
+                 LocalDateTime orderedAt,
+                 LocalDateTime shippedAt,
+                 String trackingNumber)
     {
-        this.order_id = order_id;
-        this.order_amount = order_amount;
-        this.ship_name = ship_name;
-        this.ship_address = ship_address;
-        this.order_city = order_city;
-        this.order_zip = order_zip;
-        this.order_country = order_country;
-        this.order_phone = order_phone;
-        this.order_email = order_email;
-        this.ordered_at = ordered_at;
-        this.shipped_at = shipped_at;
-        this.tracking_number = tracking_number;
+        this.id = id;
+        this.amount = amount;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.phone = phone;
+        this.email = email;
+        this.orderedAt = orderedAt;
+        this.shippedAt = shippedAt;
+        this.trackingNumber = trackingNumber;
     }
 
-    public Integer getOrder_id() {
-        return order_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setOrder_id(Integer order_id) {
-        this.order_id = order_id;
+    public void setId(Integer id) {
+        this.id = Order.this.id;
     }
 
-    public Float getOrder_amount() {
-        return order_amount;
+    public Float getAmount() {
+        return amount;
     }
 
-    public void setOrder_amount(Float order_amount) {
-        this.order_amount = order_amount;
+    public void setAmount(Float amount) {
+        this.amount = amount;
     }
 
-    public String getShip_name() {
-        return ship_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setShip_name(String ship_name) {
-        this.ship_name = ship_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getShip_address() {
-        return ship_address;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setShip_address(String ship_address) {
-        this.ship_address = ship_address;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getOrder_city() {
-        return order_city;
+    public String getAddress() {
+        return address;
     }
 
-    public void setOrder_city(String order_city) {
-        this.order_city = order_city;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getOrder_zip() {
-        return order_zip;
+    public String getCity() {
+        return city;
     }
 
-    public void setOrder_zip(String order_zip) {
-        this.order_zip = order_zip;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getOrder_country() {
-        return order_country;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setOrder_country(String order_country) {
-        this.order_country = order_country;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
-    public String getOrder_phone() {
-        return order_phone;
+    public String getCountry() {
+        return country;
     }
 
-    public void setOrder_phone(String order_phone) {
-        this.order_phone = order_phone;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String getOrder_email() {
-        return order_email;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setOrder_email(String order_email) {
-        this.order_email = order_email;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public LocalDateTime getOrdered_at() {
-        return ordered_at;
+    public String getEmail() {
+        return email;
     }
 
-    public void setOrdered_at(LocalDateTime ordered_at) {
-        this.ordered_at = ordered_at;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public LocalDateTime getShipped_at() {
-        return shipped_at;
+    public LocalDateTime getOrderedAt() {
+        return orderedAt;
     }
 
-    public void setShipped_at(LocalDateTime shipped_at) {
-        this.shipped_at = shipped_at;
+    public void setOrderedAt(LocalDateTime orderedAt) {
+        this.orderedAt = orderedAt;
     }
 
-    public String getTracking_number() {
-        return tracking_number;
+    public LocalDateTime getShippedAt() {
+        return shippedAt;
     }
 
-    public void setTracking_number(String tracking_number) {
-        this.tracking_number = tracking_number;
+    public void setShippedAt(LocalDateTime shippedAt) {
+        this.shippedAt = shippedAt;
+    }
+
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
     }
 
     @Override
     public String toString() {
         return "Order{" +
-                "order_id=" + order_id +
-                ", order_amount=" + order_amount +
-                ", ship_name='" + ship_name + '\'' +
-                ", ship_address='" + ship_address + '\'' +
-                ", order_city='" + order_city + '\'' +
-                ", order_zip='" + order_zip + '\'' +
-                ", order_country='" + order_country + '\'' +
-                ", order_phone='" + order_phone + '\'' +
-                ", order_email='" + order_email + '\'' +
-                ", ordered_at=" + ordered_at +
-                ", shipped_at=" + shipped_at +
-                ", tracking_number='" + tracking_number + '\'' +
+                "id=" + id +
+                ", amount=" + amount +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", country='" + country + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", orderedAt=" + orderedAt +
+                ", shippedAt=" + shippedAt +
+                ", trackingNumber='" + trackingNumber + '\'' +
                 '}';
     }
 }

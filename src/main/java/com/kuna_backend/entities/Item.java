@@ -6,71 +6,71 @@ import com.kuna_backend.entities.enums.Size;
 import java.time.LocalDateTime;
 
 public class Item {
-    private Integer item_id;
-    private String name_item;
-    private String desc_item;
+    private Integer id;
+    private String name;
+    private String desc;
     private Size size;
     private Color color;
     private Float price;
     private Float discount;
     private String SKU;
-    private Integer quantity_stock;
-    private String image_path;
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
-    private LocalDateTime deleted_at;
+    private Integer quantityStock;
+    private String imagePath;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
+    private LocalDateTime deletedAt;
 
-    public Item(Integer item_id,
-                String name_item,
-                String desc_item,
+    public Item(Integer id,
+                String name,
+                String desc,
                 Size size,
                 Color color,
                 Float price,
                 Float discount,
                 String SKU,
-                Integer quantity_stock,
-                String image_path,
-                LocalDateTime created_at,
-                LocalDateTime modified_at,
-                LocalDateTime deleted_at)
+                Integer quantityStock,
+                String imagePath,
+                LocalDateTime createdAt,
+                LocalDateTime modifiedAt,
+                LocalDateTime deletedAt)
     {
-        this.item_id = item_id;
-        this.name_item = name_item;
-        this.desc_item = desc_item;
+        this.id = id;
+        this.name = name;
+        this.desc = desc;
         this.size = size;
         this.color = color;
         this.price = price;
         this.discount = discount;
         this.SKU = SKU;
-        this.quantity_stock = quantity_stock;
-        this.image_path = image_path;
-        this.created_at = created_at;
-        this.modified_at = modified_at;
-        this.deleted_at = deleted_at;
+        this.quantityStock = quantityStock;
+        this.imagePath = imagePath;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+        this.deletedAt = deletedAt;
     }
 
-    public Integer getItem_id() {
-        return item_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setItem_id(Integer item_id) {
-        this.item_id = item_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getName_item() {
-        return name_item;
+    public String getName() {
+        return name;
     }
 
-    public void setName_item(String name_item) {
-        this.name_item = name_item;
+    public void setName(String name) {
+        this.name = Item.this.name;
     }
 
-    public String getDesc_item() {
-        return desc_item;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDesc_item(String desc_item) {
-        this.desc_item = desc_item;
+    public void setDesc(String desc) {
+        this.desc = Item.this.desc;
     }
 
     public Size getSize() {
@@ -113,62 +113,62 @@ public class Item {
         this.SKU = SKU;
     }
 
-    public Integer getQuantity_stock() {
-        return quantity_stock;
+    public Integer getQuantityStock() {
+        return quantityStock;
     }
 
-    public void setQuantity_stock(Integer quantity_stock) {
-        this.quantity_stock = quantity_stock;
+    public void setQuantityStock(Integer quantityStock) {
+        this.quantityStock = quantityStock;
     }
 
-    public String getImage_path() {
-        return image_path;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage_path(String image_path) {
-        this.image_path = image_path;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getModified_at() {
-        return modified_at;
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
     }
 
-    public void setModified_at(LocalDateTime modified_at) {
-        this.modified_at = modified_at;
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
-    public LocalDateTime getDeleted_at() {
-        return deleted_at;
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
     }
 
-    public void setDeleted_at(LocalDateTime deleted_at) {
-        this.deleted_at = deleted_at;
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     @Override
     public String toString() {
         return "Item{" +
-                "item_id=" + item_id +
-                ", name_item='" + name_item + '\'' +
-                ", desc_item='" + desc_item + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
                 ", size=" + size +
                 ", color=" + color +
                 ", price=" + price +
                 ", discount=" + discount +
                 ", SKU='" + SKU + '\'' +
-                ", quantity_stock=" + quantity_stock +
-                ", image_path='" + image_path + '\'' +
-                ", created_at=" + created_at +
-                ", modified_at=" + modified_at +
-                ", deleted_at=" + deleted_at +
+                ", quantityStock=" + quantityStock +
+                ", imagePath='" + imagePath + '\'' +
+                ", createdAt=" + createdAt +
+                ", modifiedAt=" + modifiedAt +
+                ", deletedAt=" + deletedAt +
                 '}';
     }
 }

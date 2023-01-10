@@ -1,57 +1,62 @@
 package com.kuna_backend.entities;
 
+import jakarta.persistence.Id;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import jakarta.persistence.Entity;
 import java.time.LocalDateTime;
 
+@Entity
 public class Client {
-    private Integer client_id;
+    @Id
+    private Integer id;
     private String username;
-    private String password_client;
-    private String first_name;
-    private String last_name;
-    private String address_client;
-    private String zip_code;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String zipCode;
     private String city;
     private String country;
     private String phone;
     private String email;
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
-    public Client(Integer client_id,
+    public Client(Integer id,
                   String username,
-                  String password_client,
-                  String first_name,
-                  String last_name,
-                  String address_client,
-                  String zip_code,
+                  String password,
+                  String firstName,
+                  String lastName,
+                  String address,
+                  String zipCode,
                   String city,
                   String country,
                   String phone,
                   String email,
-                  LocalDateTime created_at,
-                  LocalDateTime modified_at)
+                  LocalDateTime createdAt,
+                  LocalDateTime modifiedAt)
     {
-        this.client_id = client_id;
+        this.id = id;
         this.username = username;
-        this.password_client = password_client;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.address_client = address_client;
-        this.zip_code = zip_code;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.zipCode = zipCode;
         this.city = city;
         this.country = country;
         this.phone = phone;
         this.email = email;
-        this.created_at = created_at;
-        this.modified_at = modified_at;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 
-    public Integer getClient_id() {
-        return client_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setClient_id(Integer client_id) {
-        this.client_id = client_id;
+    public void setId(Integer id) {
+        this.id = Client.this.id;
     }
 
     public String getUsername() {
@@ -62,44 +67,44 @@ public class Client {
         this.username = username;
     }
 
-    public String getPassword_client() {
-        return password_client;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassword_client(String password_client) {
-        this.password_client = password_client;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getAddress_client() {
-        return address_client;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddress_client(String address_client) {
-        this.address_client = address_client;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getZip_code() {
-        return zip_code;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setZip_code(String zip_code) {
-        this.zip_code = zip_code;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public String getCity() {
@@ -134,38 +139,38 @@ public class Client {
         this.email = email;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getModified_at() {
-        return modified_at;
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
     }
 
-    public void setModified_at(LocalDateTime modified_at) {
-        this.modified_at = modified_at;
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     @Override
     public String toString() {
         return "Client{" +
-                "client_id=" + client_id +
+                "id=" + id +
                 ", username='" + username + '\'' +
-                ", password_client='" + password_client + '\'' +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", address_client='" + address_client + '\'' +
-                ", zip_code='" + zip_code + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", zipCode='" + zipCode + '\'' +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
-                ", created_at=" + created_at +
-                ", modified_at=" + modified_at +
+                ", createdAt=" + createdAt +
+                ", modifiedAt=" + modifiedAt +
                 '}';
     }
 }

@@ -19,12 +19,13 @@ public class OrderDaoService {
         orders.add(new Order(++ordersCount,
                 10.0F,
                 "Fiorella",
-                "Bei der Flottbeker Muhle",
+                "Mansilla",
+                "Bei der Flottbeker Muhle 3",
                 "Hamburg",
                 "22607",
                 "Germany",
                 "0842039131",
-                "fmansilla@gmail.com",
+                "fiorellamansilla@gmail.com",
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 "123"));
@@ -38,20 +39,20 @@ public class OrderDaoService {
 
     // Get one Order by ID Method
     public Order findOne(int id) {
-        Predicate<? super Order> predicate = order -> order.getOrder_id().equals(id);
+        Predicate<? super Order> predicate = order -> order.getId().equals(id);
         return orders.stream().filter(predicate).findFirst().orElse(null);
     }
 
     // POST a client Method
     public Order save(Order order) {
-        order.setOrder_id(++ordersCount);
+        order.setId(++ordersCount);
         orders.add(order);
         return order;
     }
 
     // Delete Order by Id Method
     public void deleteById(int id) {
-        Predicate<? super Order> predicate = order -> order.getOrder_id().equals(id);
+        Predicate<? super Order> predicate = order -> order.getId().equals(id);
         orders.removeIf(predicate);
     }
 

@@ -38,20 +38,20 @@ public class ClientDaoService {
 
     // GET one client by ID Method
     public Client findOne(int id) {
-        Predicate<? super Client> predicate = client -> client.getClient_id().equals(id);
+        Predicate<? super Client> predicate = client -> client.getId().equals(id);
         return clients.stream().filter(predicate).findFirst().orElse(null);
     }
 
     // POST a client Method
     public Client save(Client client) {
-        client.setClient_id(++clientsCount);
+        client.setId(++clientsCount);
         clients.add(client);
         return client;
     }
 
     // DELETE client Method
     public void deleteById(int id) {
-        Predicate<? super Client> predicate = client -> client.getClient_id().equals(id);
+        Predicate<? super Client> predicate = client -> client.getId().equals(id);
         clients.removeIf(predicate);
     }
 
