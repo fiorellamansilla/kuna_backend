@@ -1,4 +1,3 @@
-USE kuna_db;
 
 CREATE TABLE client (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
