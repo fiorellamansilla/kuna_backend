@@ -1,5 +1,6 @@
 package com.kuna_backend.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 import java.time.LocalDateTime;
@@ -8,16 +9,22 @@ import java.time.LocalDateTime;
 public class Order {
     private Integer id;
     private Float amount;
+    @Column (name = "first_name")
     private String firstName;
+    @Column (name = "last_name")
     private String lastName;
     private String address;
     private String city;
+    @Column (name = "zip_code")
     private String zipCode;
     private String country;
     private String phone;
     private String email;
+    @Column (name = "ordered_at")
     private LocalDateTime orderedAt;
+    @Column (name = "shipped_at")
     private LocalDateTime shippedAt;
+    @Column (name = "tracking_number")
     private String trackingNumber;
 
     public Order(Integer id,
