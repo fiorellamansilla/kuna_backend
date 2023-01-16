@@ -1,6 +1,5 @@
 package com.kuna_backend.controllers;
 
-import com.kuna_backend.dao.ClientDaoService;
 import com.kuna_backend.entities.Client;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

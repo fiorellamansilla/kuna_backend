@@ -27,34 +27,6 @@ public class Client {
     @Column (name = "modified_at")
     private LocalDateTime modifiedAt;
 
-    public Client(Integer id,
-                  String username,
-                  String password,
-                  String firstName,
-                  String lastName,
-                  String address,
-                  String zipCode,
-                  String city,
-                  String country,
-                  String phone,
-                  String email,
-                  LocalDateTime createdAt,
-                  LocalDateTime modifiedAt)
-    {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.zipCode = zipCode;
-        this.city = city;
-        this.country = country;
-        this.phone = phone;
-        this.email = email;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
 
     public Integer getId() {
         return id;

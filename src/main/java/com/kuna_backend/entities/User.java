@@ -21,23 +21,6 @@ public class User {
     @Column (name = "created_at")
     private LocalDateTime createdAt;
 
-    public User(Integer id,
-                String username,
-                String passwordHash,
-                String email, String country,
-                Boolean isBlocked,
-                Boolean isApproved,
-                LocalDateTime createdAt)
-    {
-        this.id = id;
-        this.username = username;
-        this.passwordHash = passwordHash;
-        this.email = email;
-        this.country = country;
-        this.isBlocked = isBlocked;
-        this.isApproved = isApproved;
-        this.createdAt = createdAt;
-    }
 
     public Integer getId() {
         return id;

@@ -2,13 +2,11 @@ package com.kuna_backend.entities;
 
 import com.kuna_backend.entities.enums.Color;
 import com.kuna_backend.entities.enums.Size;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+@Entity
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,35 +30,6 @@ public class Item {
     private LocalDateTime modifiedAt;
     @Column (name = "deleted_at")
     private LocalDateTime deletedAt;
-
-    public Item(Integer id,
-                String name,
-                String desc,
-                Size size,
-                Color color,
-                Float price,
-                Float discount,
-                String SKU,
-                Integer quantityStock,
-                String imagePath,
-                LocalDateTime createdAt,
-                LocalDateTime modifiedAt,
-                LocalDateTime deletedAt)
-    {
-        this.id = id;
-        this.name = name;
-        this.desc = desc;
-        this.size = size;
-        this.color = color;
-        this.price = price;
-        this.discount = discount;
-        this.SKU = SKU;
-        this.quantityStock = quantityStock;
-        this.imagePath = imagePath;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.deletedAt = deletedAt;
-    }
 
     public Integer getId() {
         return id;

@@ -1,6 +1,5 @@
 package com.kuna_backend.controllers;
 
-import com.kuna_backend.dao.OrderDaoService;
 import com.kuna_backend.entities.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

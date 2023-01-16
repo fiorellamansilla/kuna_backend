@@ -28,35 +28,6 @@ public class Order {
     @Column (name = "tracking_number")
     private String trackingNumber;
 
-    public Order(Integer id,
-                 Float amount,
-                 String firstName,
-                 String lastName,
-                 String address,
-                 String city,
-                 String zipCode,
-                 String country,
-                 String phone,
-                 String email,
-                 LocalDateTime orderedAt,
-                 LocalDateTime shippedAt,
-                 String trackingNumber)
-    {
-        this.id = id;
-        this.amount = amount;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.city = city;
-        this.zipCode = zipCode;
-        this.country = country;
-        this.phone = phone;
-        this.email = email;
-        this.orderedAt = orderedAt;
-        this.shippedAt = shippedAt;
-        this.trackingNumber = trackingNumber;
-    }
-
     public Integer getId() {
         return id;
     }
