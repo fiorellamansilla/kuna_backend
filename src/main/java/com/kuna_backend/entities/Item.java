@@ -3,10 +3,15 @@ package com.kuna_backend.entities;
 import com.kuna_backend.entities.enums.Color;
 import com.kuna_backend.entities.enums.Size;
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 
 public class Item {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column (name = "name_item")
     private String name;

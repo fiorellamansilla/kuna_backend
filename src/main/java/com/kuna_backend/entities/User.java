@@ -1,12 +1,13 @@
 package com.kuna_backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity (name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String username;
     @Column (name = "password_hash")

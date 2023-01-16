@@ -1,12 +1,13 @@
 package com.kuna_backend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity (name = "orders")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private Float amount;
     @Column (name = "first_name")
