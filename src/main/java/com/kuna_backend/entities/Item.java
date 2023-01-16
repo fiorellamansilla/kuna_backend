@@ -2,22 +2,30 @@ package com.kuna_backend.entities;
 
 import com.kuna_backend.entities.enums.Color;
 import com.kuna_backend.entities.enums.Size;
+import jakarta.persistence.Column;
 
 import java.time.LocalDateTime;
 
 public class Item {
     private Integer id;
+    @Column (name = "name_item")
     private String name;
+    @Column (name = "desc_item")
     private String desc;
     private Size size;
     private Color color;
     private Float price;
     private Float discount;
     private String SKU;
+    @Column (name = "quantity_stock")
     private Integer quantityStock;
+    @Column (name = "image_path")
     private String imagePath;
+    @Column (name = "created_at")
     private LocalDateTime createdAt;
+    @Column (name = "modified_at")
     private LocalDateTime modifiedAt;
+    @Column (name = "deleted_at")
     private LocalDateTime deletedAt;
 
     public Item(Integer id,
