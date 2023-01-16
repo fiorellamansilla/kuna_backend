@@ -1,5 +1,6 @@
 package com.kuna_backend.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 import java.time.LocalDateTime;
@@ -8,11 +9,15 @@ import java.time.LocalDateTime;
 public class User {
     private Integer id;
     private String username;
+    @Column (name = "password_hash")
     private String passwordHash;
     private String email;
     private String country;
+    @Column (name = "is_blocked")
     private Boolean isBlocked;
+    @Column (name = "is_approved")
     private Boolean isApproved;
+    @Column (name = "created_at")
     private LocalDateTime createdAt;
 
     public User(Integer id,
