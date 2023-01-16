@@ -1,7 +1,10 @@
 package com.kuna_backend.entities;
 
+import jakarta.persistence.Entity;
+
 import java.time.LocalDateTime;
 
+@Entity (name = "users")
 public class User {
     private Integer id;
     private String username;

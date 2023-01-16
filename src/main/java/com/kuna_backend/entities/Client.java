@@ -1,13 +1,14 @@
 package com.kuna_backend.entities;
 
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import jakarta.persistence.Entity;
 import java.time.LocalDateTime;
 
 @Entity
 public class Client {
     @Id
+    @GeneratedValue
     private Integer id;
     private String username;
     private String password;

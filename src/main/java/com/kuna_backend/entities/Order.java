@@ -1,7 +1,10 @@
 package com.kuna_backend.entities;
 
+import jakarta.persistence.Entity;
+
 import java.time.LocalDateTime;
 
+@Entity (name = "orders")
 public class Order {
     private Integer id;
     private Float amount;
