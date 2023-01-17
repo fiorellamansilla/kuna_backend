@@ -1,7 +1,10 @@
 package com.kuna_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -38,6 +41,12 @@ public class Order {
     private LocalDateTime shippedAt;
     @Column (name = "tracking_number", length = 64, nullable = false)
     private String trackingNumber;
+
+    @ManyToOne (fetch = FetchType.LAZY, optional = false)
+    @JoinColumn (name = "client_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Client client;
 
     public Integer getId() {
         return id;
