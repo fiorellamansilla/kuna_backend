@@ -3,32 +3,45 @@ package com.kuna_backend.entities;
 import com.kuna_backend.entities.enums.Color;
 import com.kuna_backend.entities.enums.Size;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table (name = "item")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column (name = "name_item")
+    @Column (name = "name_item", length = 128, nullable = false)
     private String name;
-    @Column (name = "desc_item")
+    @Column (name = "desc_item", length = 2048, nullable = false)
     private String desc;
+    @Column (name = "size", length = 64, nullable = false)
+    @Enumerated (EnumType.STRING)
     private Size size;
+    @Column (name = "color", length = 64, nullable = false)
+    @Enumerated (EnumType.STRING)
     private Color color;
-    private Float price;
-    private Float discount;
+    @Column (name = "price", nullable = false)
+    private Float price = 0.0f;
+    @Column (name = "discount", nullable = false)
+    private Float discount = 0.0f;
+    @Column (name = "SKU", length = 128, nullable = false)
     private String SKU;
-    @Column (name = "quantity_stock")
-    private Integer quantityStock;
-    @Column (name = "image_path")
+    @Column (name = "quantity_stock", nullable = false)
+    private Integer quantityStock = 0;
+    @Column (name = "image_path", length = 256, nullable = false)
     private String imagePath;
-    @Column (name = "created_at")
+    @Column (name = "created_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
-    @Column (name = "modified_at")
+    @Column (name = "modified_at", nullable = false)
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
-    @Column (name = "deleted_at")
+    @Column (name = "deleted_at", nullable = false)
+    @UpdateTimestamp
     private LocalDateTime deletedAt;
 
     public Integer getId() {
