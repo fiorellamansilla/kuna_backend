@@ -26,8 +26,10 @@ public class User {
     @Column (name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
+
     public User() {
     }
+
     public User(Integer id, String username, String passwordHash, String email, String country, Boolean isBlocked, Boolean isApproved, LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
