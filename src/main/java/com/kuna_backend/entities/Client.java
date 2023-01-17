@@ -1,30 +1,42 @@
 package com.kuna_backend.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table (name = "client")
 public class Client {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer id;
+    @Column (name = "username", length = 64, nullable = false)
     private String username;
+    @Column (name = "password", length = 64, nullable = false)
     private String password;
-    @Column (name = "first_name")
+    @Column (name = "first_name", length = 64, nullable = false)
     private String firstName;
-    @Column (name = "last_name")
+    @Column (name = "last_name", length = 64, nullable = false)
     private String lastName;
+    @Column (name = "address", length = 128, nullable = false)
     private String address;
-    @Column (name = "zip_code")
+    @Column (name = "zip_code", length = 64, nullable = false)
     private String zipCode;
+    @Column (name = "city", length = 32, nullable = false)
     private String city;
+    @Column (name = "country", length = 32, nullable = false)
     private String country;
+    @Column (name = "phone", length = 32, nullable = false)
     private String phone;
+    @Column (name = "email", length = 64, nullable = false)
     private String email;
-    @Column (name = "created_at")
+    @Column (name = "created_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
-    @Column (name = "modified_at")
+    @Column (name = "modified_at", nullable = false)
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
 
