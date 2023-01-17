@@ -10,42 +10,60 @@ import java.time.LocalDateTime;
 @Table (name = "client")
 public class Client {
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column (name = "username", length = 64, nullable = false)
+    @Column(name = "username", length = 64, nullable = false)
     private String username;
-    @Column (name = "password", length = 64, nullable = false)
+    @Column(name = "password", length = 64, nullable = false)
     private String password;
-    @Column (name = "first_name", length = 64, nullable = false)
+    @Column(name = "first_name", length = 64, nullable = false)
     private String firstName;
-    @Column (name = "last_name", length = 64, nullable = false)
+    @Column(name = "last_name", length = 64, nullable = false)
     private String lastName;
-    @Column (name = "address", length = 128, nullable = false)
+    @Column(name = "address", length = 128, nullable = false)
     private String address;
-    @Column (name = "zip_code", length = 64, nullable = false)
+    @Column(name = "zip_code", length = 64, nullable = false)
     private String zipCode;
-    @Column (name = "city", length = 32, nullable = false)
+    @Column(name = "city", length = 32, nullable = false)
     private String city;
-    @Column (name = "country", length = 32, nullable = false)
+    @Column(name = "country", length = 32, nullable = false)
     private String country;
-    @Column (name = "phone", length = 32, nullable = false)
+    @Column(name = "phone", length = 32, nullable = false)
     private String phone;
-    @Column (name = "email", length = 64, nullable = false)
+    @Column(name = "email", length = 64, nullable = false)
     private String email;
-    @Column (name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
-    @Column (name = "modified_at", nullable = false)
+    @Column(name = "modified_at", nullable = false)
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
+    public Client() {
+    }
+
+    public Client(Integer id, String username, String password, String firstName, String lastName, String address, String zipCode, String city, String country, String phone, String email, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.zipCode = zipCode;
+        this.city = city;
+        this.country = country;
+        this.phone = phone;
+        this.email = email;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
 
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
-        this.id = Client.this.id;
+        this.id = id;
     }
 
     public String getUsername() {
@@ -144,22 +162,6 @@ public class Client {
         this.modifiedAt = modifiedAt;
     }
 
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", city='" + city + '\'' +
-                ", country='" + country + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", createdAt=" + createdAt +
-                ", modifiedAt=" + modifiedAt +
-                '}';
-    }
 }
+
+

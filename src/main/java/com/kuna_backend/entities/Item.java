@@ -44,6 +44,25 @@ public class Item {
     @UpdateTimestamp
     private LocalDateTime deletedAt;
 
+    public Item() {
+    }
+
+    public Item(Integer id, String name, String desc, Size size, Color color, Float price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt) {
+        this.id = id;
+        this.name = name;
+        this.desc = desc;
+        this.size = size;
+        this.color = color;
+        this.price = price;
+        this.discount = discount;
+        this.SKU = SKU;
+        this.quantityStock = quantityStock;
+        this.imagePath = imagePath;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+        this.deletedAt = deletedAt;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -57,7 +76,7 @@ public class Item {
     }
 
     public void setName(String name) {
-        this.name = Item.this.name;
+        this.name = name;
     }
 
     public String getDesc() {
@@ -65,7 +84,7 @@ public class Item {
     }
 
     public void setDesc(String desc) {
-        this.desc = Item.this.desc;
+        this.desc = desc;
     }
 
     public Size getSize() {
@@ -146,25 +165,6 @@ public class Item {
 
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                ", size=" + size +
-                ", color=" + color +
-                ", price=" + price +
-                ", discount=" + discount +
-                ", SKU='" + SKU + '\'' +
-                ", quantityStock=" + quantityStock +
-                ", imagePath='" + imagePath + '\'' +
-                ", createdAt=" + createdAt +
-                ", modifiedAt=" + modifiedAt +
-                ", deletedAt=" + deletedAt +
-                '}';
     }
 }
 

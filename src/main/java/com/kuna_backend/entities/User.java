@@ -26,7 +26,18 @@ public class User {
     @Column (name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
-
+    public User() {
+    }
+    public User(Integer id, String username, String passwordHash, String email, String country, Boolean isBlocked, Boolean isApproved, LocalDateTime createdAt) {
+        this.id = id;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.email = email;
+        this.country = country;
+        this.isBlocked = isBlocked;
+        this.isApproved = isApproved;
+        this.createdAt = createdAt;
+    }
 
     public Integer getId() {
         return id;
@@ -68,20 +79,20 @@ public class User {
         this.country = country;
     }
 
-    public Boolean getIsBlocked() {
+    public Boolean getBlocked() {
         return isBlocked;
     }
 
-    public void setIsBlocked(Boolean isBlocked) {
-        this.isBlocked = isBlocked;
+    public void setBlocked(Boolean blocked) {
+        isBlocked = blocked;
     }
 
-    public Boolean getIsApproved() {
+    public Boolean getApproved() {
         return isApproved;
     }
 
-    public void setIsApproved(Boolean isApproved) {
-        this.isApproved = isApproved;
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -90,19 +101,5 @@ public class User {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", passwordHash='" + passwordHash + '\'' +
-                ", email='" + email + '\'' +
-                ", country='" + country + '\'' +
-                ", isBlocked=" + isBlocked +
-                ", isApproved=" + isApproved +
-                ", createdAt=" + createdAt +
-                '}';
     }
 }

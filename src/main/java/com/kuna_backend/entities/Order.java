@@ -48,12 +48,32 @@ public class Order {
     @JsonIgnore
     private Client client;
 
+    public Order() {
+    }
+
+    public Order(Integer id, Float amount, String firstName, String lastName, String address, String city, String zipCode, String country, String phone, String email, LocalDateTime orderedAt, LocalDateTime shippedAt, String trackingNumber, Client client) {
+        this.id = id;
+        this.amount = amount;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.phone = phone;
+        this.email = email;
+        this.orderedAt = orderedAt;
+        this.shippedAt = shippedAt;
+        this.trackingNumber = trackingNumber;
+        this.client = client;
+    }
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
-        this.id = Order.this.id;
+        this.id = id;
     }
 
     public Float getAmount() {
@@ -152,22 +172,11 @@ public class Order {
         this.trackingNumber = trackingNumber;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", amount=" + amount +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", country='" + country + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", orderedAt=" + orderedAt +
-                ", shippedAt=" + shippedAt +
-                ", trackingNumber='" + trackingNumber + '\'' +
-                '}';
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }
