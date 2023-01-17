@@ -1,31 +1,42 @@
 package com.kuna_backend.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity (name = "orders")
+@Entity
+@Table (name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private Float amount;
-    @Column (name = "first_name")
+    @Column (name = "amount", nullable = false)
+    private Float amount = 0.0f;
+    @Column (name = "first_name", length = 128, nullable = false)
     private String firstName;
-    @Column (name = "last_name")
+    @Column (name = "last_name", length = 128, nullable = false)
     private String lastName;
+    @Column (name = "address", length = 2048, nullable = false)
     private String address;
+    @Column (name = "city", length = 32, nullable = false)
     private String city;
-    @Column (name = "zip_code")
+    @Column (name = "zip_code", length = 64, nullable = false)
     private String zipCode;
+    @Column (name = "country", length = 32, nullable = false)
     private String country;
+    @Column (name = "phone", length = 32, nullable = false)
     private String phone;
+    @Column (name = "email", length = 64, nullable = false)
     private String email;
-    @Column (name = "ordered_at")
+    @Column (name = "ordered_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime orderedAt;
-    @Column (name = "shipped_at")
+    @Column (name = "shipped_at", nullable = false)
+    @UpdateTimestamp
     private LocalDateTime shippedAt;
-    @Column (name = "tracking_number")
+    @Column (name = "tracking_number", length = 64, nullable = false)
     private String trackingNumber;
 
     public Integer getId() {
