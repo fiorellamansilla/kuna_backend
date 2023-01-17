@@ -1,24 +1,30 @@
 package com.kuna_backend.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity (name = "users")
+@Entity
+@Table (name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @Column (name = "username", length = 64, nullable = false)
     private String username;
-    @Column (name = "password_hash")
+    @Column (name = "password_hash", length = 64, nullable = false)
     private String passwordHash;
+    @Column (name = "email", length = 64, nullable = false)
     private String email;
+    @Column (name = "country", length = 64, nullable = false)
     private String country;
-    @Column (name = "is_blocked")
+    @Column (name = "is_blocked", columnDefinition = "bit", nullable = false)
     private Boolean isBlocked;
-    @Column (name = "is_approved")
+    @Column (name = "is_approved", columnDefinition = "bit", nullable = false)
     private Boolean isApproved;
-    @Column (name = "created_at")
+    @Column (name = "created_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
 
