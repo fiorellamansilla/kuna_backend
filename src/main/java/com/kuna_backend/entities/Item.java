@@ -2,38 +2,52 @@ package com.kuna_backend.entities;
 
 import com.kuna_backend.entities.enums.Color;
 import com.kuna_backend.entities.enums.Size;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table (name = "item")
 public class Item {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @Column (name = "name_item", length = 128, nullable = false)
     private String name;
+    @Column (name = "desc_item", length = 2048, nullable = false)
     private String desc;
+    @Column (name = "size", length = 64, nullable = false)
+    @Enumerated (EnumType.STRING)
     private Size size;
+    @Column (name = "color", length = 64, nullable = false)
+    @Enumerated (EnumType.STRING)
     private Color color;
-    private Float price;
-    private Float discount;
+    @Column (name = "price", nullable = false)
+    private Float price = 0.0f;
+    @Column (name = "discount", nullable = false)
+    private Float discount = 0.0f;
+    @Column (name = "SKU", length = 128, nullable = false)
     private String SKU;
-    private Integer quantityStock;
+    @Column (name = "quantity_stock", nullable = false)
+    private Integer quantityStock = 0;
+    @Column (name = "image_path", length = 256, nullable = false)
     private String imagePath;
+    @Column (name = "created_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
+    @Column (name = "modified_at", nullable = false)
+    @UpdateTimestamp
     private LocalDateTime modifiedAt;
+    @Column (name = "deleted_at", nullable = false)
+    @UpdateTimestamp
     private LocalDateTime deletedAt;
 
-    public Item(Integer id,
-                String name,
-                String desc,
-                Size size,
-                Color color,
-                Float price,
-                Float discount,
-                String SKU,
-                Integer quantityStock,
-                String imagePath,
-                LocalDateTime createdAt,
-                LocalDateTime modifiedAt,
-                LocalDateTime deletedAt)
-    {
+    public Item() {
+    }
+
+    public Item(Integer id, String name, String desc, Size size, Color color, Float price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt) {
         this.id = id;
         this.name = name;
         this.desc = desc;
@@ -62,7 +76,7 @@ public class Item {
     }
 
     public void setName(String name) {
-        this.name = Item.this.name;
+        this.name = name;
     }
 
     public String getDesc() {
@@ -70,7 +84,7 @@ public class Item {
     }
 
     public void setDesc(String desc) {
-        this.desc = Item.this.desc;
+        this.desc = desc;
     }
 
     public Size getSize() {
@@ -151,25 +165,6 @@ public class Item {
 
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                ", size=" + size +
-                ", color=" + color +
-                ", price=" + price +
-                ", discount=" + discount +
-                ", SKU='" + SKU + '\'' +
-                ", quantityStock=" + quantityStock +
-                ", imagePath='" + imagePath + '\'' +
-                ", createdAt=" + createdAt +
-                ", modifiedAt=" + modifiedAt +
-                ", deletedAt=" + deletedAt +
-                '}';
     }
 }
 

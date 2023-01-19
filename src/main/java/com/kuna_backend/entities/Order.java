@@ -1,36 +1,57 @@
 package com.kuna_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table (name = "orders")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private Float amount;
+    @Column (name = "amount", nullable = false)
+    private Float amount = 0.0f;
+    @Column (name = "first_name", length = 128, nullable = false)
     private String firstName;
+    @Column (name = "last_name", length = 128, nullable = false)
     private String lastName;
+    @Column (name = "address", length = 2048, nullable = false)
     private String address;
+    @Column (name = "city", length = 32, nullable = false)
     private String city;
+    @Column (name = "zip_code", length = 64, nullable = false)
     private String zipCode;
+    @Column (name = "country", length = 32, nullable = false)
     private String country;
+    @Column (name = "phone", length = 32, nullable = false)
     private String phone;
+    @Column (name = "email", length = 64, nullable = false)
     private String email;
+    @Column (name = "ordered_at", nullable = false)
+    @CreationTimestamp
     private LocalDateTime orderedAt;
+    @Column (name = "shipped_at", nullable = false)
+    @UpdateTimestamp
     private LocalDateTime shippedAt;
+    @Column (name = "tracking_number", length = 64, nullable = false)
     private String trackingNumber;
 
-    public Order(Integer id,
-                 Float amount,
-                 String firstName,
-                 String lastName,
-                 String address,
-                 String city,
-                 String zipCode,
-                 String country,
-                 String phone,
-                 String email,
-                 LocalDateTime orderedAt,
-                 LocalDateTime shippedAt,
-                 String trackingNumber)
-    {
+    @ManyToOne (fetch = FetchType.LAZY, optional = false)
+    @JoinColumn (name = "client_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Client client;
+
+    public Order() {
+    }
+
+    public Order(Integer id, Float amount, String firstName, String lastName, String address, String city, String zipCode, String country, String phone, String email, LocalDateTime orderedAt, LocalDateTime shippedAt, String trackingNumber, Client client) {
         this.id = id;
         this.amount = amount;
         this.firstName = firstName;
@@ -44,6 +65,7 @@ public class Order {
         this.orderedAt = orderedAt;
         this.shippedAt = shippedAt;
         this.trackingNumber = trackingNumber;
+        this.client = client;
     }
 
     public Integer getId() {
@@ -51,7 +73,7 @@ public class Order {
     }
 
     public void setId(Integer id) {
-        this.id = Order.this.id;
+        this.id = id;
     }
 
     public Float getAmount() {
@@ -150,22 +172,11 @@ public class Order {
         this.trackingNumber = trackingNumber;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", amount=" + amount +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", country='" + country + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", orderedAt=" + orderedAt +
-                ", shippedAt=" + shippedAt +
-                ", trackingNumber='" + trackingNumber + '\'' +
-                '}';
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }
