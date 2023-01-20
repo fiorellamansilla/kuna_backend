@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Table (name = "orders")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column (name = "amount", nullable = false)
     private Float amount = 0.0f;

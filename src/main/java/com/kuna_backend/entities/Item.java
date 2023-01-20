@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table (name = "item")
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column (name = "name_item", length = 128, nullable = false)
     private String name;
