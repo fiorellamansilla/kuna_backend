@@ -1,70 +1,63 @@
 package com.kuna_backend.controllers;
 
 import com.kuna_backend.entities.Item;
+import com.kuna_backend.services.ItemService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
+@RequestMapping("/item")
 public class ItemController {
 
-    private ItemDaoService service;
+    @Autowired
+    private ItemService itemService;
 
-    public ItemController(ItemDaoService service) {
-        this.service = service;
-    }
-
-    // GET All Items Endpoint
-    @GetMapping(path = "/item")
-    public List<Item> retrieveAllItems(){
-        return service.findAll();
+    // GET All Items / Endpoint
+    @GetMapping(path = "/all")
+    public List<Item> list(){
+        return (List<Item>) itemService.getAllItems();
     }
 
     // GET an Item by ID / Endpoint
-    @GetMapping(path = "/item/{id}")
-    public Item retrieveItem (@PathVariable int id) {
-        Item item =  service. findOne(id);
-
-        if (item==null)
-            throw new ElementNotFoundException("id:" +id);
-
-        return item;
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Item> get(@PathVariable Integer id) {
+        try {
+            Item item = itemService.getItem(id);
+            return new ResponseEntity<Item>(item, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<Item>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    // POST an Item Endpoint
-    @PostMapping(path = "/item")
-    public ResponseEntity<Item> createItem (@RequestBody Item item) {
-        Item savedItem = service.save(item);
+    // CREATE an Item / Endpoint
+    @PostMapping(path = "/")
+    public void add (@RequestBody Item item) {
+        itemService.createItem(item);
+    }
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedItem.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
+    // UPDATE an Item / Endpoint
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Item> update(@RequestBody Item item, @PathVariable Integer id) {
+        try {
+            Item existItem = itemService.getItem(id);
+            item.setId(id);
+            itemService.createItem(item);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     //DELETE one Item by ID / Endpoint
-    @DeleteMapping(path = "/item/{id}")
-    public void deleteItem (@PathVariable int id) {
-        service.deleteById(id);
-    }
-
-
-    // UPDATE one Item by ID / Endpoint
-    @PutMapping (path = "/item/{id}")
-    public ResponseEntity<Item> updateItem (@RequestBody Item item, @PathVariable int id) {
-        Item updatedItem = service.findOne(id);
-
-        if (item==null)
-            throw new ElementNotFoundException("id:" +id);
-
-        service.save(updatedItem);
-
-        return ResponseEntity.ok(updatedItem);
+    @DeleteMapping(path = "/{id}")
+    public void delete (@PathVariable Integer id) {
+        itemService.deleteItem(id);
     }
 
 }
