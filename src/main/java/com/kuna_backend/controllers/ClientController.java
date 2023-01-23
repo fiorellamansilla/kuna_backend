@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -19,8 +20,8 @@ public class ClientController {
 
     // GET  all Clients / Endpoint
     @GetMapping(path = "/all")
-    public Iterable<Client> list(){
-        return clientService.getAllClients();
+    public List<Client> list(){
+        return (List<Client>) clientService.getAllClients();
     }
 
     // GET a Client by ID / Endpoint
