@@ -1,70 +1,64 @@
 package com.kuna_backend.controllers;
 
+import com.kuna_backend.entities.Client;
 import com.kuna_backend.entities.Order;
+import com.kuna_backend.services.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/order")
 public class OrderController {
 
-    private OrderDaoService service;
+    @Autowired
+    private OrderService orderService;
 
-    public OrderController(OrderDaoService service) {
-        this.service = service;
-    }
-
-    // GET All Orders Endpoint
-    @GetMapping(path = "/order")
-    public List<Order> retrieveAllOrders(){
-        return service.findAll();
+    // GET All Orders / Endpoint
+    @GetMapping(path = "/all")
+    public List<Order> list(){
+        return (List<Order>) orderService.getAllOrders();
     }
 
     // GET an Order by ID / Endpoint
-    @GetMapping(path = "/order/{id}")
-    public Order retrieveOrder (@PathVariable int id) {
-        Order order =  service. findOne(id);
-
-        if (order==null)
-            throw new ElementNotFoundException("id:" +id);
-
-        return order;
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Order> get(@PathVariable Integer id) {
+        try {
+            Order order = orderService.getOrder(id);
+            return new ResponseEntity<Order>(order, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    // POST an Order Endpoint
-    @PostMapping(path = "/order")
-    public ResponseEntity<Order> createOrder (@RequestBody Order order) {
-        Order savedOrder = service.save(order);
+    // CREATE an Order / Endpoint
+    @PostMapping(path = "/")
+    public void add (@RequestBody Order order) {
+        orderService.createOrder(order);
+    }
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedOrder.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
+    // UPDATE an Order / Endpoint
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Order> update(@RequestBody Order order, @PathVariable Integer id) {
+        try {
+            Order existOrder = orderService.getOrder(id);
+            order.setId(id);
+            orderService.createOrder(order);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     //DELETE one Order by ID / Endpoint
-    @DeleteMapping(path = "/order/{id}")
-    public void deleteOrder (@PathVariable int id) {
-        service.deleteById(id);
-    }
-
-
-    // UPDATE one Order by ID /  Endpoint
-    @PutMapping (path = "/order/{id}")
-    public ResponseEntity<Order> updateOrder (@RequestBody Order order, @PathVariable int id) {
-        Order updatedOrder = service.findOne(id);
-
-        if (order==null)
-            throw new ElementNotFoundException("id:" +id);
-
-        service.save(updatedOrder);
-
-        return ResponseEntity.ok(updatedOrder);
+    @DeleteMapping(path = "/{id}")
+    public void delete (@PathVariable Integer id) {
+        orderService.deleteOrder(id);
     }
 
 }
