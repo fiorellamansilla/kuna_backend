@@ -6,14 +6,16 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Iterable<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<Order> getAllOrders() {
+        return (List<Order>) orderRepository.findAll();
     }
 
     public Order getOrder (Integer id) {
