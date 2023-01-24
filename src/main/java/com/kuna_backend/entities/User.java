@@ -2,6 +2,7 @@ package com.kuna_backend.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +20,9 @@ public class User {
     private String email;
     @Column (name = "country", length = 64, nullable = false)
     private String country;
-    @Column (name = "is_blocked", columnDefinition = "bit", nullable = false)
+    @Column (name = "is_blocked", columnDefinition = "BIT", nullable = false)
     private Boolean isBlocked;
-    @Column (name = "is_approved", columnDefinition = "bit", nullable = false)
+    @Column (name = "is_approved", columnDefinition = "BIT", nullable = false)
     private Boolean isApproved;
     @Column (name = "created_at", nullable = false)
     @CreationTimestamp

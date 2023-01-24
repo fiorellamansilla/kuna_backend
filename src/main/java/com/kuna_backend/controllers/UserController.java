@@ -1,68 +1,64 @@
 package com.kuna_backend.controllers;
 
 import com.kuna_backend.entities.User;
+import com.kuna_backend.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
-    private UserDaoService service;
+    @Autowired
+    private UserService userService;
 
-    public UserController(UserDaoService service) {this.service = service;}
-
-    // GET All Users Endpoint
-    @GetMapping(path = "/user")
-    public List<User> retrieveAllUsers(){
-        return service.findAll();
+    // GET All Users / Endpoint
+    @GetMapping(path = "/all")
+    public List<User> list() {
+        return (List<User>) userService.getAllUsers();
     }
 
     // GET a User by ID / Endpoint
-    @GetMapping(path = "/user/{id}")
-    public User retrieveUser (@PathVariable int id) {
-        User user =  service. findOne(id);
-
-        if (user==null)
-            throw new ElementNotFoundException("id:" +id);
-
-        return user;
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<User> get(@PathVariable Integer id) {
+        try {
+            User user = userService.getUser(id);
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    // POST a User Endpoint
-    @PostMapping(path = "/user")
-    public ResponseEntity<User> createUser (@RequestBody User user) {
-        User savedUser = service.save(user);
+    // CREATE a User / Endpoint
+    @PostMapping(path = "/")
+    public void add(@RequestBody User user) {
+        userService.createUser(user);
+    }
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedUser.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
+    // UPDATE a User / Endpoint
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<User> update(@RequestBody User user, @PathVariable Integer id) {
+        try {
+            User existUser = userService.getUser(id);
+            user.setId(id);
+            userService.createUser(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     //DELETE one User by ID /  Endpoint
-    @DeleteMapping(path = "/user/{id}")
-    public void deleteUser (@PathVariable int id) {
-        service.deleteById(id);
-    }
-
-
-    // UPDATE one User by ID /  Endpoint
-    @PutMapping (path = "/user/{id}")
-    public ResponseEntity<User> updateUser (@RequestBody User user, @PathVariable int id) {
-        User updatedUser = service.findOne(id);
-
-        if (user==null)
-            throw new ElementNotFoundException("id:" +id);
-
-        service.save(updatedUser);
-
-        return ResponseEntity.ok(updatedUser);
+    @DeleteMapping(path = "/{id}")
+    public void delete(@PathVariable Integer id) {
+        userService.deleteUser(id);
     }
 
 }
+
+
