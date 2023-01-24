@@ -1,6 +1,6 @@
 package com.kuna_backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
@@ -43,9 +43,9 @@ public class Order {
     private String trackingNumber;
 
     @ManyToOne (fetch = FetchType.LAZY, optional = false)
-    @JoinColumn (name = "client_id", nullable = false)
+    @JoinColumn (name = "client_id", referencedColumnName = "id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
+    @JsonBackReference
     private Client client;
 
     public Order() {
