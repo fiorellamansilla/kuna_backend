@@ -1,10 +1,12 @@
 package com.kuna_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table (name = "client")
@@ -38,6 +40,10 @@ public class Client {
     @Column(name = "modified_at", nullable = false)
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
+
+    @OneToMany (mappedBy = "client", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Order> orders;
 
     public Client() {
     }
