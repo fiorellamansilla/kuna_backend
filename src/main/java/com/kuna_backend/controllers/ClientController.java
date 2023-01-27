@@ -1,71 +1,62 @@
 package com.kuna_backend.controllers;
 
 import com.kuna_backend.entities.Client;
+import com.kuna_backend.services.ClientService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
+@RequestMapping("/client")
 public class ClientController {
 
-    private ClientDaoService service;
+    @Autowired
+    private ClientService clientService;
 
-    public ClientController(ClientDaoService service) {
-        this.service = service;
-    }
-
-    // GET  all Clients Endpoint
-    @GetMapping(path = "/client")
-    public List<Client> retrieveAllClients(){
-        return service.findAll();
+    // GET  all Clients / Endpoint
+    @GetMapping(path = "/all")
+    public Iterable<Client> list(){
+        return clientService.getAllClients();
     }
 
     // GET a Client by ID / Endpoint
-    @GetMapping(path = "/client/{id}")
-    public Client retrieveClient (@PathVariable int id) {
-        Client client =  service. findOne(id);
-
-        if (client==null)
-            throw new ElementNotFoundException("id:" +id);
-
-        return client;
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Client> get(@PathVariable Integer id) {
+        try {
+            Client client = clientService.getClient(id);
+            return new ResponseEntity<Client>(client, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<Client>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    // POST a Client Endpoint
-    @PostMapping(path = "/client")
-    public ResponseEntity<Client> createClient (@RequestBody Client client) {
-        Client savedClient = service.save(client);
+    // CREATE a Client / Endpoint
+    @PostMapping(path = "/")
+    public void add (@RequestBody Client client) {
+        clientService.createClient(client);
+    }
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedClient.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
+    // UPDATE a Client / Endpoint
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Client> update(@RequestBody Client client, @PathVariable Integer id) {
+        try {
+            Client existClient = clientService.getClient(id);
+            client.setId(id);
+            clientService.createClient(client);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     //DELETE one Client by ID / Endpoint
-
-    @DeleteMapping(path = "/client/{id}")
-    public void deleteClient (@PathVariable int id) {
-        service.deleteById(id);
-    }
-
-
-    // UPDATE one Client by ID / Endpoint
-    @PutMapping (path = "/client/{id}")
-    public ResponseEntity<Client> updateClient (@RequestBody Client client, @PathVariable int id) {
-        Client updatedClient = service.findOne(id);
-
-        if (client==null)
-            throw new ElementNotFoundException("id:" +id);
-
-        service.save(updatedClient);
-
-        return ResponseEntity.ok(updatedClient);
+    @DeleteMapping(path = "/{id}")
+    public void delete (@PathVariable Integer id) {
+        clientService.deleteClient(id);
     }
 
 }
