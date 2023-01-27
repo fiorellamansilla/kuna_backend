@@ -28,7 +28,7 @@ public class Item {
     private Float price = 0.0f;
     @Column (name = "discount", nullable = false)
     private Float discount = 0.0f;
-    @Column (name = "SKU", length = 128, nullable = false)
+    @Column (name = "sku", length = 128, nullable = false)
     private String SKU;
     @Column (name = "quantity_stock", nullable = false)
     private Integer quantityStock = 0;
@@ -166,5 +166,7 @@ public class Item {
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
+
 }
+
 
