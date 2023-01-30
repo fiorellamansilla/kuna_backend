@@ -1,7 +1,9 @@
 package com.kuna_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.type.NumericBooleanConverter;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +21,11 @@ public class User {
     private String email;
     @Column (name = "country", length = 64, nullable = false)
     private String country;
-    @Column (name = "is_blocked", columnDefinition = "bit", nullable = false)
+    @Column (name = "is_blocked", columnDefinition = "BIT(1)", nullable = false)
+    @Convert (converter = NumericBooleanConverter.class)
     private Boolean isBlocked;
-    @Column (name = "is_approved", columnDefinition = "bit", nullable = false)
+    @Column (name = "is_approved", columnDefinition = "BIT(1)", nullable = false)
+    @Convert (converter = NumericBooleanConverter.class)
     private Boolean isApproved;
     @Column (name = "created_at", nullable = false)
     @CreationTimestamp
@@ -81,18 +85,22 @@ public class User {
         this.country = country;
     }
 
+    @JsonProperty(value = "isBlocked")
     public Boolean getBlocked() {
         return isBlocked;
     }
 
+    @JsonProperty(value = "isBlocked")
     public void setBlocked(Boolean blocked) {
         isBlocked = blocked;
     }
 
+    @JsonProperty(value = "isApproved")
     public Boolean getApproved() {
         return isApproved;
     }
 
+    @JsonProperty(value = "isApproved")
     public void setApproved(Boolean approved) {
         isApproved = approved;
     }
@@ -104,4 +112,5 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
 }
