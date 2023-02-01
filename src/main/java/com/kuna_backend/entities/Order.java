@@ -8,6 +8,8 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table (name = "orders")
@@ -48,10 +50,19 @@ public class Order {
     @JsonBackReference
     private Client client;
 
+    @ManyToMany (fetch = FetchType.LAZY)
+    @JoinTable (
+            name = "order_item",
+            joinColumns = {@JoinColumn (name = "order_id")},
+            inverseJoinColumns = {@JoinColumn (name = "item_id")}
+    )
+    @JsonBackReference
+    private Set<Item> items = new HashSet<Item>();
+
     public Order() {
     }
 
-    public Order(Integer id, Float amount, String firstName, String lastName, String address, String city, String zipCode, String country, String phone, String email, LocalDateTime orderedAt, LocalDateTime shippedAt, String trackingNumber, Client client) {
+    public Order(Integer id, Float amount, String firstName, String lastName, String address, String city, String zipCode, String country, String phone, String email, LocalDateTime orderedAt, LocalDateTime shippedAt, String trackingNumber, Client client, java.util.Set<Item> items) {
         this.id = id;
         this.amount = amount;
         this.firstName = firstName;
@@ -66,6 +77,7 @@ public class Order {
         this.shippedAt = shippedAt;
         this.trackingNumber = trackingNumber;
         this.client = client;
+        this.items = items;
     }
 
     public Integer getId() {
@@ -178,5 +190,13 @@ public class Order {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public java.util.Set<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(java.util.Set<Item> items) {
+        this.items = items;
     }
 }
