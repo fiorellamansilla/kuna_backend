@@ -50,8 +50,9 @@ public class Order {
     @JsonBackReference
     private Client client;
 
-    @ManyToMany (mappedBy = "orders", fetch = FetchType.LAZY)
-    private Set<Item> items = new HashSet<>();
+    @ManyToMany (mappedBy = "orders", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JsonBackReference
+    private Set<Item> items = new HashSet<Item>();
 
     public Order() {
     }
@@ -189,8 +190,8 @@ public class Order {
         return items;
     }
 
-    public void addItem (Item item) {
-        items.add(item);
-        item.getOrders().add(this);
+    public void setItems(Set<Item> items) {
+        this.items = items;
     }
+
 }

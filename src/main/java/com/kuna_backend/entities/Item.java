@@ -47,14 +47,18 @@ public class Item {
     @UpdateTimestamp
     private LocalDateTime deletedAt;
 
-    @ManyToMany (fetch = FetchType.LAZY)
+    @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable (
             name = "order_item",
-            joinColumns = {@JoinColumn (name = "item_id")},
-            inverseJoinColumns = {@JoinColumn (name = "order_id")}
+            joinColumns = {
+                    @JoinColumn (name = "item_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn (name = "order_id")
+            }
     )
     @JsonBackReference
-    private Set<Order> orders = new HashSet<>();
+    private Set<Order> orders = new HashSet<Order>();
 
     public Item() {
     }
