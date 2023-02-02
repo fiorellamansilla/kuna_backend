@@ -1,5 +1,6 @@
 package com.kuna_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.kuna_backend.entities.enums.Color;
 import com.kuna_backend.entities.enums.Size;
 import jakarta.persistence.*;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table (name = "item")
@@ -44,10 +47,23 @@ public class Item {
     @UpdateTimestamp
     private LocalDateTime deletedAt;
 
+    @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JoinTable (
+            name = "order_item",
+            joinColumns = {
+                    @JoinColumn (name = "item_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn (name = "order_id")
+            }
+    )
+    @JsonBackReference
+    private Set<Order> orders = new HashSet<Order>();
+
     public Item() {
     }
 
-    public Item(Integer id, String name, String desc, Size size, Color color, Float price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt) {
+    public Item(Integer id, String name, String desc, Size size, Color color, Float price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt, Set<Order> orders) {
         this.id = id;
         this.name = name;
         this.desc = desc;
@@ -61,6 +77,7 @@ public class Item {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.deletedAt = deletedAt;
+        this.orders = orders;
     }
 
     public Integer getId() {
@@ -167,6 +184,13 @@ public class Item {
         this.deletedAt = deletedAt;
     }
 
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
 }
 
 

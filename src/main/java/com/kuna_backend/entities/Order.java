@@ -8,6 +8,8 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table (name = "orders")
@@ -47,6 +49,10 @@ public class Order {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
     private Client client;
+
+    @ManyToMany (mappedBy = "orders", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JsonBackReference
+    private Set<Item> items = new HashSet<Item>();
 
     public Order() {
     }
@@ -179,4 +185,13 @@ public class Order {
     public void setClient(Client client) {
         this.client = client;
     }
+
+    public Set<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<Item> items) {
+        this.items = items;
+    }
+
 }
