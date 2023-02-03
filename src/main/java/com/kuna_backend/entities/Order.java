@@ -51,7 +51,6 @@ public class Order {
     private Client client;
 
     @ManyToMany (mappedBy = "orders", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JsonBackReference
     private Set<Item> items = new HashSet<Item>();
 
     public Order() {

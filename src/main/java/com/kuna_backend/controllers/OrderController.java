@@ -1,6 +1,9 @@
 package com.kuna_backend.controllers;
 
+import com.kuna_backend.entities.Client;
+import com.kuna_backend.entities.Item;
 import com.kuna_backend.entities.Order;
+import com.kuna_backend.services.ItemService;
 import com.kuna_backend.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/order")
@@ -17,6 +20,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ItemService itemService;
 
     // GET All Orders / Endpoint
     @GetMapping(path = "/all")
@@ -60,4 +66,17 @@ public class OrderController {
         orderService.deleteOrder(id);
     }
 
+    // Retrieve all Items for an Order / Many-to-many relationship Endpoint
+    @GetMapping(path = "/{id}/items")
+    public Set<Item> retrieveItemsForOrder(@PathVariable Integer id) {
+
+        Order order = orderService.getOrder(id);
+
+        if (order==null)
+            throw new NoSuchElementException("id:"+id);
+
+        return order.getItems();
+    }
 }
+
+
