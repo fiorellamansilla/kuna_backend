@@ -168,6 +168,13 @@ public class Client {
         this.modifiedAt = modifiedAt;
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }
 
 
