@@ -42,7 +42,6 @@ public class Client {
     private LocalDateTime modifiedAt;
 
     @OneToMany (mappedBy = "client", fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Order> orders;
 
     public Client() {
@@ -168,6 +167,13 @@ public class Client {
         this.modifiedAt = modifiedAt;
     }
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }
 
 

@@ -1,6 +1,5 @@
 package com.kuna_backend.controllers;
 
-import com.kuna_backend.entities.Client;
 import com.kuna_backend.entities.Order;
 import com.kuna_backend.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
