@@ -1,6 +1,5 @@
 package com.kuna_backend.controllers;
 
-import com.kuna_backend.entities.Client;
 import com.kuna_backend.entities.Item;
 import com.kuna_backend.entities.Order;
 import com.kuna_backend.services.ItemService;
@@ -9,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -66,6 +67,7 @@ public class OrderController {
         orderService.deleteOrder(id);
     }
 
+
     // Retrieve all Items for an Order / Many-to-many relationship Endpoint
     @GetMapping(path = "/{id}/items")
     public Set<Item> retrieveItemsForOrder(@PathVariable Integer id) {
@@ -76,6 +78,28 @@ public class OrderController {
             throw new NoSuchElementException("id:"+id);
 
         return order.getItems();
+    }
+
+
+    // Create an Item for a specific Order / Many-to-many relationship Endpoint
+    @PostMapping(path = "/{id}/items")
+    public ResponseEntity<Item> createItemForOrder(@PathVariable Integer id, @RequestBody Item item) {
+
+        Order order = orderService.getOrder(id);
+
+        if (order==null)
+            throw new NoSuchElementException("id:"+id);
+
+        item.setOrders((Set<Order>) order);
+
+        itemService.createItem(item);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(item.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }
 
