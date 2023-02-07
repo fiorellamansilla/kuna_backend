@@ -1,6 +1,7 @@
 package com.kuna_backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kuna_backend.entities.enums.Color;
 import com.kuna_backend.entities.enums.Size;
 import jakarta.persistence.*;
@@ -57,7 +58,7 @@ public class Item {
                     @JoinColumn (name = "order_id")
             }
     )
-    @JsonBackReference
+    @JsonIgnore
     private Set<Order> orders = new HashSet<Order>();
 
     public Item() {
