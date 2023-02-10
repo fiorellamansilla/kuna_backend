@@ -13,6 +13,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -50,7 +51,7 @@ public class Payment {
     @JoinColumn (name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
 
-    @OneToOne (fetch = FetchType.LAZY, optional = false)
+    @OneToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn (name = "order_id", referencedColumnName = "id", nullable = false)
     private Order order;
 
@@ -63,6 +64,10 @@ public class Payment {
         this.lastUpdate = lastUpdate;
         this.client = client;
         this.order = order;
+    }
+
+    public Payment() {
+
     }
 
     public Integer getId() {
