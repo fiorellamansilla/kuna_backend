@@ -55,7 +55,8 @@ public class Order {
     @ManyToMany (mappedBy = "orders", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private Set<Item> items = new HashSet<Item>();
 
-    @OneToOne (mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @OneToOne (mappedBy = "order", optional = false)
+    @JsonIgnore
     private Payment payment;
 
     public Order() {
