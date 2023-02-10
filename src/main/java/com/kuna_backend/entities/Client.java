@@ -51,6 +51,9 @@ public class Client {
     @OneToMany (mappedBy = "client", fetch = FetchType.LAZY)
     private List<Order> orders;
 
+    @OneToMany (mappedBy = "client", fetch = FetchType.LAZY)
+    private List<Payment> payments;
+
     public Client() {
     }
 
@@ -180,6 +183,13 @@ public class Client {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
     }
 }
 
