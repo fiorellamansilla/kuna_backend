@@ -13,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
@@ -54,10 +55,13 @@ public class Order {
     @ManyToMany (mappedBy = "orders", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private Set<Item> items = new HashSet<Item>();
 
+    @OneToOne (mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    private Payment payment;
+
     public Order() {
     }
 
-    public Order(Integer id, Float totalAmount, Integer quantityOrdered, OrderStatus orderStatus, String trackingNumber, LocalDateTime createdAt, LocalDateTime modifiedAt, Client client) {
+    public Order(Integer id, Float totalAmount, Integer quantityOrdered, OrderStatus orderStatus, String trackingNumber, LocalDateTime createdAt, LocalDateTime modifiedAt, Client client, Payment payment) {
         this.id = id;
         this.totalAmount = totalAmount;
         this.quantityOrdered = quantityOrdered;
@@ -66,6 +70,7 @@ public class Order {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.client = client;
+        this.payment = payment;
     }
 
     public Integer getId() {
@@ -140,4 +145,10 @@ public class Order {
         this.items = items;
     }
 
+    public Payment getPayment() {
+        return payment;
+    }
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
 }
