@@ -1,7 +1,7 @@
 package com.kuna_backend.controllers;
 
-import com.kuna_backend.entities.User;
-import com.kuna_backend.services.UserService;
+import com.kuna_backend.entities.Payment;
+import com.kuna_backend.services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,54 +19,50 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/payment")
+public class PaymentController {
 
     @Autowired
-    private UserService userService;
+    private PaymentService paymentService;
 
-    // GET All Users / Endpoint
+    // GET All Payments / Endpoint
     @GetMapping(path = "/all")
-    public List<User> list() {
-        return (List<User>) userService.getAllUsers();
+    public List<Payment> list(){
+        return (List<Payment>) paymentService.getAllPayments();
     }
 
-    // GET a User by ID / Endpoint
+    // GET a Payment by ID / Endpoint
     @GetMapping(path = "/{id}")
-    public ResponseEntity<User> get(@PathVariable Integer id) {
+    public ResponseEntity<Payment> get(@PathVariable Integer id) {
         try {
-            User user = userService.getUser(id);
-            return new ResponseEntity<User>(user, HttpStatus.OK);
+            Payment payment = paymentService.getPayment(id);
+            return new ResponseEntity<Payment>(payment, HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Payment>(HttpStatus.NOT_FOUND);
         }
     }
 
-    // CREATE a User / Endpoint
+    //CREATE a Payment / Endpoint
     @PostMapping(path = "/")
-    public void add(@RequestBody User user) {
-        userService.createUser(user);
+    public void add (@RequestBody Payment payment) {
+        paymentService.createPayment(payment);
     }
 
-    // UPDATE a User / Endpoint
+    // UPDATE a Payment / Endpoint
     @PutMapping(path = "/{id}")
-    public ResponseEntity<User> update(@RequestBody User user, @PathVariable Integer id) {
+    public ResponseEntity<Payment> update(@RequestBody Payment payment, @PathVariable Integer id) {
         try {
-            User existUser = userService.getUser(id);
-            user.setId(id);
-            userService.createUser(user);
+            Payment existPayment = paymentService.getPayment(id);
+            payment.setId(id);
+            paymentService.createPayment(payment);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    //DELETE one User by ID /  Endpoint
+    // DELETE a Payment by ID / Endpoint
     @DeleteMapping(path = "/{id}")
-    public void delete(@PathVariable Integer id) {
-        userService.deleteUser(id);
-    }
-
+    public void delete (@PathVariable Integer id) {
+        paymentService.deletePayment(id);}
 }
-
-

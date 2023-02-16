@@ -1,5 +1,8 @@
 package com.kuna_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kuna_backend.entities.enums.PaymentStatus;
 
 import jakarta.persistence.Entity;
@@ -47,11 +50,11 @@ public class Payment {
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
 
-    @ManyToOne (fetch = FetchType.LAZY, optional = false)
+    @ManyToOne (optional = false)
     @JoinColumn (name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
 
-    @OneToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @OneToOne (optional = false)
     @JoinColumn (name = "order_id", referencedColumnName = "id", nullable = false)
     private Order order;
 
