@@ -1,4 +1,4 @@
-package com.kuna_backend.models.enums;
+package com.kuna_backend.enums;
 
 public enum Color {
     WHITE,

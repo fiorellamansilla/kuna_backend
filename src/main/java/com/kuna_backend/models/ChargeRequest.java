@@ -1,6 +1,6 @@
 package com.kuna_backend.models;
 
-import com.kuna_backend.models.enums.Currency;
+import com.kuna_backend.enums.Currency;
 import lombok.Data;
 
 // Business Entity that we will use during the charge operation //

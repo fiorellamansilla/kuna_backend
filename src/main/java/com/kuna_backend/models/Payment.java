@@ -1,6 +1,6 @@
 package com.kuna_backend.models;
 
-import com.kuna_backend.models.enums.PaymentStatus;
+import com.kuna_backend.enums.PaymentStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

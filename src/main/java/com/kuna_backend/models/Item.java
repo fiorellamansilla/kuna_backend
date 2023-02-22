@@ -1,9 +1,9 @@
 package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kuna_backend.models.enums.Category;
-import com.kuna_backend.models.enums.Color;
-import com.kuna_backend.models.enums.Size;
+import com.kuna_backend.enums.Category;
+import com.kuna_backend.enums.Color;
+import com.kuna_backend.enums.Size;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

@@ -1,7 +1,7 @@
 package com.kuna_backend.controllers;
 
 import com.kuna_backend.models.ChargeRequest;
-import com.kuna_backend.models.enums.Currency;
+import com.kuna_backend.enums.Currency;
 import com.kuna_backend.services.StripeService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
