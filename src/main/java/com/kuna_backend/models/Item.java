@@ -1,6 +1,7 @@
 package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kuna_backend.models.enums.Category;
 import com.kuna_backend.models.enums.Color;
 import com.kuna_backend.models.enums.Size;
 
@@ -35,6 +36,9 @@ public class Item {
     private String name;
     @Column (name = "desc_item", length = 2048, nullable = false)
     private String desc;
+    @Column (name = "category", length = 64, nullable = false)
+    @Enumerated (EnumType.STRING)
+    private Category category;
     @Column (name = "size", length = 64, nullable = false)
     @Enumerated (EnumType.STRING)
     private Size size;
@@ -77,10 +81,11 @@ public class Item {
     public Item() {
     }
 
-    public Item(Integer id, String name, String desc, Size size, Color color, Float price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt, Set<Order> orders) {
+    public Item(Integer id, String name, String desc, Category category, Size size, Color color, Float price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt, Set<Order> orders) {
         this.id = id;
         this.name = name;
         this.desc = desc;
+        this.category = category;
         this.size = size;
         this.color = color;
         this.price = price;
@@ -116,6 +121,14 @@ public class Item {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Size getSize() {
