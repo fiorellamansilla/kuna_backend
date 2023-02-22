@@ -1,6 +1,6 @@
 package com.kuna_backend.controllers;
 
-import com.kuna_backend.entities.Payment;
+import com.kuna_backend.models.Payment;
 import com.kuna_backend.services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

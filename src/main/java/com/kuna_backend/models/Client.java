@@ -1,4 +1,4 @@
-package com.kuna_backend.entities;
+package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

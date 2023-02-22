@@ -1,7 +1,7 @@
 package com.kuna_backend.controllers;
 
-import com.kuna_backend.entities.Item;
-import com.kuna_backend.entities.Order;
+import com.kuna_backend.models.Item;
+import com.kuna_backend.models.Order;
 import com.kuna_backend.services.ItemService;
 import com.kuna_backend.services.OrderService;
 

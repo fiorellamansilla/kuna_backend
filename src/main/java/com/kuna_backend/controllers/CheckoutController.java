@@ -1,5 +1,5 @@
 package com.kuna_backend.controllers;
-import com.kuna_backend.entities.enums.Currency;
+import com.kuna_backend.models.enums.Currency;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
