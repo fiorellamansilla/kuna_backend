@@ -1,9 +1,6 @@
-package com.kuna_backend.entities;
+package com.kuna_backend.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.kuna_backend.entities.enums.PaymentStatus;
+import com.kuna_backend.enums.PaymentStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -16,8 +13,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

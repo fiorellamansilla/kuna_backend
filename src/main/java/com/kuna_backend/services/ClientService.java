@@ -1,6 +1,6 @@
 package com.kuna_backend.services;
 
-import com.kuna_backend.entities.Client;
+import com.kuna_backend.models.Client;
 import com.kuna_backend.repositories.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

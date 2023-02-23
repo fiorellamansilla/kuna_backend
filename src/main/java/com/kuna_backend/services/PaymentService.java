@@ -1,6 +1,6 @@
 package com.kuna_backend.services;
 
-import com.kuna_backend.entities.Payment;
+import com.kuna_backend.models.Payment;
 import com.kuna_backend.repositories.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

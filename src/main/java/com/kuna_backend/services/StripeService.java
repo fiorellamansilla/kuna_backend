@@ -1,6 +1,6 @@
 package com.kuna_backend.services;
 
-import com.kuna_backend.entities.ChargeRequest;
+import com.kuna_backend.models.ChargeRequest;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;

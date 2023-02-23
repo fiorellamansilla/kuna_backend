@@ -1,7 +1,7 @@
-package com.kuna_backend.entities;
+package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kuna_backend.entities.enums.OrderStatus;
+import com.kuna_backend.enums.OrderStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
