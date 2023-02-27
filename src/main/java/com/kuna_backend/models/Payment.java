@@ -1,5 +1,6 @@
 package com.kuna_backend.models;
 
+import com.kuna_backend.enums.Currency;
 import com.kuna_backend.enums.PaymentStatus;
 
 import jakarta.persistence.Entity;
@@ -30,6 +31,13 @@ public class Payment {
     @Column (name = "amount", nullable = false)
     private Float amount;
 
+    @Column (name = "currency", length = 32, nullable = false)
+    @Enumerated (EnumType.STRING)
+    private Currency currency;
+
+    @Column (name = "stripe_id", length = 256, nullable = false)
+    private String stripeToken;
+
     @Column (name = "payment_status", length = 64, nullable = false)
     @Enumerated (EnumType.STRING)
     private PaymentStatus paymentStatus;
@@ -45,17 +53,21 @@ public class Payment {
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
 
+    // Many-to-one relationship with Client //
     @ManyToOne (optional = false)
     @JoinColumn (name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
 
+    // One-to-one relationship with order //
     @OneToOne (optional = false)
     @JoinColumn (name = "order_id", referencedColumnName = "id", nullable = false)
     private Order order;
 
-    public Payment(Integer id, Float amount, PaymentStatus paymentStatus, String provider, LocalDateTime paymentDate, LocalDateTime lastUpdate, Client client, Order order) {
+    public Payment(Integer id, Float amount, Currency currency, String stripeToken, PaymentStatus paymentStatus, String provider, LocalDateTime paymentDate, LocalDateTime lastUpdate, Client client, Order order) {
         this.id = id;
         this.amount = amount;
+        this.currency = currency;
+        this.stripeToken = stripeToken;
         this.paymentStatus = paymentStatus;
         this.provider = provider;
         this.paymentDate = paymentDate;
@@ -82,6 +94,22 @@ public class Payment {
 
     public void setAmount(Float amount) {
         this.amount = amount;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    public String getStripeToken() {
+        return stripeToken;
+    }
+
+    public void setStripeToken(String stripeToken) {
+        this.stripeToken = stripeToken;
     }
 
     public PaymentStatus getPaymentStatus() {
