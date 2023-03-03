@@ -77,6 +77,9 @@ public class Client {
         this.modifiedAt = modifiedAt;
     }
 
+    public Client(String firstName, String lastName, String email, String encryptedPassword) {
+    }
+
     public Integer getId() {
         return id;
     }
