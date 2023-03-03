@@ -50,13 +50,11 @@ public class ClientController {
         }
     }
 
-    // CREATE Endpoint for Sign up
-
+     // CREATE Endpoint for Registration of a Client
     @PostMapping(path = "/signup")
     public ResponseDto Signup(@RequestBody SignupDto signupDto) {
         return clientService.signUp(signupDto);
     }
-
 
     // CREATE a Client / Endpoint
     @PostMapping(path = "/")
