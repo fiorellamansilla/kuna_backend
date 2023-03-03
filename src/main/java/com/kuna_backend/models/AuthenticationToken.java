@@ -44,6 +44,10 @@ public class AuthenticationToken {
         this.client = client;
     }
 
+    public AuthenticationToken(Client client) {
+
+    }
+
     public Integer getId() {
         return id;
     }

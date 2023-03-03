@@ -3,6 +3,7 @@ package com.kuna_backend.services;
 import com.kuna_backend.dtos.ResponseDto;
 import com.kuna_backend.dtos.SignupDto;
 import com.kuna_backend.exceptions.CustomException;
+import com.kuna_backend.models.AuthenticationToken;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.repositories.ClientRepository;
 import jakarta.transaction.Transactional;
@@ -21,6 +22,9 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     public List<Client> getAllClients() {
         return (List<Client>) clientRepository.findAll();
     }
@@ -37,6 +41,7 @@ public class ClientService {
         clientRepository.deleteById(id);
     }
 
+    @Transactional
     public ResponseDto signUp(SignupDto signupDto) {
 
         // Check to see if the current email address has already been registered
@@ -53,12 +58,24 @@ public class ClientService {
             e.printStackTrace();
         }
 
-        // Save the Client
         Client client = new Client(signupDto.getFirstName(), signupDto.getLastName(), signupDto.getEmail(), encryptedPassword);
-        clientRepository.save(client);
 
-        ResponseDto responseDto = new ResponseDto("success", "test response");
-        return responseDto;
+        Client createdClient;
+
+        try {
+            // Save the Client
+            createdClient = clientRepository.save(client);
+            // Generate a token for Client
+            final AuthenticationToken authenticationToken = new AuthenticationToken(createdClient);
+            // Save the token in the database
+            authenticationService.saveConfirmationToken(authenticationToken);
+            // Response to successful registration
+            ResponseDto responseDto = new ResponseDto("success", "The Client has been successfully created");
+            return responseDto;
+        } catch (Exception e) {
+            // Handle Error with the Registration
+            throw new CustomException(e.getMessage());
+        }
 
     }
 
