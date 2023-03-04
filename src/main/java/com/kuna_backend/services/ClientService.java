@@ -1,7 +1,7 @@
 package com.kuna_backend.services;
 
 import com.kuna_backend.dtos.ResponseDto;
-import com.kuna_backend.dtos.SignupDto;
+import com.kuna_backend.dtos.client.SignupDto;
 import com.kuna_backend.exceptions.CustomException;
 import com.kuna_backend.models.AuthenticationToken;
 import com.kuna_backend.models.Client;
