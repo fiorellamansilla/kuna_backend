@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TokenRepository extends JpaRepository <AuthenticationToken, Integer> {
-    AuthenticationToken findByClient(Client client);
+    AuthenticationToken findTokenByClient(Client client);
 }
