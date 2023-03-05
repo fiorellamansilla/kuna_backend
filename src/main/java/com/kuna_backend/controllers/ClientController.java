@@ -1,5 +1,7 @@
 package com.kuna_backend.controllers;
 
+import com.kuna_backend.dtos.ResponseDto;
+import com.kuna_backend.dtos.SignupDto;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Order;
 import com.kuna_backend.services.ClientService;
@@ -28,7 +30,6 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
-
     @Autowired
     private OrderService orderService;
 
@@ -47,6 +48,12 @@ public class ClientController {
         } catch (NoSuchElementException e) {
             return new ResponseEntity<Client>(HttpStatus.NOT_FOUND);
         }
+    }
+
+     // CREATE Endpoint for Registration of a Client
+    @PostMapping(path = "/signup")
+    public ResponseDto Signup(@RequestBody SignupDto signupDto) {
+        return clientService.signUp(signupDto);
     }
 
     // CREATE a Client / Endpoint
