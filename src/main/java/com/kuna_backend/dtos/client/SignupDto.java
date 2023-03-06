@@ -1,4 +1,4 @@
-package com.kuna_backend.dtos;
+package com.kuna_backend.dtos.client;
 
 public class SignupDto {
 

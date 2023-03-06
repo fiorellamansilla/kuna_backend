@@ -1,7 +1,9 @@
 package com.kuna_backend.controllers;
 
 import com.kuna_backend.dtos.ResponseDto;
-import com.kuna_backend.dtos.SignupDto;
+import com.kuna_backend.dtos.client.SignInDto;
+import com.kuna_backend.dtos.client.SignInResponseDto;
+import com.kuna_backend.dtos.client.SignupDto;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Order;
 import com.kuna_backend.services.ClientService;
@@ -50,17 +52,25 @@ public class ClientController {
         }
     }
 
-     // CREATE Endpoint for Registration of a Client
-    @PostMapping(path = "/signup")
-    public ResponseDto Signup(@RequestBody SignupDto signupDto) {
+     // CREATE Endpoint for Sign Up
+    @PostMapping(path = "/signUp")
+    public ResponseDto signUp(@RequestBody SignupDto signupDto) {
         return clientService.signUp(signupDto);
     }
+
+    // CREATE Endpoint for Sign In
+    @PostMapping(path = "/signIn")
+    public SignInResponseDto signIn(@RequestBody SignInDto signInDto) {
+        return clientService.signIn(signInDto);
+    }
+
 
     // CREATE a Client / Endpoint
     @PostMapping(path = "/")
     public void add (@RequestBody Client client) {
         clientService.createClient(client);
     }
+
 
     // UPDATE a Client / Endpoint
     @PutMapping(path = "/{id}")

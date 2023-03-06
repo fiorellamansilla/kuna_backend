@@ -1,7 +1,10 @@
 package com.kuna_backend.services;
 
 import com.kuna_backend.dtos.ResponseDto;
-import com.kuna_backend.dtos.SignupDto;
+import com.kuna_backend.dtos.client.SignInDto;
+import com.kuna_backend.dtos.client.SignInResponseDto;
+import com.kuna_backend.dtos.client.SignupDto;
+import com.kuna_backend.exceptions.AuthenticationFailException;
 import com.kuna_backend.exceptions.CustomException;
 import com.kuna_backend.models.AuthenticationToken;
 import com.kuna_backend.models.Client;
@@ -76,11 +79,40 @@ public class ClientService {
             // Handle Error with the Registration
             throw new CustomException(e.getMessage());
         }
-
     }
 
-     // Method for encrypting the password
-    private String hashPassword(String password) throws NoSuchAlgorithmException {
+    public SignInResponseDto signIn(SignInDto signInDto) {
+
+        // Find Client by Email
+        Client client = clientRepository.findByEmail(signInDto.getEmail());
+
+        if (Objects.isNull(client)) {
+            throw new AuthenticationFailException("Client is not valid");
+        }
+
+        // Hash the password
+        try {
+            if (!client.getPassword().equals(hashPassword(signInDto.getPassword()))) {
+                // If password doesn't match
+                throw new AuthenticationFailException("Invalid Password");
+
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        // If the password match
+        AuthenticationToken token = authenticationService.getToken(client);
+
+        // Retrieve the token
+        if (Objects.isNull(token)) {
+            throw new CustomException("Token is not present");
+        }
+        return new SignInResponseDto("Success", token.getToken());
+    }
+
+    // Method for encrypting the password
+    String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
         byte[] digest = md.digest();
@@ -88,5 +120,4 @@ public class ClientService {
                 .printHexBinary(digest).toUpperCase();
         return myHash;
     }
-
 }
