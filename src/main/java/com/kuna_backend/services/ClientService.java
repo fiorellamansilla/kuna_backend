@@ -11,10 +11,9 @@ import com.kuna_backend.models.Client;
 import com.kuna_backend.repositories.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.DatatypeConverter;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
@@ -55,11 +54,7 @@ public class ClientService {
 
         // Encrypt the password
         String encryptedPassword = signupDto.getPassword();
-        try {
-            encryptedPassword = hashPassword(signupDto.getPassword());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        encryptedPassword = hashPassword(signupDto.getPassword());
 
         Client client = new Client(signupDto.getFirstName(), signupDto.getLastName(), signupDto.getEmail(), encryptedPassword);
 
@@ -91,14 +86,10 @@ public class ClientService {
         }
 
         // Hash the password
-        try {
-            if (!client.getPassword().equals(hashPassword(signInDto.getPassword()))) {
-                // If password doesn't match
-                throw new AuthenticationFailException("Invalid Password");
+        if (!client.getPassword().equals(hashPassword(signInDto.getPassword()))) {
+            // If password doesn't match
+            throw new AuthenticationFailException("Invalid Password");
 
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         }
 
         // If the password match
@@ -112,12 +103,9 @@ public class ClientService {
     }
 
     // Method for encrypting the password
-    String hashPassword(String password) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(password.getBytes());
-        byte[] digest = md.digest();
-        String myHash = DatatypeConverter
-                .printHexBinary(digest).toUpperCase();
-        return myHash;
+    public static String hashPassword(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
     }
+
 }
