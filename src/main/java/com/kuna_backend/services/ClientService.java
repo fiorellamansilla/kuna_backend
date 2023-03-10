@@ -11,10 +11,14 @@ import com.kuna_backend.models.Client;
 import com.kuna_backend.repositories.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -89,7 +93,6 @@ public class ClientService {
         if (!client.getPassword().equals(hashPassword(signInDto.getPassword()))) {
             // If password doesn't match
             throw new AuthenticationFailException("Invalid Password");
-
         }
 
         // If the password match
@@ -104,8 +107,15 @@ public class ClientService {
 
     // Method for encrypting the password
     public static String hashPassword(String password) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // Check whether the password is null or empty
+        if (password.isBlank()) {
+            // Throw an error message
+            throw new IllegalArgumentException("The password cannot be blank");
+        }
+        //  This method returns an instance of a 'DelegatingPasswordEncoder' that supports multiple password hashing algorithms,
+        //  including 'bcrypt', 'scrypt', and 'argon2' and automatically generates a random salt for each password.
+        PasswordEncoder passwordEncoder =  PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        // We call the 'encode' method on the 'passwordEncoder' instance to hash the password using the default algorithm ('bcrypt').
         return passwordEncoder.encode(password);
     }
-
 }
