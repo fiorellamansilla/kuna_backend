@@ -35,7 +35,7 @@ public class Item {
     @Column (name = "name_item", length = 128, nullable = false)
     private String name;
     @Column (name = "desc_item", length = 2048, nullable = false)
-    private String desc;
+    private String description;
     @Column (name = "category", length = 64, nullable = false)
     @Enumerated (EnumType.STRING)
     private Category category;
@@ -81,10 +81,10 @@ public class Item {
     public Item() {
     }
 
-    public Item(Integer id, String name, String desc, Category category, Size size, Color color, Float price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt, Set<Order> orders) {
+    public Item(Integer id, String name, String description, Category category, Size size, Color color, Float price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt, Set<Order> orders) {
         this.id = id;
         this.name = name;
-        this.desc = desc;
+        this.description = description;
         this.category = category;
         this.size = size;
         this.color = color;
@@ -115,12 +115,12 @@ public class Item {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Category getCategory() {

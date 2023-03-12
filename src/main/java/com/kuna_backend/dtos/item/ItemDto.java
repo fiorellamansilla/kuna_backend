@@ -1,4 +1,4 @@
-package com.kuna_backend.dtos;
+package com.kuna_backend.dtos.item;
 
 import com.kuna_backend.enums.Category;
 import com.kuna_backend.models.Item;
