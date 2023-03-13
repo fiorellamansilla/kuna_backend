@@ -26,6 +26,7 @@ public class CartController {
     @Autowired
     private ItemService itemService;
 
+
     // POST/CREATE Add items to Shopping Cart endpoint
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDto addToCartDto,
@@ -50,13 +51,24 @@ public class CartController {
 
         // Authenticate the token
         authenticationService.authenticate(token);
-        // Find the client
+        // Find the clie
         Client client = authenticationService.getClient(token);
         // Get cart items
         CartDto cartDto = cartService.listCartItems(client);
         return new ResponseEntity<>(cartDto, HttpStatus.OK);
     }
 
+    // DELETE a cart Item for a Client endpoint
+    @DeleteMapping("/delete/{cartItemId}")
+    public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable("cartItemId") Integer itemId,
+                                                      @RequestParam("token") String token) {
 
-    // DELETE a cart item for a user endpoint
+        authenticationService.authenticate(token);
+        Client client = authenticationService.getClient(token);
+
+        // Delete a cart Item
+        cartService.deleteCartItem(itemId, client);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "The Item has been removed"), HttpStatus.OK);
+    }
+
 }
