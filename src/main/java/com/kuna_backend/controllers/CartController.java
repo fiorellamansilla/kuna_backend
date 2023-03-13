@@ -2,6 +2,7 @@ package com.kuna_backend.controllers;
 
 import com.kuna_backend.common.ApiResponse;
 import com.kuna_backend.dtos.cart.AddToCartDto;
+import com.kuna_backend.dtos.cart.CartDto;
 import com.kuna_backend.exceptions.AuthenticationFailException;
 import com.kuna_backend.exceptions.ItemNotExistsException;
 import com.kuna_backend.models.Client;
@@ -43,8 +44,19 @@ public class CartController {
     }
 
 
+    // GET/RETRIEVE all items from Cart for a Client endpoint
+    @GetMapping("/")
+    public ResponseEntity<CartDto> getCartItems(@RequestParam("token") String token) {
 
-    // GET all cart items for a user endpoint
+        // Authenticate the token
+        authenticationService.authenticate(token);
+        // Find the client
+        Client client = authenticationService.getClient(token);
+        // Get cart items
+        CartDto cartDto = cartService.listCartItems(client);
+        return new ResponseEntity<>(cartDto, HttpStatus.OK);
+    }
+
 
     // DELETE a cart item for a user endpoint
 }
