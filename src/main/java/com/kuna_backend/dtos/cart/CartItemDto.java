@@ -1,5 +1,6 @@
 package com.kuna_backend.dtos.cart;
 
+import com.kuna_backend.models.Cart;
 import com.kuna_backend.models.Item;
 
 public class CartItemDto {
@@ -32,5 +33,11 @@ public class CartItemDto {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public CartItemDto(Cart cart) {
+        this.id = cart.getId();
+        this.quantity = cart.getQuantity();
+        this.setItem(cart.getItem());
     }
 }
