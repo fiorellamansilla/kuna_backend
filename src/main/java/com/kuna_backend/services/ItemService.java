@@ -32,7 +32,7 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public Item findById(Integer itemId) throws ItemNotExistsException {
+    public Item getItemById(Integer itemId) throws ItemNotExistsException {
         Optional<Item> optionalItem= itemRepository.findById(itemId);
         // Check if the item exists
         if (optionalItem.isEmpty()) {
