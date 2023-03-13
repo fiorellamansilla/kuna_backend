@@ -34,6 +34,7 @@ public class ItemService {
 
     public Item findById(Integer itemId) throws ItemNotExistsException {
         Optional<Item> optionalItem= itemRepository.findById(itemId);
+        // Check if the item exists
         if (optionalItem.isEmpty()) {
             throw new ItemNotExistsException("Item id is invalid:" + itemId);
         }
