@@ -2,6 +2,8 @@ package com.kuna_backend.controllers;
 
 import com.kuna_backend.common.ApiResponse;
 import com.kuna_backend.dtos.cart.AddToCartDto;
+import com.kuna_backend.exceptions.AuthenticationFailException;
+import com.kuna_backend.exceptions.ItemNotExistsException;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Item;
 import com.kuna_backend.services.AuthenticationService;
@@ -20,25 +22,24 @@ public class CartController {
     private CartService cartService;
     @Autowired
     private AuthenticationService authenticationService;
-
     @Autowired
     private ItemService itemService;
 
-    // POST/CREATE Add to Shopping Cart endpoint
+    // POST/CREATE Add items to Shopping Cart endpoint
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDto addToCartDto,
-                                                 @RequestParam("token") String token) {
+                                                 @RequestParam("token") String token) throws AuthenticationFailException, ItemNotExistsException {
 
         // Authenticate the token
         authenticationService.authenticate(token);
-
         // Find the client
         Client client = authenticationService.getClient(token);
-
-        cartService.addToCart(addToCartDto, client);
-
-        return new ResponseEntity<>(new ApiResponse(true, "Added to cart"), HttpStatus.CREATED);
-
+        // Check if the item_id is valid or not
+        Item item = itemService.getItemById(addToCartDto.getItemId());
+        System.out.println("Item to add" + item.getName());
+        // Add item to the client's cart
+        cartService.addToCart(addToCartDto, item, client);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Added to cart"), HttpStatus.CREATED);
     }
 
 
