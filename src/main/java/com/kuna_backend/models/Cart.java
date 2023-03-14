@@ -37,6 +37,12 @@ public class Cart {
 
     public Cart() {
     }
+    public Cart(Item item, Integer quantity, Client client) {
+        this.client = client;
+        this.quantity = quantity;
+        this.item = item;
+        this.createdAt = new Date();
+    }
 
     public Integer getId() {
         return id;
