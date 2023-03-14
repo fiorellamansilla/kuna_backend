@@ -23,9 +23,9 @@ public class CartController {
     @Autowired
     private CartService cartService;
     @Autowired
-    private AuthenticationService authenticationService;
-    @Autowired
     private ItemService itemService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
 
     // POST/CREATE Add items to Shopping Cart endpoint
@@ -48,15 +48,13 @@ public class CartController {
 
     // GET/RETRIEVE all items from Cart for a Client endpoint
     @GetMapping("/")
-    public ResponseEntity<CartDto> getCartItems(@RequestParam("token") String token) {
+    public ResponseEntity<CartDto> getCartItems(@RequestParam("token") String token) throws AuthenticationFailException {
 
-        // Authenticate the token
         authenticationService.authenticate(token);
-        // Find the client
         Client client = authenticationService.getClient(token);
         // Get cart items
         CartDto cartDto = cartService.listCartItems(client);
-        return new ResponseEntity<>(cartDto, HttpStatus.OK);
+        return new ResponseEntity<CartDto>(cartDto, HttpStatus.OK);
     }
 
     // DELETE a cart Item for a Client endpoint
