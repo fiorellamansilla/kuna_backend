@@ -3,6 +3,7 @@ package com.kuna_backend.services;
 import com.kuna_backend.dtos.cart.AddToCartDto;
 import com.kuna_backend.dtos.cart.CartDto;
 import com.kuna_backend.dtos.cart.CartItemDto;
+import com.kuna_backend.exceptions.CartItemNotExistException;
 import com.kuna_backend.exceptions.CustomException;
 import com.kuna_backend.models.Cart;
 import com.kuna_backend.models.Client;
@@ -50,21 +51,17 @@ public class CartService  {
         return cartDto;
     }
 
-    public void deleteCartItem(Integer cartItemId, Client client) {
+    public void deleteCartItem(int id, int clientId) throws CartItemNotExistException {
+        if (!cartRepository.existsById(id))
+            throw new CartItemNotExistException("Cart item id is invalid: " + id);
+        cartRepository.deleteById(id);
+    }
 
-        // Check if the item id is valid and belongs to the user
-        Optional<Cart> optionalCart = cartRepository.findById(cartItemId);
+    public void deleteCartItems (int clientId) {
+        cartRepository.deleteAll();
+    }
 
-        if (optionalCart.isEmpty()) {
-            throw new CustomException("Cart item id is invalid: " + cartItemId);
-        }
-
-        Cart cart = optionalCart.get();
-
-        if (cart.getClient() != client) {
-            throw new CustomException("Cart item does not to belong to the Client: " + cartItemId);
-        }
-
-        cartRepository.delete(cart);
+    public void deleteClientCartItems (Client client) {
+        cartRepository.deleteByClient(client);
     }
 }
