@@ -11,6 +11,21 @@ public class CartItemDto {
     public CartItemDto() {
     }
 
+    public CartItemDto(Cart cart) {
+        this.id = cart.getId();
+        this.quantity = cart.getQuantity();
+        this.setItem(cart.getItem());
+    }
+
+    @Override
+    public String toString() {
+        return "CartDto{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", itemName=" + item.getName() +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }
@@ -35,9 +50,4 @@ public class CartItemDto {
         this.item = item;
     }
 
-    public CartItemDto(Cart cart) {
-        this.id = cart.getId();
-        this.quantity = cart.getQuantity();
-        this.setItem(cart.getItem());
-    }
 }
