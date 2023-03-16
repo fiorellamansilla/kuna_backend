@@ -23,26 +23,24 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "username", length = 64, nullable = false)
-    private String username;
-    @Column(name = "password", length = 64, nullable = false)
-    private String password;
     @Column(name = "first_name", length = 64, nullable = false)
     private String firstName;
     @Column(name = "last_name", length = 64, nullable = false)
     private String lastName;
-    @Column(name = "address", length = 128, nullable = false)
-    private String address;
-    @Column(name = "zip_code", length = 64, nullable = false)
-    private String zipCode;
-    @Column(name = "city", length = 32, nullable = false)
-    private String city;
-    @Column(name = "country", length = 32, nullable = false)
-    private String country;
-    @Column(name = "phone", length = 32, nullable = false)
-    private String phone;
     @Column(name = "email", length = 64, nullable = false)
     private String email;
+    @Column(name = "password", length = 64, nullable = false)
+    private String password;
+    @Column(name = "address", length = 128)
+    private String address;
+    @Column(name = "zip_code", length = 64)
+    private String zipCode;
+    @Column(name = "city", length = 32)
+    private String city;
+    @Column(name = "country", length = 32)
+    private String country;
+    @Column(name = "phone", length = 32)
+    private String phone;
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -61,18 +59,17 @@ public class Client {
     public Client() {
     }
 
-    public Client(Integer id, String username, String password, String firstName, String lastName, String address, String zipCode, String city, String country, String phone, String email, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public Client(Integer id, String firstName, String lastName, String email, String password, String address, String zipCode, String city, String country, String phone, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
-        this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
+        this.password = password;
         this.address = address;
         this.zipCode = zipCode;
         this.city = city;
         this.country = country;
         this.phone = phone;
-        this.email = email;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
@@ -86,22 +83,6 @@ public class Client {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -118,6 +99,22 @@ public class Client {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getAddress() {
@@ -158,14 +155,6 @@ public class Client {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public LocalDateTime getCreatedAt() {
