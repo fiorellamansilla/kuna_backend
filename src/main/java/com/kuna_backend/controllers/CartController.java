@@ -4,6 +4,7 @@ import com.kuna_backend.common.ApiResponse;
 import com.kuna_backend.dtos.cart.AddToCartDto;
 import com.kuna_backend.dtos.cart.CartDto;
 import com.kuna_backend.exceptions.AuthenticationFailException;
+import com.kuna_backend.exceptions.CartItemNotExistException;
 import com.kuna_backend.exceptions.ItemNotExistsException;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Item;
@@ -25,6 +26,7 @@ public class CartController {
     private AuthenticationService authenticationService;
     @Autowired
     private ItemService itemService;
+
 
     // POST/CREATE Add items to Shopping Cart endpoint
     @PostMapping("/add")
@@ -57,6 +59,16 @@ public class CartController {
         return new ResponseEntity<>(cartDto, HttpStatus.OK);
     }
 
+    // DELETE a cart Item for a Client endpoint
+    @DeleteMapping("/delete/{cartItemId}")
+    public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable("cartItemId") Integer itemID,
+                                                      @RequestParam("token") String token) throws AuthenticationFailException, CartItemNotExistException {
 
-    // DELETE a cart item for a user endpoint
+        authenticationService.authenticate(token);
+        int clientId = authenticationService.getClient(token).getId();
+        // Delete a cart Item
+        cartService.deleteCartItem(itemID, clientId);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "The Item has been removed"), HttpStatus.OK);
+    }
+
 }
