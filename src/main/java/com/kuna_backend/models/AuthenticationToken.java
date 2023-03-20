@@ -10,9 +10,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -22,30 +21,21 @@ public class AuthenticationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column (name = "token", length = 256, nullable = false)
+    @Column (name = "token", length = 256)
     private String token;
-
-    @Column (name = "created_at", nullable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
+    @Column (name = "created_at")
+    private Date createdAt;
     @OneToOne (targetEntity = Client.class, fetch = FetchType.EAGER)
-    @JoinColumn (name = "client_id", nullable = false)
+    @JoinColumn (nullable = false, name = "client_id")
     private Client client;
 
-    public AuthenticationToken() {
-    }
-
-    public AuthenticationToken(Integer id, String token, LocalDateTime createdAt, Client client) {
-        this.id = id;
-        this.token = token;
-        this.createdAt = createdAt;
-        this.client = client;
-    }
-
     public AuthenticationToken(Client client) {
+        this.client = client;
+        this.createdAt = new Date();
+        this.token = UUID.randomUUID().toString();
+    }
 
+    public AuthenticationToken() {
     }
 
     public Integer getId() {
@@ -64,11 +54,11 @@ public class AuthenticationToken {
         this.token = token;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -80,9 +70,10 @@ public class AuthenticationToken {
         this.client = client;
     }
 
-    public AuthenticationToken(Client client, LocalDateTime createdAt) {
-        this.client = client;
-        this.token = UUID.randomUUID().toString();
+    public AuthenticationToken(Integer id, String token, Date createdAt, Client client) {
+        this.id = id;
+        this.token = token;
         this.createdAt = createdAt;
+        this.client = client;
     }
 }
