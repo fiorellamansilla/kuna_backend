@@ -1,44 +1,44 @@
 package com.kuna_backend.services;
 
+import com.kuna_backend.config.MessageStrings;
 import com.kuna_backend.exceptions.AuthenticationFailException;
 import com.kuna_backend.models.AuthenticationToken;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.repositories.TokenRepository;
+import com.kuna_backend.utils.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class AuthenticationService {
     @Autowired
-    TokenRepository tokenRepository;
+    TokenRepository repository;
 
     public void saveConfirmationToken(AuthenticationToken authenticationToken) {
-        tokenRepository.save(authenticationToken);
+        repository.save(authenticationToken);
     }
 
     public AuthenticationToken getToken(Client client) {
-        return tokenRepository.findTokenByClient(client);
+        return repository.findTokenByClient(client);
     }
 
     public Client getClient (String token) {
-        final AuthenticationToken authenticationToken = tokenRepository.findTokenByToken(token);
-        // The authentication token is null
-        if (Objects.isNull(authenticationToken)) {
-            return null;
+        AuthenticationToken authenticationToken = repository.findTokenByToken(token);
+        if (Helper.notNull(authenticationToken)) {
+            if (Helper.notNull(authenticationToken.getClient())) {
+                return authenticationToken.getClient();
+            }
         }
-        // The authentication token is not null
-        return authenticationToken.getClient();
+        return null;
     }
     public void authenticate(String token) throws AuthenticationFailException {
         // Null check
-        if (Objects.isNull(token)) {
-            throw new AuthenticationFailException("The token doesn't exist");
+        if (!Helper.notNull(token)) {
+            throw new AuthenticationFailException(MessageStrings.AUTH_TOKEN_NOT_PRESENT);
         }
         // There is not user with the token
-        if (Objects.isNull(getClient(token))) {
-            throw new AuthenticationFailException("The token is not valid");
+        if (!Helper.notNull(getClient(token))) {
+            throw new AuthenticationFailException(MessageStrings.AUTH_TOKEN_NOT_VALID);
         }
     }
 }
