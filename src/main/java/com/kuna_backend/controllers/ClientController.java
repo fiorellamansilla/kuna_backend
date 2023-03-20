@@ -35,6 +35,7 @@ public class ClientController {
     @Autowired
     private OrderService orderService;
 
+
     // GET  all Clients / Endpoint
     @GetMapping(path = "/all")
     public List<Client> list(){
@@ -53,37 +54,29 @@ public class ClientController {
     }
 
      // CREATE Endpoint for Sign Up
-    @PostMapping(path = "/signUp")
+    @PostMapping(path = "/signup")
     public ResponseDto signUp(@RequestBody SignupDto signupDto) {
         return clientService.signUp(signupDto);
     }
 
     // CREATE Endpoint for Sign In
-    @PostMapping(path = "/signIn")
+    @PostMapping(path = "/signin")
     public SignInResponseDto signIn(@RequestBody SignInDto signInDto) {
         return clientService.signIn(signInDto);
     }
 
-
-    // CREATE a Client / Endpoint
-    @PostMapping(path = "/")
-    public void add (@RequestBody Client client) {
-        clientService.createClient(client);
-    }
-
-
-    // UPDATE a Client / Endpoint
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<Client> update(@RequestBody Client client, @PathVariable Integer id) {
-        try {
-            Client existClient = clientService.getClient(id);
-            client.setId(id);
-            clientService.createClient(client);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+    //UPDATE a Client / Endpoint
+//    @PutMapping(path = "/{id}")
+//    public ResponseEntity<Client> update(@RequestBody Client client, @PathVariable Integer id) {
+//        try {
+//            Client existClient = clientService.getClient(id);
+//            client.setId(id);
+//            clientService.createdClient(client);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (NoSuchElementException e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
     //DELETE one Client by ID / Endpoint
     @DeleteMapping(path = "/{id}")

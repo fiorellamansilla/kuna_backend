@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@Transactional
 public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
@@ -39,17 +38,11 @@ public class ClientService {
         return clientRepository.findById(id).get();
     }
 
-    public void createClient (Client client) {
-        clientRepository.save(client);
-    }
-
     public void deleteClient (Integer id) {
         clientRepository.deleteById(id);
     }
 
-    @Transactional
-    public ResponseDto signUp(SignupDto signupDto) {
-
+    public ResponseDto signUp(SignupDto signupDto) throws CustomException {
         // Check to see if the current email address has already been registered
         if (Objects.nonNull(clientRepository.findByEmail(signupDto.getEmail()))) {
             // We already have a Client with this e-mail account

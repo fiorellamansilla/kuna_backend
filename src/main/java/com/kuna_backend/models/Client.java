@@ -29,7 +29,7 @@ public class Client {
     private String lastName;
     @Column(name = "email", length = 64, nullable = false)
     private String email;
-    @Column(name = "password", length = 64, nullable = false)
+    @Column(name = "password", length = 256, nullable = false)
     private String password;
     @Column(name = "address", length = 128)
     private String address;
@@ -59,22 +59,11 @@ public class Client {
     public Client() {
     }
 
-    public Client(Integer id, String firstName, String lastName, String email, String password, String address, String zipCode, String city, String country, String phone, LocalDateTime createdAt, LocalDateTime modifiedAt) {
-        this.id = id;
+    public Client(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.address = address;
-        this.zipCode = zipCode;
-        this.city = city;
-        this.country = country;
-        this.phone = phone;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
-
-    public Client(String firstName, String lastName, String email, String encryptedPassword) {
     }
 
     public Integer getId() {
