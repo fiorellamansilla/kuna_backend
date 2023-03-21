@@ -1,7 +1,6 @@
 package com.kuna_backend.dtos.client;
 
 public class SignInResponseDto {
-
     private String status;
     private String token;
 
