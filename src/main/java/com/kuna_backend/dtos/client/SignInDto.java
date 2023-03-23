@@ -1,15 +1,8 @@
 package com.kuna_backend.dtos.client;
 
 public class SignInDto {
-
     private String email;
     private String password;
-
-
-    public SignInDto(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
     public String getEmail() {
         return email;
