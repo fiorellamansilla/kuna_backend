@@ -1,8 +1,11 @@
 package com.kuna_backend.controllers;
 
+import com.kuna_backend.common.ApiResponse;
 import com.kuna_backend.dtos.checkout.CheckoutItemDto;
 import com.kuna_backend.dtos.checkout.StripeResponse;
-import com.kuna_backend.models.Item;
+import com.kuna_backend.exceptions.AuthenticationFailException;
+import com.kuna_backend.exceptions.OrderNotFoundException;
+import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Order;
 import com.kuna_backend.services.AuthenticationService;
 import com.kuna_backend.services.ItemService;
@@ -13,20 +16,9 @@ import com.stripe.model.checkout.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+
 
 @RestController
 @RequestMapping("/order")
@@ -34,9 +26,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private AuthenticationService authenticationService;
+
     @Autowired
     private ItemService itemService;
 
@@ -50,20 +42,43 @@ public class OrderController {
         return new ResponseEntity<StripeResponse>(stripeResponse, HttpStatus.OK);
     }
 
-    // GET All Orders / Endpoint
-    @GetMapping(path = "/all")
-    public List<Order> list(){
-        return (List<Order>) orderService.getAllOrders();
+    // POST Endpoint - Place order after Checkout session
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse> placeOrder (@RequestParam("token") String token, @RequestParam("sessionId") String sessionId) throws AuthenticationFailException {
+        // Validate token
+        authenticationService.authenticate(token);
+        // Retrieve Client
+        Client client = authenticationService.getClient(token);
+        // Place the order
+        orderService.placeOrder(client, sessionId);
+        return new ResponseEntity<>(new ApiResponse(true, "The Order has been placed"), HttpStatus.CREATED);
     }
 
-    // GET an Order by ID / Endpoint
+    // GET All Orders for a Client / Endpoint
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<Order>> getAllOrders(@RequestParam("token") String token) throws AuthenticationFailException {
+        // Validate the token
+        authenticationService.authenticate(token);
+        // Retrieve the client
+        Client client = authenticationService.getClient(token);
+        // Get Orders
+        List<Order> orderDtoList = orderService.listOrders(client);
+
+        return new ResponseEntity<>(orderDtoList, HttpStatus.OK);
+    }
+
+    // GET Order Items for an Order
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Order> get(@PathVariable Integer id) {
+    public ResponseEntity<Object> getOrderById(@PathVariable ("id") Integer id, @RequestParam ("token") String token)
+            throws AuthenticationFailException {
+
+        // Validate token
         try {
             Order order = orderService.getOrder(id);
-            return new ResponseEntity<Order>(order, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<Order>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(order, HttpStatus.OK);
+        }
+        catch (OrderNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -100,27 +115,6 @@ public class OrderController {
 //        return order.getItems();
 //    }
 
-
-    // Create an Item for a specific Order / Many-to-many relationship Endpoint
-    @PostMapping(path = "/{id}/items")
-    public ResponseEntity<Item> createItemForOrder(@PathVariable Integer id, @RequestBody Item item) {
-
-        Order order = orderService.getOrder(id);
-
-        if (order==null)
-            throw new NoSuchElementException("id:"+id);
-
-        item.setOrders((Set<Order>) order);
-
-        itemService.createItem(item);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(item.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
-    }
 }
 
 
