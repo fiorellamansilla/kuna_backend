@@ -1,23 +1,36 @@
 package com.kuna_backend.services;
 
+import com.kuna_backend.dtos.cart.CartDto;
+import com.kuna_backend.dtos.cart.CartItemDto;
 import com.kuna_backend.dtos.checkout.CheckoutItemDto;
+import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Order;
+import com.kuna_backend.models.OrderItem;
+import com.kuna_backend.repositories.OrderItemsRepository;
 import com.kuna_backend.repositories.OrderRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class OrderService {
+
     @Autowired
-    private OrderRepository orderRepository;
+    private CartService cartService;
+    @Autowired
+    OrderRepository orderRepository;
+    @Autowired
+    OrderItemsRepository orderItemsRepository;
 
     @Value("${BASE_URL}")
     private String baseURL;
@@ -64,7 +77,7 @@ public class OrderService {
             sessionItemList.add(createSessionLineItem(checkoutItemDto));
         }
 
-        // Build the session param
+        // Build the session params
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
@@ -73,6 +86,37 @@ public class OrderService {
                 .setSuccessUrl(successURL)
                 .build();
         return Session.create(params);
+    }
+
+    public void placeOrder (Client client, String sessionId) {
+
+        // Retrieve cart items for the Client
+        CartDto cartDto = cartService.listCartItems(client);
+
+        List<CartItemDto> cartItemDtoList = cartDto.getCartItems();
+
+        // Create the Order and Save it
+        Order newOrder = new Order();
+        newOrder.setCreatedAt(new Date());
+        newOrder.setSessionId(sessionId);
+        newOrder.setClient(client);
+        newOrder.setTotalAmount(cartDto.getTotalCost());
+        orderRepository.save(newOrder);
+
+        for (CartItemDto cartItemDto : cartItemDtoList) {
+            // Create OrderItem and Save each one
+            OrderItem orderItem = new OrderItem();
+            orderItem.setCreatedAt(new Date());
+            orderItem.setPrice(cartItemDto.getItem().getPrice());
+            orderItem.setItem(cartItemDto.getItem());
+            orderItem.setQuantity(cartItemDto.getQuantity());
+            orderItem.setOrder(newOrder);
+
+            orderItemsRepository.save(orderItem);
+        }
+
+        // Delete items from cart after the client has placed the order
+        cartService.deleteClientCartItems(client);
     }
 
     public List<Order> getAllOrders() {
