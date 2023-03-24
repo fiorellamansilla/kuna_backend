@@ -12,9 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "order_item")
@@ -32,8 +30,7 @@ public class OrderItem {
     private Double price;
 
     @Column (name = "created_at", nullable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     // Many-to-One relationship with Order //
     @ManyToOne
@@ -49,7 +46,7 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem (Item item,Integer quantity, Double price, Order order, LocalDateTime createdAt) {
+    public OrderItem (Item item,Integer quantity, Double price, Order order, Date createdAt) {
         this.item = item;
         this.quantity = quantity;
         this.price = price;
@@ -80,11 +77,11 @@ public class OrderItem {
         this.price = price;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 

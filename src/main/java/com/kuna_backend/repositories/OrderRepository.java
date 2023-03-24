@@ -12,5 +12,5 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     // Method to fetch an ordered list of Orders from a Client by date of each entry in the order table.
-    List<Order> findAllByClientOrderByCreatedDateDesc (Client client);
+    List<Order> findAllByClientOrderByCreatedAtDesc (Client client);
 }

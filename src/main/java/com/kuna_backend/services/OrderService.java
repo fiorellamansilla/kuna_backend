@@ -122,7 +122,7 @@ public class OrderService {
     }
 
     public List<Order> listOrders(Client client) {
-        return orderRepository.findAllByClientOrderByCreatedDateDesc(client);
+        return orderRepository.findAllByClientOrderByCreatedAtDesc(client);
     }
 
     public Order getOrder (Integer orderId) throws OrderNotFoundException {
