@@ -3,6 +3,7 @@ package com.kuna_backend.services;
 import com.kuna_backend.dtos.cart.CartDto;
 import com.kuna_backend.dtos.cart.CartItemDto;
 import com.kuna_backend.dtos.checkout.CheckoutItemDto;
+import com.kuna_backend.exceptions.OrderNotFoundException;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Order;
 import com.kuna_backend.models.OrderItem;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -119,16 +121,19 @@ public class OrderService {
         cartService.deleteClientCartItems(client);
     }
 
-    public List<Order> getAllOrders() {
-        return (List<Order>) orderRepository.findAll();
+    public List<Order> listOrders(Client client) {
+        return orderRepository.findAllByClientOrderByCreatedDateDesc(client);
     }
 
-    public Order getOrder (Integer id) {
-        return orderRepository.findById(id).get();
+    public Order getOrder (Integer orderId) throws OrderNotFoundException {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if (order.isPresent()) {
+            return order.get();
+        }
+        throw new OrderNotFoundException("Order not found");
     }
 
     public void deleteOrder (Integer id) {
         orderRepository.deleteById(id);
     }
-
 }
