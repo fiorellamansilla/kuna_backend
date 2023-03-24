@@ -17,10 +17,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,18 +30,17 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column (name = "total_amount", nullable = false)
-    private Float totalAmount = 0.0f;
-    @Column (name = "order_status", length = 64, nullable = false)
+    private Double totalAmount;
+    @Column (name = "order_status", length = 64)
     @Enumerated (EnumType.STRING)
     private OrderStatus orderStatus = OrderStatus.PENDING;
     @Column (name = "session_id", length = 256, nullable = false)
     private String sessionId;
-    @Column (name = "tracking_number", length = 64, nullable = false)
+    @Column (name = "tracking_number", length = 64)
     private String trackingNumber;
     @Column (name = "created_at", nullable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @Column (name = "modified_at", nullable = false)
+    private Date createdAt;
+    @Column (name = "modified_at")
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
@@ -71,11 +70,11 @@ public class Order {
         this.id = id;
     }
 
-    public Float getTotalAmount() {
+    public Double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Float totalAmount) {
+    public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -103,11 +102,11 @@ public class Order {
         this.trackingNumber = trackingNumber;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
