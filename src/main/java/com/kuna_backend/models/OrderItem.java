@@ -25,50 +25,43 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column (name = "price", nullable = false)
-    private Double price;
-
     @Column (name = "quantity", nullable = false)
     private Integer quantity;
+
+    @Column (name = "price", nullable = false)
+    private Double price;
 
     @Column (name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    // Many to One relationship with Order //
+    // Many-to-One relationship with Order //
     @ManyToOne
-    @JoinColumn (name = "order_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn (name = "order_id", referencedColumnName = "id")
     @JsonIgnore
     private Order order;
 
     // One to one relationship with Item //
     @OneToOne
-    @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "item_id", referencedColumnName = "id")
     private Item item;
 
-    public OrderItem(Integer id, Double price, Integer quantity, LocalDateTime createdAt, Order order, Item item) {
-        this.id = id;
-        this.price = price;
-        this.quantity = quantity;
-        this.createdAt = createdAt;
-        this.order = order;
+    public OrderItem() {
+    }
+
+    public OrderItem (Item item,Integer quantity, Double price, Order order, LocalDateTime createdAt) {
         this.item = item;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
+        this.quantity = quantity;
         this.price = price;
+        this.order = order;
+        this.createdAt = createdAt;
+    }
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public Integer getQuantity() {
@@ -77,6 +70,14 @@ public class OrderItem {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -95,11 +96,4 @@ public class OrderItem {
         this.order = order;
     }
 
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
 }

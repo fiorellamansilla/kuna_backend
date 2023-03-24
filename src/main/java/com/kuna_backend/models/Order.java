@@ -46,8 +46,8 @@ public class Order {
     private LocalDateTime modifiedAt;
 
     // Many-to-One relationship with Client //
-    @ManyToOne (fetch = FetchType.LAZY, optional = false)
-    @JoinColumn (name = "client_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne ()
+    @JoinColumn (name = "client_id", referencedColumnName = "id")
     @JsonIgnore
     private Client client;
 
@@ -61,18 +61,6 @@ public class Order {
     private Payment payment;
 
     public Order() {
-    }
-
-    public Order(Integer id, Float totalAmount, OrderStatus orderStatus, String sessionId, String trackingNumber, LocalDateTime createdAt, LocalDateTime modifiedAt, Client client, Payment payment) {
-        this.id = id;
-        this.totalAmount = totalAmount;
-        this.orderStatus = orderStatus;
-        this.sessionId = sessionId;
-        this.trackingNumber = trackingNumber;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.client = client;
-        this.payment = payment;
     }
 
     public Integer getId() {
@@ -153,4 +141,5 @@ public class Order {
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
+
 }
