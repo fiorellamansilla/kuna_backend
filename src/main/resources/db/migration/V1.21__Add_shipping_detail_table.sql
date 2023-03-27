@@ -1,0 +1,15 @@
+
+CREATE TABLE shipping_detail (
+    id INT NOT NULL AUTO_INCREMENT,
+    client_id INT NOT NULL,
+    order_id INT NOT NULL,
+    address VARCHAR(128) NOT NULL,
+    zip_code VARCHAR(64) NOT NULL,
+    city VARCHAR(32) NOT NULL,
+    country VARCHAR(32) NOT NULL,
+    phone VARCHAR(32) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
