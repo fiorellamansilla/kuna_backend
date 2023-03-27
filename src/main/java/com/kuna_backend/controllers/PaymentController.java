@@ -1,7 +1,11 @@
 package com.kuna_backend.controllers;
 
+import com.kuna_backend.dtos.checkout.CheckoutItemDto;
+import com.kuna_backend.dtos.checkout.StripeResponse;
 import com.kuna_backend.models.Payment;
 import com.kuna_backend.services.PaymentService;
+import com.stripe.exception.StripeException;
+import com.stripe.model.checkout.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,16 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
+
+    // Stripe Create Session Api
+    @PostMapping("/create-checkout-session")
+    public ResponseEntity<StripeResponse> checkoutList(@RequestBody List<CheckoutItemDto> checkoutItemDtoList) throws StripeException {
+        // Create the Stripe session
+        Session session = paymentService.createSession(checkoutItemDtoList);
+        StripeResponse stripeResponse = new StripeResponse(session.getId());
+        // Send the Stripe session id in response
+        return new ResponseEntity<StripeResponse>(stripeResponse, HttpStatus.OK);
+    }
 
     // GET All Payments / Endpoint
     @GetMapping(path = "/all")

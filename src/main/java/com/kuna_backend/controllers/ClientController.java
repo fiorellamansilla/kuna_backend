@@ -98,23 +98,23 @@ public class ClientController {
     }
 
     // Create an Order for a specific Client / One-to-many relationship Endpoint
-    @PostMapping(path = "/{id}/orders")
-    public ResponseEntity<Order> createOrderForClient(@PathVariable Integer id, @RequestBody Order order) {
-
-        Client client = clientService.getClient(id);
-
-        if (client==null)
-            throw new NoSuchElementException("id:"+id);
-
-        order.setClient(client);
-
-        orderService.createOrder(order);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(order.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).build();
-    }
+//    @PostMapping(path = "/{id}/orders")
+//    public ResponseEntity<Order> createOrderForClient(@PathVariable Integer id, @RequestBody Order order) {
+//
+//        Client client = clientService.getClient(id);
+//
+//        if (client==null)
+//            throw new NoSuchElementException("id:"+id);
+//
+//        order.setClient(client);
+//
+//        orderService.createOrder(order);
+//
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(order.getId())
+//                .toUri();
+//
+//        return ResponseEntity.created(location).build();
+//    }
 }
