@@ -6,6 +6,7 @@ import com.kuna_backend.exceptions.OrderNotFoundException;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Order;
 import com.kuna_backend.models.OrderItem;
+import com.kuna_backend.models.ShippingDetail;
 import com.kuna_backend.repositories.OrderItemsRepository;
 import com.kuna_backend.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
@@ -27,11 +28,11 @@ public class OrderService {
     @Autowired
     OrderItemsRepository orderItemsRepository;
 
-    public void placeOrder (Client client, String sessionId) {
+
+    public void placeOrder (Client client, String sessionId, ShippingDetail shippingDetail) {
 
         // Retrieve cart items for the Client
         CartDto cartDto = cartService.listCartItems(client);
-
         List<CartItemDto> cartItemDtoList = cartDto.getCartItems();
 
         // Create the Order and Save it
@@ -53,6 +54,10 @@ public class OrderService {
 
             orderItemsRepository.save(orderItem);
         }
+
+        // Set the shipping details for the Order
+        newOrder.setShippingDetail(shippingDetail);
+        orderRepository.save(newOrder);
 
         // Delete items from cart after the client has placed the order
         cartService.deleteClientCartItems(client);
