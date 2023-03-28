@@ -59,6 +59,11 @@ public class Order {
     @JsonIgnore
     private Payment payment;
 
+    // One-to-One relationship with ShippingDetail//
+    @OneToOne(mappedBy = "order", optional = false)
+    @JsonIgnore
+    private ShippingDetail shippingDetail;
+
     public Order() {
     }
 
@@ -141,4 +146,11 @@ public class Order {
         this.payment = payment;
     }
 
+    public ShippingDetail getShippingDetail() {
+        return shippingDetail;
+    }
+
+    public void setShippingDetail(ShippingDetail shippingDetail) {
+        this.shippingDetail = shippingDetail;
+    }
 }

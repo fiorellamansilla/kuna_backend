@@ -18,6 +18,9 @@ public class ShippingDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "full_name", length = 64, nullable = false)
+    private String fullName;
+
     @Column(name = "address", length = 128, nullable = false)
     private String address;
 
@@ -51,16 +54,8 @@ public class ShippingDetail {
     public ShippingDetail() {
     }
 
-    public ShippingDetail(Integer id, String address, String zipCode, String city, String country, String phone, Date createdAt, Client client, Order order) {
-        this.id = id;
-        this.address = address;
-        this.zipCode = zipCode;
-        this.city = city;
-        this.country = country;
-        this.phone = phone;
-        this.createdAt = createdAt;
-        this.client = client;
-        this.order = order;
+
+    public ShippingDetail(String fullName, String address, String zipCode, String city, String country, String phone) {
     }
 
     public Integer getId() {
@@ -69,6 +64,14 @@ public class ShippingDetail {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getAddress() {

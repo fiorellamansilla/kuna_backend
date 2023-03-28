@@ -2,14 +2,7 @@ package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -45,6 +38,11 @@ public class Client {
     @OneToMany (mappedBy = "client", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Payment> payments;
+
+    // One-to-One relationship with ShippingDetail//
+    @OneToOne(mappedBy = "client", optional = false)
+    @JsonIgnore
+    private ShippingDetail shippingDetail;
 
     public Client() {
     }
@@ -125,6 +123,14 @@ public class Client {
     }
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    public ShippingDetail getShippingDetail() {
+        return shippingDetail;
+    }
+
+    public void setShippingDetail(ShippingDetail shippingDetail) {
+        this.shippingDetail = shippingDetail;
     }
 }
 
