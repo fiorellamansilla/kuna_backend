@@ -54,13 +54,13 @@ public class Payment {
     private LocalDateTime lastUpdate;
 
     // Many-to-one relationship with Client //
-    @ManyToOne (optional = false)
-    @JoinColumn (name = "client_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne ()
+    @JoinColumn (name = "client_id", referencedColumnName = "id")
     private Client client;
 
     // One-to-one relationship with order //
     @OneToOne (optional = false)
-    @JoinColumn (name = "order_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn (name = "order_id", referencedColumnName = "id")
     private Order order;
 
     public Payment(Integer id, Float amount, Currency currency, String stripeToken, PaymentStatus paymentStatus, String provider, LocalDateTime paymentDate, LocalDateTime lastUpdate, Client client, Order order) {

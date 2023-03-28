@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,7 +36,7 @@ public class CartService  {
     }
 
     public CartDto listCartItems(Client client) {
-        List<Cart> cartList = cartRepository.findAllByClientOrderByCreatedDateDesc(client);
+        List<Cart> cartList = cartRepository.findAllByClientOrderByCreatedAtDesc(client);
         List<CartItemDto> cartItems = new ArrayList<>();
 
         for (Cart cart:cartList){

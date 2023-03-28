@@ -17,10 +17,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,24 +30,23 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column (name = "total_amount", nullable = false)
-    private Float totalAmount = 0.0f;
-    @Column (name = "order_status", length = 64, nullable = false)
+    private Double totalAmount;
+    @Column (name = "order_status", length = 64)
     @Enumerated (EnumType.STRING)
     private OrderStatus orderStatus = OrderStatus.PENDING;
     @Column (name = "session_id", length = 256, nullable = false)
     private String sessionId;
-    @Column (name = "tracking_number", length = 64, nullable = false)
+    @Column (name = "tracking_number", length = 64)
     private String trackingNumber;
     @Column (name = "created_at", nullable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-    @Column (name = "modified_at", nullable = false)
+    private Date createdAt;
+    @Column (name = "modified_at")
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
     // Many-to-One relationship with Client //
-    @ManyToOne (fetch = FetchType.LAZY, optional = false)
-    @JoinColumn (name = "client_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne ()
+    @JoinColumn (name = "client_id", referencedColumnName = "id")
     @JsonIgnore
     private Client client;
 
@@ -63,18 +62,6 @@ public class Order {
     public Order() {
     }
 
-    public Order(Integer id, Float totalAmount, OrderStatus orderStatus, String sessionId, String trackingNumber, LocalDateTime createdAt, LocalDateTime modifiedAt, Client client, Payment payment) {
-        this.id = id;
-        this.totalAmount = totalAmount;
-        this.orderStatus = orderStatus;
-        this.sessionId = sessionId;
-        this.trackingNumber = trackingNumber;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.client = client;
-        this.payment = payment;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -83,11 +70,11 @@ public class Order {
         this.id = id;
     }
 
-    public Float getTotalAmount() {
+    public Double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Float totalAmount) {
+    public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -115,11 +102,11 @@ public class Order {
         this.trackingNumber = trackingNumber;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -153,4 +140,5 @@ public class Order {
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
+
 }

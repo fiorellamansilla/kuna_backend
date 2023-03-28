@@ -12,9 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "order_item")
@@ -25,50 +23,42 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column (name = "price", nullable = false)
-    private Double price;
-
     @Column (name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column (name = "created_at", nullable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    @Column (name = "price", nullable = false)
+    private Double price;
 
-    // Many to One relationship with Order //
+    @Column (name = "created_at", nullable = false)
+    private Date createdAt;
+
+    // Many-to-One relationship with Order //
     @ManyToOne
-    @JoinColumn (name = "order_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn (name = "order_id", referencedColumnName = "id")
     @JsonIgnore
     private Order order;
 
     // One to one relationship with Item //
     @OneToOne
-    @JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "item_id", referencedColumnName = "id")
     private Item item;
 
-    public OrderItem(Integer id, Double price, Integer quantity, LocalDateTime createdAt, Order order, Item item) {
-        this.id = id;
-        this.price = price;
-        this.quantity = quantity;
-        this.createdAt = createdAt;
-        this.order = order;
+    public OrderItem() {
+    }
+
+    public OrderItem (Item item,Integer quantity, Double price, Order order, Date createdAt) {
         this.item = item;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
+        this.quantity = quantity;
         this.price = price;
+        this.order = order;
+        this.createdAt = createdAt;
+    }
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public Integer getQuantity() {
@@ -79,11 +69,19 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -95,11 +93,4 @@ public class OrderItem {
         this.order = order;
     }
 
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
 }

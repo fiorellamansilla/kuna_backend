@@ -8,7 +8,7 @@ public class ItemDto {
     private Integer id;
     private String name;
     private String imagePath;
-    private Float price;
+    private Double price;
     private String description;
     private Category category;
 
@@ -21,7 +21,7 @@ public class ItemDto {
         this.setCategory(item.getCategory());
     }
 
-    public ItemDto(Integer id, String name, String imagePath, Float price, String description, Category category) {
+    public ItemDto(Integer id, String name, String imagePath, Double price, String description, Category category) {
         this.id = id;
         this.name = name;
         this.imagePath = imagePath;
@@ -57,11 +57,11 @@ public class ItemDto {
         this.imagePath = imagePath;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

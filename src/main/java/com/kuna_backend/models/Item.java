@@ -5,25 +5,14 @@ import com.kuna_backend.enums.Category;
 import com.kuna_backend.enums.Color;
 import com.kuna_backend.enums.Size;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,13 +31,13 @@ public class Item {
     @Column (name = "size", length = 64, nullable = false)
     @Enumerated (EnumType.STRING)
     private Size size;
-    @Column (name = "color", length = 64, nullable = false)
+    @Column (name = "color", length = 64)
     @Enumerated (EnumType.STRING)
     private Color color;
     @Column (name = "price", nullable = false)
-    private Float price = 0.0f;
-    @Column (name = "discount", nullable = false)
-    private Float discount = 0.0f;
+    private Double price;
+    @Column (name = "discount")
+    private Float discount;
     @Column (name = "sku", length = 128, nullable = false)
     private String SKU;
     @Column (name = "quantity_stock", nullable = false)
@@ -78,10 +67,14 @@ public class Item {
     @JsonIgnore
     private Set<Order> orders = new HashSet<Order>();
 
+    @JsonIgnore
+    @OneToMany (fetch = FetchType.LAZY, mappedBy = "item")
+    private List<Cart> cart;
+
     public Item() {
     }
 
-    public Item(Integer id, String name, String description, Category category, Size size, Color color, Float price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt, Set<Order> orders) {
+    public Item(Integer id, String name, String description, Category category, Size size, Color color, Double price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt, Set<Order> orders) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -147,11 +140,11 @@ public class Item {
         this.color = color;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
