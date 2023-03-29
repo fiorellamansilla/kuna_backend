@@ -2,8 +2,11 @@ package com.kuna_backend.controllers;
 
 import com.kuna_backend.dtos.checkout.CheckoutItemDto;
 import com.kuna_backend.dtos.checkout.StripeResponse;
+import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Payment;
+import com.kuna_backend.services.AuthenticationService;
 import com.kuna_backend.services.PaymentService;
+
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ public class PaymentController {
 
     @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     // Stripe Create Session Api
     @PostMapping("/create-checkout-session")
@@ -29,6 +34,23 @@ public class PaymentController {
         StripeResponse stripeResponse = new StripeResponse(session.getId());
         // Send the Stripe session id in response
         return new ResponseEntity<StripeResponse>(stripeResponse, HttpStatus.OK);
+    }
+
+    // Receive payment details from Stripe Api and save it into the database
+    @GetMapping("/process-payment")
+    public ResponseEntity<String> processPayment(@RequestParam("stripeToken") String stripeToken, @RequestParam("token") String token) {
+        try {
+            // Validate token
+            authenticationService.authenticate(token);
+            // Retrieve Client
+            Client client = authenticationService.getClient(token);
+            // Save payment to database
+            paymentService.savePaymentFromSession(stripeToken, client);
+            return new ResponseEntity<>("Payment received and processed successfully", HttpStatus.OK);
+        } catch (StripeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to process payment", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // GET All Payments / Endpoint
@@ -48,24 +70,6 @@ public class PaymentController {
         }
     }
 
-    //CREATE a Payment / Endpoint
-    @PostMapping(path = "/")
-    public void add (@RequestBody Payment payment) {
-        paymentService.createPayment(payment);
-    }
-
-    // UPDATE a Payment / Endpoint
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<Payment> update(@RequestBody Payment payment, @PathVariable Integer id) {
-        try {
-            Payment existPayment = paymentService.getPayment(id);
-            payment.setId(id);
-            paymentService.createPayment(payment);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 
     // DELETE a Payment by ID / Endpoint
     @DeleteMapping(path = "/{id}")

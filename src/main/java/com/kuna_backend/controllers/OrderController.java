@@ -39,7 +39,7 @@ public class OrderController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> placeOrder (
             @RequestParam("token") String token,
-            @RequestParam("sessionId") String sessionId,
+            @RequestParam("stripeToken") String stripeToken,
             @RequestBody ShippingDetailDto shippingDetailDto)
             throws AuthenticationFailException {
         // Validate token
@@ -49,7 +49,7 @@ public class OrderController {
         // Save the shipping details
         ShippingDetail shippingDetail = shippingDetailService.addShippingDetail(shippingDetailDto, client);
         // Place the order
-        orderService.placeOrder(client, sessionId, shippingDetail);
+        orderService.placeOrder(client, stripeToken, shippingDetail);
         return new ResponseEntity<>(new ApiResponse(true, "The Order has been placed"), HttpStatus.CREATED);
     }
 
