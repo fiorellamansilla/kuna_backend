@@ -40,7 +40,7 @@ public class Client {
     private List<Payment> payments;
 
     // One-to-One relationship with ShippingDetail//
-    @OneToOne(mappedBy = "client", optional = false)
+    @OneToOne(mappedBy = "client")
     @JsonIgnore
     private ShippingDetail shippingDetail;
 
