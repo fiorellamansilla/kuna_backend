@@ -36,8 +36,8 @@ public class PaymentController {
         return new ResponseEntity<StripeResponse>(stripeResponse, HttpStatus.OK);
     }
 
-    // Receive payment details from Stripe Api and save it into the database
-    @GetMapping("/process-payment")
+    // Retrieve payment details from Stripe session and save it into the database
+    @GetMapping("/save-payment")
     public ResponseEntity<String> processPayment(@RequestParam("stripeToken") String stripeToken, @RequestParam("token") String token) {
         try {
             // Validate token
@@ -46,10 +46,10 @@ public class PaymentController {
             Client client = authenticationService.getClient(token);
             // Save payment to database
             paymentService.savePaymentFromSession(stripeToken, client);
-            return new ResponseEntity<>("Payment received and processed successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Payment created and saved successfully", HttpStatus.OK);
         } catch (StripeException e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Failed to process payment", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Failed to save payment", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
