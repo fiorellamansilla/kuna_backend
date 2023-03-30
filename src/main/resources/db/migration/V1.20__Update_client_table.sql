@@ -1,0 +1,6 @@
+ALTER TABLE client
+DROP COLUMN address,
+DROP COLUMN zip_code,
+DROP COLUMN city,
+DROP COLUMN country,
+DROP COLUMN phone;

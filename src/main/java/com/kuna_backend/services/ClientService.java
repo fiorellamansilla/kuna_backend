@@ -29,18 +29,8 @@ public class ClientService {
     @Autowired
     AuthenticationService authenticationService;
 
-    public List<Client> getAllClients() {
-        return (List<Client>) clientRepository.findAll();
-    }
 
-    public Client getClient (Integer id) {
-        return clientRepository.findById(id).get();
-    }
-
-    public void deleteClient (Integer id) {
-        clientRepository.deleteById(id);
-    }
-
+    // Register a Client method
     public ResponseDto signUp(SignupDto signupDto) throws CustomException {
         // Check to see if the current email address has already been registered
         if (Objects.nonNull(clientRepository.findByEmail(signupDto.getEmail()))) {
@@ -70,6 +60,8 @@ public class ClientService {
             throw new CustomException(e.getMessage());
         }
     }
+
+    // Login Client method
 
     public SignInResponseDto signIn(SignInDto signInDto)  {
 
@@ -109,5 +101,17 @@ public class ClientService {
         PasswordEncoder passwordEncoder =  PasswordEncoderFactories.createDelegatingPasswordEncoder();
         // We call the 'encode' method on the 'passwordEncoder' instance to hash the password using the default algorithm ('bcrypt').
         return passwordEncoder.encode(password);
+    }
+
+    public List<Client> getAllClients() {
+        return (List<Client>) clientRepository.findAll();
+    }
+
+    public Client getClient (Integer id) {
+        return clientRepository.findById(id).get();
+    }
+
+    public void deleteClient (Integer id) {
+        clientRepository.deleteById(id);
     }
 }

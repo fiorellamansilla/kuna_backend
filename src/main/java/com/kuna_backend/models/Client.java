@@ -2,14 +2,7 @@ package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -31,16 +24,6 @@ public class Client {
     private String email;
     @Column(name = "password", length = 256, nullable = false)
     private String password;
-    @Column(name = "address", length = 128)
-    private String address;
-    @Column(name = "zip_code", length = 64)
-    private String zipCode;
-    @Column(name = "city", length = 32)
-    private String city;
-    @Column(name = "country", length = 32)
-    private String country;
-    @Column(name = "phone", length = 32)
-    private String phone;
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -55,6 +38,11 @@ public class Client {
     @OneToMany (mappedBy = "client", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Payment> payments;
+
+    // One-to-One relationship with ShippingDetail//
+    @OneToOne(mappedBy = "client")
+    @JsonIgnore
+    private ShippingDetail shippingDetail;
 
     public Client() {
     }
@@ -106,46 +94,6 @@ public class Client {
         this.password = password;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -175,6 +123,14 @@ public class Client {
     }
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
+    }
+
+    public ShippingDetail getShippingDetail() {
+        return shippingDetail;
+    }
+
+    public void setShippingDetail(ShippingDetail shippingDetail) {
+        this.shippingDetail = shippingDetail;
     }
 }
 
