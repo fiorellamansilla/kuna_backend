@@ -102,8 +102,8 @@ public class PaymentService {
         return (List<Payment>) paymentRepository.findAll();
     }
 
-    public Payment getPayment (Integer id) {
-        return paymentRepository.findById(id).get();
+    public Payment getPayment (String stripeToken) {
+        return paymentRepository.findPaymentByStripeToken(stripeToken);
     }
 
     public void deletePayment (Integer id) {
