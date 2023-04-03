@@ -33,9 +33,7 @@ public class Order {
     private Double totalAmount;
     @Column (name = "order_status", length = 64)
     @Enumerated (EnumType.STRING)
-    private OrderStatus orderStatus = OrderStatus.PENDING;
-    @Column (name = "session_id", length = 256, nullable = false)
-    private String sessionId;
+    private OrderStatus orderStatus = OrderStatus.CONFIRMED;
     @Column (name = "tracking_number", length = 64)
     private String trackingNumber;
     @Column (name = "created_at", nullable = false)
@@ -54,11 +52,17 @@ public class Order {
     @OneToMany (mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
-
     // One-to-One relationship with ShippingDetail//
-    @OneToOne(mappedBy = "order", optional = false)
+    @OneToOne()
+    @JoinColumn(name = "shipping_detail_id", referencedColumnName = "id")
     @JsonIgnore
     private ShippingDetail shippingDetail;
+
+    // One-to-One relationship with Payment//
+    @OneToOne()
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Payment payment;
 
     public Order() {
     }
@@ -85,14 +89,6 @@ public class Order {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 
     public String getTrackingNumber() {
@@ -142,5 +138,13 @@ public class Order {
 
     public void setShippingDetail(ShippingDetail shippingDetail) {
         this.shippingDetail = shippingDetail;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

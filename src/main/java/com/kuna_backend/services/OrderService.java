@@ -6,6 +6,7 @@ import com.kuna_backend.exceptions.OrderNotFoundException;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Order;
 import com.kuna_backend.models.OrderItem;
+import com.kuna_backend.models.Payment;
 import com.kuna_backend.models.ShippingDetail;
 import com.kuna_backend.repositories.OrderItemsRepository;
 import com.kuna_backend.repositories.OrderRepository;
@@ -29,7 +30,7 @@ public class OrderService {
     OrderItemsRepository orderItemsRepository;
 
 
-    public void placeOrder (Client client, String sessionId, ShippingDetail shippingDetail) {
+    public void placeOrder (Client client, Payment payment, ShippingDetail shippingDetail) {
 
         // Retrieve cart items for the Client
         CartDto cartDto = cartService.listCartItems(client);
@@ -38,8 +39,8 @@ public class OrderService {
         // Create the Order and Save it
         Order newOrder = new Order();
         newOrder.setCreatedAt(new Date());
-        newOrder.setSessionId(sessionId);
         newOrder.setClient(client);
+        newOrder.setPayment(payment);
         newOrder.setTotalAmount(cartDto.getTotalCost());
         orderRepository.save(newOrder);
 
