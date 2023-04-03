@@ -2,6 +2,7 @@ package com.kuna_backend.controllers;
 
 import com.kuna_backend.common.ApiResponse;
 import com.kuna_backend.dtos.shipping.ShippingDetailDto;
+import com.kuna_backend.enums.OrderStatus;
 import com.kuna_backend.exceptions.AuthenticationFailException;
 import com.kuna_backend.exceptions.OrderNotFoundException;
 import com.kuna_backend.models.Client;
@@ -81,6 +82,12 @@ public class OrderController {
         }
     }
 
+    // GET All Orders by Status / Endpoint
+    @GetMapping(path = "/status")
+    public ResponseEntity<List<Order>> getOrdersByStatus(@RequestParam("orderStatus")OrderStatus orderStatus) {
+        List<Order> orders = orderService.listOrdersByStatus(orderStatus);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
     //DELETE one Order by ID / Endpoint
     @DeleteMapping(path = "/{id}")
     public void delete (@PathVariable Integer id) {
