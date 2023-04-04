@@ -1,18 +1,18 @@
 package com.kuna_backend.dtos.checkout;
 
 public class StripeResponse {
-    private String stripeToken;
+    private String sessionId;
 
-    public String getStripeToken() {
-        return stripeToken;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setStripeToken(String stripeToken) {
-        this.stripeToken = stripeToken;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
-    public StripeResponse(String stripeToken) {
-        this.stripeToken = stripeToken;
+    public StripeResponse(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public StripeResponse() {

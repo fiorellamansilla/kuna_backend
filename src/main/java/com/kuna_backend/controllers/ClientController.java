@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -77,7 +78,14 @@ public class ClientController {
 //        }
 //    }
 
-    // GET all Orders for a Client / One-to-many relationship Endpoint
+    //DELETE one Client by ID / Endpoint
+    @DeleteMapping(path = "/{id}")
+    public void delete (@PathVariable Integer id) {
+        clientService.deleteClient(id);
+    }
+
+
+    // Retrieve all Orders for a Client / One-to-many relationship Endpoint
     @GetMapping(path = "/{id}/orders")
     public List<Order> retrieveOrdersForClient(@PathVariable Integer id) {
 
@@ -89,10 +97,24 @@ public class ClientController {
         return client.getOrders();
     }
 
-    //DELETE one Client by ID / Endpoint
-    @DeleteMapping(path = "/{id}")
-    public void delete (@PathVariable Integer id) {
-        clientService.deleteClient(id);
-    }
-
+    // Create an Order for a specific Client / One-to-many relationship Endpoint
+//    @PostMapping(path = "/{id}/orders")
+//    public ResponseEntity<Order> createOrderForClient(@PathVariable Integer id, @RequestBody Order order) {
+//
+//        Client client = clientService.getClient(id);
+//
+//        if (client==null)
+//            throw new NoSuchElementException("id:"+id);
+//
+//        order.setClient(client);
+//
+//        orderService.createOrder(order);
+//
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(order.getId())
+//                .toUri();
+//
+//        return ResponseEntity.created(location).build();
+//    }
 }

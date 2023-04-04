@@ -2,6 +2,7 @@ package com.kuna_backend.services;
 
 import com.kuna_backend.dtos.shipping.ShippingDetailDto;
 import com.kuna_backend.models.Client;
+import com.kuna_backend.models.Order;
 import com.kuna_backend.models.ShippingDetail;
 import com.kuna_backend.repositories.ShippingDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;

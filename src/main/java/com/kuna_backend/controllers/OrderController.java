@@ -10,21 +10,14 @@ import com.kuna_backend.models.ShippingDetail;
 import com.kuna_backend.services.AuthenticationService;
 import com.kuna_backend.services.ItemService;
 import com.kuna_backend.services.OrderService;
-import com.kuna_backend.services.ShippingDetailService;
 
+import com.kuna_backend.services.ShippingDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/order")
@@ -46,7 +39,7 @@ public class OrderController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> placeOrder (
             @RequestParam("token") String token,
-            @RequestParam("stripeToken") String stripeToken,
+            @RequestParam("sessionId") String sessionId,
             @RequestBody ShippingDetailDto shippingDetailDto)
             throws AuthenticationFailException {
         // Validate token
@@ -56,7 +49,7 @@ public class OrderController {
         // Save the shipping details
         ShippingDetail shippingDetail = shippingDetailService.addShippingDetail(shippingDetailDto, client);
         // Place the order
-        orderService.placeOrder(client, stripeToken, shippingDetail);
+        orderService.placeOrder(client, sessionId, shippingDetail);
         return new ResponseEntity<>(new ApiResponse(true, "The Order has been placed"), HttpStatus.CREATED);
     }
 
