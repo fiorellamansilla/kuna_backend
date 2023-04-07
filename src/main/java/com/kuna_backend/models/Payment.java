@@ -3,7 +3,6 @@ package com.kuna_backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -53,10 +52,6 @@ public class Payment {
     @JsonIgnore
     private Client client;
 
-    // One-to-one relationship with Order //
-    @OneToOne(mappedBy = "payment")
-    private Order order;
-
     public Payment(Integer id, Float amount, String currency, String stripeToken, String paymentStatus, String provider, Date paymentDate, LocalDateTime lastUpdate, Client client) {
         this.id = id;
         this.amount = amount;
@@ -67,7 +62,6 @@ public class Payment {
         this.paymentDate = paymentDate;
         this.lastUpdate = lastUpdate;
         this.client = client;
-
     }
 
     public Payment() {
@@ -146,11 +140,4 @@ public class Payment {
         this.client = client;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 }

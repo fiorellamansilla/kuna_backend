@@ -9,9 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "shipping_detail")
@@ -39,9 +38,8 @@ public class ShippingDetail {
     @Column(name = "phone", length = 32, nullable = false)
     private String phone;
 
-    @Column(name = "created_at")
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
 
     // One-to-One relationship with Client //
     @OneToOne
@@ -49,15 +47,17 @@ public class ShippingDetail {
     @JsonIgnore
     private Client client;
 
-    // One-to-one relationship with Order //
-    @OneToOne(mappedBy = "shippingDetail")
+    // One-to-One relationship with Order //
+    @OneToOne
+    @JoinColumn (name = "order_id", referencedColumnName = "id")
+    @JsonIgnore
     private Order order;
 
     public ShippingDetail() {
     }
 
 
-    public ShippingDetail(String fullName, String address, String zipCode, String city, String country, String phone, LocalDateTime createdAt) {
+    public ShippingDetail(String fullName, String address, String zipCode, String city, String country, String phone) {
     }
 
     public Integer getId() {
@@ -116,11 +116,11 @@ public class ShippingDetail {
         this.phone = phone;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 

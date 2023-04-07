@@ -69,15 +69,15 @@ public class PaymentController {
     }
 
     // GET a Payment by ID / Endpoint
-//    @GetMapping(path = "/{id}")
-//    public ResponseEntity<Payment> get(@PathVariable Integer id) {
-//        try {
-//            Payment payment = paymentService.getPayment(id);
-//            return new ResponseEntity<Payment>(payment, HttpStatus.OK);
-//        } catch (NoSuchElementException e) {
-//            return new ResponseEntity<Payment>(HttpStatus.NOT_FOUND);
-//        }
-//    }
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Payment> get(@PathVariable Integer id) {
+        try {
+            Payment payment = paymentService.getPayment(id);
+            return new ResponseEntity<Payment>(payment, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<Payment>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
     // DELETE a Payment by ID / Endpoint
