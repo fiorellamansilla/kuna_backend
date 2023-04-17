@@ -145,5 +145,4 @@ public class Order {
     public void setShippingDetail(ShippingDetail shippingDetail) {
         this.shippingDetail = shippingDetail;
     }
-
 }
