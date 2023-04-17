@@ -2,6 +2,7 @@ package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -41,7 +43,7 @@ public class Payment {
 
     @Column (name = "last_update")
     @UpdateTimestamp
-    private Date lastUpdate;
+    private LocalDateTime lastUpdate;
 
     // Many-to-one relationship with Client //
     @ManyToOne ()
@@ -49,7 +51,11 @@ public class Payment {
     @JsonIgnore
     private Client client;
 
-    public Payment(Integer id, Float amount, String currency, String stripeToken, String paymentStatus, String provider, Date paymentDate, Date lastUpdate, Client client) {
+    // One-to-one relationship with Order //
+    @OneToOne(mappedBy = "payment")
+    private Order order;
+
+    public Payment(Integer id, Float amount, String currency, String stripeToken, String paymentStatus, String provider, Date paymentDate, LocalDateTime lastUpdate, Client client, Order order) {
         this.id = id;
         this.amount = amount;
         this.currency = currency;
@@ -59,6 +65,7 @@ public class Payment {
         this.paymentDate = paymentDate;
         this.lastUpdate = lastUpdate;
         this.client = client;
+        this.order = order;
     }
 
     public Payment() {
@@ -121,11 +128,11 @@ public class Payment {
         this.paymentDate = paymentDate;
     }
 
-    public Date getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
@@ -135,6 +142,14 @@ public class Payment {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
 }
