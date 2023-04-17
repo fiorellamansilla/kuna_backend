@@ -2,6 +2,7 @@ package com.kuna_backend.services;
 
 import com.kuna_backend.dtos.cart.CartDto;
 import com.kuna_backend.dtos.cart.CartItemDto;
+import com.kuna_backend.enums.OrderStatus;
 import com.kuna_backend.exceptions.OrderNotFoundException;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Order;
@@ -42,6 +43,7 @@ public class OrderService {
         newOrder.setClient(client);
         newOrder.setPayment(payment);
         newOrder.setTotalAmount(cartDto.getTotalCost());
+        newOrder.setOrderStatus(OrderStatus.CONFIRMED);
         orderRepository.save(newOrder);
 
         for (CartItemDto cartItemDto : cartItemDtoList) {
@@ -66,6 +68,10 @@ public class OrderService {
 
     public List<Order> listOrders(Client client) {
         return orderRepository.findAllByClientOrderByCreatedAtDesc(client);
+    }
+
+    public List<Order> listOrdersByStatus(OrderStatus orderStatus) {
+        return orderRepository.findAllByOrderStatus(orderStatus);
     }
 
     public Order getOrder (Integer orderId) throws OrderNotFoundException {

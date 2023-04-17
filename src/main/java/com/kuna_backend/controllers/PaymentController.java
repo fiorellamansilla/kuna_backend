@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/payment")
@@ -55,25 +53,6 @@ public class PaymentController {
 //            return new ResponseEntity<Payment>(HttpStatus.NOT_FOUND);
 //        }
 //    }
-
-    //CREATE a Payment / Endpoint
-    @PostMapping(path = "/")
-    public void add (@RequestBody Payment payment) {
-        paymentService.createPayment(payment);
-    }
-
-    // UPDATE a Payment / Endpoint
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<Payment> update(@RequestBody Payment payment, @PathVariable Integer id) {
-        try {
-            Payment existPayment = paymentService.getPayment(id);
-            payment.setId(id);
-            paymentService.createPayment(payment);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 
     // DELETE a Payment by ID / Endpoint
     @DeleteMapping(path = "/{id}")
