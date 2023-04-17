@@ -86,10 +86,6 @@ public class PaymentService {
         return paymentRepository.findPaymentByStripeToken(stripeToken);
     }
 
-    public void createPayment (Payment payment) {
-        paymentRepository.save(payment);
-    }
-
     public void deletePayment (Integer id) {
         paymentRepository.deleteById(id);
     }
