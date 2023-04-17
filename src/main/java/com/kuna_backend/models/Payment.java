@@ -1,20 +1,14 @@
 package com.kuna_backend.models;
 
-import com.kuna_backend.enums.PaymentStatus;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
-
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
@@ -27,42 +21,35 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column (name = "amount", nullable = false)
+    @Column (name = "amount")
     private Float amount;
 
-    @Column (name = "currency", length = 32, nullable = false)
-    @Enumerated (EnumType.STRING)
+    @Column (name = "currency", length = 32)
     private String currency;
 
-    @Column (name = "stripe_id", length = 256, nullable = false)
+    @Column (name = "stripe_id", length = 256)
     private String stripeToken;
 
-    @Column (name = "payment_status", length = 64, nullable = false)
-    @Enumerated (EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    @Column (name = "payment_status", length = 64)
+    private String paymentStatus;
 
-    @Column (name = "provider", length = 64, nullable = false)
+    @Column (name = "provider", length = 64)
     private String provider;
 
-    @Column (name = "payment_date", nullable = false)
-    @CreationTimestamp
+    @Column (name = "payment_date")
     private Date paymentDate;
 
-    @Column (name = "last_update", nullable = false)
+    @Column (name = "last_update")
     @UpdateTimestamp
     private Date lastUpdate;
 
     // Many-to-one relationship with Client //
     @ManyToOne ()
     @JoinColumn (name = "client_id", referencedColumnName = "id")
+    @JsonIgnore
     private Client client;
 
-    // One-to-one relationship with Order //
-    @OneToOne(mappedBy = "payment")
-    private Order order;
-
-
-    public Payment(Integer id, Float amount, String currency, String stripeToken, PaymentStatus paymentStatus, String provider, Date paymentDate, Date lastUpdate, Client client, Order order) {
+    public Payment(Integer id, Float amount, String currency, String stripeToken, String paymentStatus, String provider, Date paymentDate, Date lastUpdate, Client client) {
         this.id = id;
         this.amount = amount;
         this.currency = currency;
@@ -72,7 +59,6 @@ public class Payment {
         this.paymentDate = paymentDate;
         this.lastUpdate = lastUpdate;
         this.client = client;
-        this.order = order;
     }
 
     public Payment() {
@@ -111,11 +97,11 @@ public class Payment {
         this.stripeToken = stripeToken;
     }
 
-    public PaymentStatus getPaymentStatus() {
+    public String getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
+    public void setPaymentStatus(String paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
@@ -151,11 +137,4 @@ public class Payment {
         this.client = client;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 }

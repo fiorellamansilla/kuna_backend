@@ -10,7 +10,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
