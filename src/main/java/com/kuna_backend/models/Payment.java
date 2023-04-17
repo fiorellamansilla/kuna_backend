@@ -61,6 +61,7 @@ public class Payment {
     @OneToOne(mappedBy = "payment")
     private Order order;
 
+
     public Payment(Integer id, Float amount, String currency, String stripeToken, PaymentStatus paymentStatus, String provider, Date paymentDate, Date lastUpdate, Client client, Order order) {
         this.id = id;
         this.amount = amount;
