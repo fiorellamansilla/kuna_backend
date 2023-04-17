@@ -1,9 +1,9 @@
 package com.kuna_backend.models;
 
-import com.kuna_backend.enums.Currency;
 import com.kuna_backend.enums.PaymentStatus;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -12,13 +12,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table (name = "payment")
@@ -33,7 +32,7 @@ public class Payment {
 
     @Column (name = "currency", length = 32, nullable = false)
     @Enumerated (EnumType.STRING)
-    private Currency currency;
+    private String currency;
 
     @Column (name = "stripe_id", length = 256, nullable = false)
     private String stripeToken;
@@ -47,23 +46,22 @@ public class Payment {
 
     @Column (name = "payment_date", nullable = false)
     @CreationTimestamp
-    private LocalDateTime paymentDate;
+    private Date paymentDate;
 
     @Column (name = "last_update", nullable = false)
     @UpdateTimestamp
-    private LocalDateTime lastUpdate;
+    private Date lastUpdate;
 
     // Many-to-one relationship with Client //
     @ManyToOne ()
     @JoinColumn (name = "client_id", referencedColumnName = "id")
     private Client client;
 
-    // One-to-one relationship with order //
-    @OneToOne (optional = false)
-    @JoinColumn (name = "order_id", referencedColumnName = "id")
+    // One-to-one relationship with Order //
+    @OneToOne(mappedBy = "payment")
     private Order order;
 
-    public Payment(Integer id, Float amount, Currency currency, String stripeToken, PaymentStatus paymentStatus, String provider, LocalDateTime paymentDate, LocalDateTime lastUpdate, Client client, Order order) {
+    public Payment(Integer id, Float amount, String currency, String stripeToken, PaymentStatus paymentStatus, String provider, Date paymentDate, Date lastUpdate, Client client, Order order) {
         this.id = id;
         this.amount = amount;
         this.currency = currency;
@@ -96,11 +94,11 @@ public class Payment {
         this.amount = amount;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
@@ -128,19 +126,19 @@ public class Payment {
         this.provider = provider;
     }
 
-    public LocalDateTime getPaymentDate() {
+    public Date getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(LocalDateTime paymentDate) {
+    public void setPaymentDate(Date paymentDate) {
         this.paymentDate = paymentDate;
     }
 
-    public LocalDateTime getLastUpdate() {
+    public Date getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(LocalDateTime lastUpdate) {
+    public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
