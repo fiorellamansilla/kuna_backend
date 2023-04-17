@@ -6,11 +6,11 @@ import com.kuna_backend.exceptions.AuthenticationFailException;
 import com.kuna_backend.exceptions.OrderNotFoundException;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Order;
+import com.kuna_backend.models.Payment;
 import com.kuna_backend.models.ShippingDetail;
 import com.kuna_backend.services.AuthenticationService;
-import com.kuna_backend.services.ItemService;
 import com.kuna_backend.services.OrderService;
-
+import com.kuna_backend.services.PaymentService;
 import com.kuna_backend.services.ShippingDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,10 +27,8 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private AuthenticationService authenticationService;
-
     @Autowired
-    private ItemService itemService;
-
+    private PaymentService paymentService;
     @Autowired
     private ShippingDetailService shippingDetailService;
 
@@ -39,17 +37,19 @@ public class OrderController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> placeOrder (
             @RequestParam("token") String token,
-            @RequestParam("sessionId") String sessionId,
+            @RequestParam("stripeToken") String stripeToken,
             @RequestBody ShippingDetailDto shippingDetailDto)
             throws AuthenticationFailException {
         // Validate token
         authenticationService.authenticate(token);
         // Retrieve Client
         Client client = authenticationService.getClient(token);
+        // Retrieve Payment
+        Payment payment = paymentService.getPayment(stripeToken);
         // Save the shipping details
         ShippingDetail shippingDetail = shippingDetailService.addShippingDetail(shippingDetailDto, client);
         // Place the order
-        orderService.placeOrder(client, sessionId, shippingDetail);
+        orderService.placeOrder(client, payment, shippingDetail);
         return new ResponseEntity<>(new ApiResponse(true, "The Order has been placed"), HttpStatus.CREATED);
     }
 
