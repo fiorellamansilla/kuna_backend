@@ -54,6 +54,10 @@ public class Order {
     @OneToMany (mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
+    // One-to-One relationship with Payment //
+    @OneToOne (mappedBy = "order", optional = false)
+    @JsonIgnore
+    private Payment payment;
 
     // One-to-One relationship with ShippingDetail//
     @OneToOne(mappedBy = "order", optional = false)
@@ -135,6 +139,12 @@ public class Order {
         this.orderItems = orderItems;
     }
 
+    public Payment getPayment() {
+        return payment;
+    }
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
 
     public ShippingDetail getShippingDetail() {
         return shippingDetail;

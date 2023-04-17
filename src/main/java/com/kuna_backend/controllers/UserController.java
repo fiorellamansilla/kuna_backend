@@ -2,7 +2,6 @@ package com.kuna_backend.controllers;
 
 import com.kuna_backend.models.User;
 import com.kuna_backend.services.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,6 @@
 package com.kuna_backend.services;
 
 import com.kuna_backend.dtos.checkout.CheckoutItemDto;
-import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Payment;
 import com.kuna_backend.repositories.PaymentRepository;
 import com.stripe.Stripe;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -80,30 +78,16 @@ public class PaymentService {
                 .build();
     }
 
-    // Save Payment after Checkout session
-    public void savePaymentFromSession(String stripeToken, Client client) throws StripeException {
-
-        Stripe.apiKey = apiKey;
-        Session session = Session.retrieve(stripeToken);
-
-        // Create the Payment with the data retrieved from the Stripe session
-        Payment payment = new Payment();
-        payment.setAmount(session.getAmountTotal() / 100.0f);
-        payment.setCurrency(session.getCurrency().toUpperCase());
-        payment.setStripeToken(session.getId());
-        payment.setPaymentStatus(session.getPaymentStatus().toUpperCase());
-        payment.setProvider("Stripe");
-        payment.setPaymentDate(new Date(session.getCreated() * 1000L));
-        payment.setClient(client);
-        // Save payment into the database
-        paymentRepository.save(payment);
-    }
     public List<Payment> getAllPayments() {
         return (List<Payment>) paymentRepository.findAll();
     }
 
     public Payment getPayment (Integer id) {
         return paymentRepository.findById(id).get();
+    }
+
+    public void createPayment (Payment payment) {
+        paymentRepository.save(payment);
     }
 
     public void deletePayment (Integer id) {

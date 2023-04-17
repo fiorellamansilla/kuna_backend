@@ -8,9 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.JoinColumn;
-
-import java.util.Date;
+import jakarta.persistence.JoinColumn;;import java.util.Date;
 
 @Entity
 @Table(name = "shipping_detail")
