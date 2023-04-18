@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
+
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 

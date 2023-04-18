@@ -33,7 +33,7 @@ public class Order {
     private Double totalAmount;
     @Column (name = "order_status", length = 64)
     @Enumerated (EnumType.STRING)
-    private OrderStatus orderStatus = OrderStatus.PENDING;
+    private OrderStatus orderStatus = OrderStatus.CONFIRMED;
     @Column (name = "tracking_number", length = 64)
     private String trackingNumber;
     @Column (name = "created_at", nullable = false)
@@ -45,6 +45,7 @@ public class Order {
     // Many-to-One relationship with Client //
     @ManyToOne ()
     @JoinColumn (name = "client_id", referencedColumnName = "id")
+    @JsonIgnore
     private Client client;
 
     // One-to-Many relationship with OrderItem //
@@ -129,13 +130,6 @@ public class Order {
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
-    
-    public Payment getPayment() {
-        return payment;
-    }
-    public void setPayment(Payment payment) {
-        this.payment = payment;
-    }
 
     public ShippingDetail getShippingDetail() {
         return shippingDetail;
@@ -144,4 +138,12 @@ public class Order {
     public void setShippingDetail(ShippingDetail shippingDetail) {
         this.shippingDetail = shippingDetail;
     }
+
+    public Payment getPayment() {
+        return payment;
+    }
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
 }
