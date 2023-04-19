@@ -1,17 +1,14 @@
 package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kuna_backend.enums.Color;
-import com.kuna_backend.enums.Size;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
@@ -48,6 +45,11 @@ public class Product {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnore
+    Category category;
+
     @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable (
             name = "order_item",
@@ -61,14 +63,15 @@ public class Product {
     @JsonIgnore
     private Set<Order> orders = new HashSet<Order>();
 
+
+    @OneToMany (fetch = FetchType.LAZY, mappedBy = "product")
     @JsonIgnore
-    @OneToMany (fetch = FetchType.LAZY, mappedBy = "item")
     private List<Cart> cart;
 
     public Product() {
     }
 
-    public Product(Integer id, String name, String description, Double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Set<Order> orders) {
+    public Product(Integer id, String name, String description, Double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category, Set<Order> orders) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -76,6 +79,7 @@ public class Product {
         this.imageUrl = imageUrl;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+        this.category = category;
         this.orders = orders;
     }
 
@@ -133,6 +137,14 @@ public class Product {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Set<Order> getOrders() {
