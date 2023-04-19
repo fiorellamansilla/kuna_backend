@@ -1,7 +1,6 @@
 package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kuna_backend.enums.Category;
 import com.kuna_backend.enums.Color;
 import com.kuna_backend.enums.Size;
 
@@ -29,43 +28,25 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table (name = "item")
-public class Item {
+@Table (name = "products")
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column (name = "name_item", length = 128, nullable = false)
+    @Column (name = "name_product", length = 128, nullable = false)
     private String name;
-    @Column (name = "desc_item", length = 2048, nullable = false)
+    @Column (name = "desc_product", length = 2048, nullable = false)
     private String description;
-    @Column (name = "category", length = 64, nullable = false)
-    @Enumerated (EnumType.STRING)
-    private Category category;
-    @Column (name = "size", length = 64, nullable = false)
-    @Enumerated (EnumType.STRING)
-    private Size size;
-    @Column (name = "color", length = 64)
-    @Enumerated (EnumType.STRING)
-    private Color color;
     @Column (name = "price", nullable = false)
     private Double price;
-    @Column (name = "discount")
-    private Float discount;
-    @Column (name = "sku", length = 128, nullable = false)
-    private String SKU;
-    @Column (name = "quantity_stock", nullable = false)
-    private Integer quantityStock = 0;
-    @Column (name = "image_path", length = 256, nullable = false)
-    private String imagePath;
+    @Column (name = "image_url", length = 256, nullable = false)
+    private String imageUrl;
     @Column (name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
     @Column (name = "modified_at", nullable = false)
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
-    @Column (name = "deleted_at", nullable = false)
-    @UpdateTimestamp
-    private LocalDateTime deletedAt;
 
     @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable (
@@ -84,24 +65,17 @@ public class Item {
     @OneToMany (fetch = FetchType.LAZY, mappedBy = "item")
     private List<Cart> cart;
 
-    public Item() {
+    public Product() {
     }
 
-    public Item(Integer id, String name, String description, Category category, Size size, Color color, Double price, Float discount, String SKU, Integer quantityStock, String imagePath, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt, Set<Order> orders) {
+    public Product(Integer id, String name, String description, Double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Set<Order> orders) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.category = category;
-        this.size = size;
-        this.color = color;
         this.price = price;
-        this.discount = discount;
-        this.SKU = SKU;
-        this.quantityStock = quantityStock;
-        this.imagePath = imagePath;
+        this.imageUrl = imageUrl;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
-        this.deletedAt = deletedAt;
         this.orders = orders;
     }
 
@@ -129,30 +103,6 @@ public class Item {
         this.description = description;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Size getSize() {
-        return size;
-    }
-
-    public void setSize(Size size) {
-        this.size = size;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     public Double getPrice() {
         return price;
     }
@@ -161,36 +111,12 @@ public class Item {
         this.price = price;
     }
 
-    public Float getDiscount() {
-        return discount;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setDiscount(Float discount) {
-        this.discount = discount;
-    }
-
-    public String getSKU() {
-        return SKU;
-    }
-
-    public void setSKU(String SKU) {
-        this.SKU = SKU;
-    }
-
-    public Integer getQuantityStock() {
-        return quantityStock;
-    }
-
-    public void setQuantityStock(Integer quantityStock) {
-        this.quantityStock = quantityStock;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -207,14 +133,6 @@ public class Item {
 
     public void setModifiedAt(LocalDateTime modifiedAt) {
         this.modifiedAt = modifiedAt;
-    }
-
-    public LocalDateTime getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(LocalDateTime deletedAt) {
-        this.deletedAt = deletedAt;
     }
 
     public Set<Order> getOrders() {
