@@ -21,13 +21,13 @@ public class Category {
     private Integer id;
 
     @Column(name = "name_category", length = 128, nullable = false)
-    String name;
+    private String name;
 
     @Column(name = "desc_category", length = 2048)
-    String description;
+    private String description;
 
     @Column(name = "image_url", length = 256)
-    String imageUrl;
+    private String imageUrl;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     Set<Product> products;
