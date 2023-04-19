@@ -1,7 +1,7 @@
 package com.kuna_backend.exceptions;
 
-public class ItemNotExistsException extends IllegalArgumentException {
-    public ItemNotExistsException(String msg) {
+public class ProductNotExistsException extends IllegalArgumentException {
+    public ProductNotExistsException(String msg) {
         super(msg);
     }
 }
