@@ -45,33 +45,19 @@ public class Product {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
+    @OneToMany (mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<ProductVariation> productVariations;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnore
     Category category;
 
-    @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @JoinTable (
-            name = "order_item",
-            joinColumns = {
-                    @JoinColumn (name = "item_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn (name = "order_id")
-            }
-    )
-    @JsonIgnore
-    private Set<Order> orders = new HashSet<Order>();
-
-
-    @OneToMany (fetch = FetchType.LAZY, mappedBy = "product")
-    @JsonIgnore
-    private List<Cart> cart;
-
     public Product() {
     }
 
-    public Product(Integer id, String name, String description, Double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category, Set<Order> orders) {
+    public Product(Integer id, String name, String description, Double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -80,7 +66,6 @@ public class Product {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.category = category;
-        this.orders = orders;
     }
 
     public Integer getId() {
@@ -139,6 +124,14 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
+    public List<ProductVariation> getProductVariations() {
+        return productVariations;
+    }
+
+    public void setProductVariations(List<ProductVariation> productVariations) {
+        this.productVariations = productVariations;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -147,13 +140,6 @@ public class Product {
         this.category = category;
     }
 
-    public Set<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
-    }
 }
 
 
