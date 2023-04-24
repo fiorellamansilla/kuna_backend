@@ -1,12 +1,14 @@
 package com.kuna_backend.dtos.cart;
 
 import com.kuna_backend.models.Cart;
-import com.kuna_backend.models.Item;
+import com.kuna_backend.models.Product;
+import com.kuna_backend.models.ProductVariation;
 
 public class CartItemDto {
     private Integer id;
     private Integer quantity;
-    private Item item;
+    private ProductVariation productVariation;
+    private Product product;
 
     public CartItemDto() {
     }
@@ -14,7 +16,7 @@ public class CartItemDto {
     public CartItemDto(Cart cart) {
         this.id = cart.getId();
         this.quantity = cart.getQuantity();
-        this.setItem(cart.getItem());
+        this.setProductVariation(cart.getProductVariation());
     }
 
     @Override
@@ -22,7 +24,7 @@ public class CartItemDto {
         return "CartDto{" +
                 "id=" + id +
                 ", quantity=" + quantity +
-                ", itemName=" + item.getName() +
+                ", productName=" + product.getName() +
                 '}';
     }
 
@@ -42,12 +44,19 @@ public class CartItemDto {
         this.quantity = quantity;
     }
 
-    public Item getItem() {
-        return item;
+    public ProductVariation getProductVariation() {
+        return productVariation;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setProductVariation(ProductVariation productVariation) {
+        this.productVariation = productVariation;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }

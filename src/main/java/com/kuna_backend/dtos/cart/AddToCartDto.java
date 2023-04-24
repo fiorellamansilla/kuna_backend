@@ -2,7 +2,7 @@ package com.kuna_backend.dtos.cart;
 
 public class AddToCartDto {
     private Integer id;
-    private Integer itemId;
+    private Integer productVariationId;
     private Integer quantity;
 
     public AddToCartDto() {
@@ -12,7 +12,7 @@ public class AddToCartDto {
     public String toString() {
         return "CartDto{" +
                 "id=" + id +
-                ", itemId=" + itemId +
+                ", productVariationId=" + productVariationId +
                 ", quantity=" + quantity +
                 '}';
     }
@@ -25,12 +25,12 @@ public class AddToCartDto {
         this.id = id;
     }
 
-    public Integer getItemId() {
-        return itemId;
+    public Integer getProductVariationId() {
+        return productVariationId;
     }
 
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
+    public void setProductVariationId(Integer productVariationId) {
+        this.productVariationId = productVariationId;
     }
 
     public Integer getQuantity() {
