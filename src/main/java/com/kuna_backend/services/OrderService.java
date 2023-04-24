@@ -50,8 +50,8 @@ public class OrderService {
             // Create OrderItem and Save each one
             OrderItem orderItem = new OrderItem();
             orderItem.setCreatedAt(new Date());
-            orderItem.setPrice(cartItemDto.getItem().getPrice());
-            orderItem.setItem(cartItemDto.getItem());
+            orderItem.setPrice(cartItemDto.getProduct().getPrice());
+            orderItem.setProductVariation(cartItemDto.getProductVariation());
             orderItem.setQuantity(cartItemDto.getQuantity());
             orderItem.setOrder(newOrder);
 
