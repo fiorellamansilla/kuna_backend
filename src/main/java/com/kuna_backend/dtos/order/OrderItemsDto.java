@@ -7,16 +7,16 @@ public class OrderItemsDto {
     private @NotNull double price;
     private @NotNull int quantity;
     private @NotNull int orderId;
-    private @NotNull int itemId;
+    private @NotNull int productVariationId;
 
     public OrderItemsDto() {
     }
 
-    public OrderItemsDto(@NotNull double price, @NotNull int quantity, @NotNull int orderId, @NotNull int itemId) {
+    public OrderItemsDto(@NotNull double price, @NotNull int quantity, @NotNull int orderId, @NotNull int productVariationId) {
         this.price = price;
         this.quantity = quantity;
         this.orderId = orderId;
-        this.itemId = itemId;
+        this.productVariationId = productVariationId;
     }
 
     public double getPrice() {
@@ -43,11 +43,11 @@ public class OrderItemsDto {
         this.orderId = orderId;
     }
 
-    public int getItemId() {
-        return itemId;
+    public int getProductVariationId() {
+        return productVariationId;
     }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
+    public void setProductVariationId(int productVariationId) {
+        this.productVariationId = productVariationId;
     }
 }
