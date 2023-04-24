@@ -25,22 +25,20 @@ public class Cart {
     @Column (name = "created_at")
     private Date createdAt;
 
-    // Many-to-one relationship with Item
+    // Many-to-one relationship with Product
     @ManyToOne
     @JoinColumn (name = "item_id")
-    private Item item;
+    private ProductVariation productVariation;
 
     // Many-to-one relationship with Client
     @ManyToOne
     @JoinColumn (name = "client_id")
     private Client client;
 
-    public Cart() {
-    }
-    public Cart(Item item, Integer quantity, Client client) {
+    public Cart(ProductVariation productVariation, Integer quantity, Client client) {
         this.client = client;
         this.quantity = quantity;
-        this.item = item;
+        this.productVariation = productVariation;
         this.createdAt = new Date();
     }
 
@@ -68,12 +66,12 @@ public class Cart {
         this.createdAt = createdAt;
     }
 
-    public Item getItem() {
-        return item;
+    public ProductVariation getProductVariation() {
+        return productVariation;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setProductVariation(ProductVariation productVariation) {
+        this.productVariation = productVariation;
     }
 
     public Client getClient() {

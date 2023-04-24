@@ -38,27 +38,28 @@ public class OrderItem {
     @JsonIgnore
     private Order order;
 
-    // One to one relationship with Item //
+    // One to one relationship with Product //
     @OneToOne
     @JoinColumn(name = "item_id", referencedColumnName = "id")
-    private Item item;
+    private ProductVariation productVariation;
 
     public OrderItem() {
     }
 
-    public OrderItem (Item item,Integer quantity, Double price, Order order, Date createdAt) {
-        this.item = item;
+    public OrderItem (ProductVariation productVariation,Integer quantity, Double price, Order order, Date createdAt) {
+        this.productVariation = productVariation;
         this.quantity = quantity;
         this.price = price;
         this.order = order;
         this.createdAt = createdAt;
     }
-    public Item getItem() {
-        return item;
+
+    public ProductVariation getProductVariation() {
+        return productVariation;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setProductVariation(ProductVariation productVariation) {
+        this.productVariation = productVariation;
     }
 
     public Integer getQuantity() {
