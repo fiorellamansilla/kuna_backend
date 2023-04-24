@@ -6,7 +6,7 @@ import com.kuna_backend.dtos.cart.CartItemDto;
 import com.kuna_backend.exceptions.CartItemNotExistException;
 import com.kuna_backend.models.Cart;
 import com.kuna_backend.models.Client;
-import com.kuna_backend.models.Item;
+import com.kuna_backend.models.ProductVariation;
 import com.kuna_backend.repositories.CartRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +24,12 @@ public class CartService  {
 
     public CartService() {
     }
-
     public CartService(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
     }
 
-    public void addToCart (AddToCartDto addToCartDto, Item item, Client client) {
-        Cart cart = new Cart (item, addToCartDto.getQuantity(), client);
+    public void addToCart (AddToCartDto addToCartDto, ProductVariation productVariation, Client client) {
+        Cart cart = new Cart (productVariation, addToCartDto.getQuantity(), client);
         // Save the cart
         cartRepository.save(cart);
     }
@@ -46,7 +45,7 @@ public class CartService  {
 
         double totalCost = 0;
         for (CartItemDto cartItemDto : cartItems) {
-            totalCost += (cartItemDto.getItem().getPrice() * cartItemDto.getQuantity());
+            totalCost += (cartItemDto.getProduct().getPrice() * cartItemDto.getQuantity());
         }
         return new CartDto(cartItems, totalCost);
     }
@@ -57,7 +56,7 @@ public class CartService  {
 
     public void deleteCartItem(int id, int clientId) throws CartItemNotExistException {
         if (!cartRepository.existsById(id))
-            throw new CartItemNotExistException("Cart item id is invalid: " + id);
+            throw new CartItemNotExistException("Cart product id is invalid: " + id);
         cartRepository.deleteById(id);
     }
 
@@ -68,4 +67,5 @@ public class CartService  {
     public void deleteClientCartItems (Client client) {
         cartRepository.deleteByClient(client);
     }
+
 }
