@@ -5,12 +5,13 @@ import com.kuna_backend.dtos.cart.AddToCartDto;
 import com.kuna_backend.dtos.cart.CartDto;
 import com.kuna_backend.exceptions.AuthenticationFailException;
 import com.kuna_backend.exceptions.CartItemNotExistException;
-import com.kuna_backend.exceptions.ItemNotExistsException;
+import com.kuna_backend.exceptions.ProductNotExistsException;
 import com.kuna_backend.models.Client;
-import com.kuna_backend.models.Item;
+import com.kuna_backend.models.ProductVariation;
 import com.kuna_backend.services.AuthenticationService;
 import com.kuna_backend.services.CartService;
-import com.kuna_backend.services.ItemService;
+import com.kuna_backend.services.ProductService;
+import com.kuna_backend.services.ProductVariationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,9 @@ public class CartController {
     @Autowired
     private CartService cartService;
     @Autowired
-    private ItemService itemService;
+    private ProductVariationService productVariationService;
+    @Autowired
+    private  ProductService productService;
     @Autowired
     private AuthenticationService authenticationService;
 
@@ -39,17 +42,17 @@ public class CartController {
     // POST/CREATE Add items to Shopping Cart
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDto addToCartDto,
-                                                 @RequestParam("token") String token) throws AuthenticationFailException, ItemNotExistsException {
+                                                 @RequestParam("token") String token) throws AuthenticationFailException, ProductNotExistsException {
 
         // Authenticate the token
         authenticationService.authenticate(token);
         // Find the client
         Client client = authenticationService.getClient(token);
         // Check if the item_id is valid or not
-        Item item = itemService.getItemById(addToCartDto.getItemId());
-        System.out.println("Item to add" + item.getName());
-        // Add item to the client's cart
-        cartService.addToCart(addToCartDto, item, client);
+        ProductVariation productVariation = productVariationService.getProductVariationById(addToCartDto.getProductVariationId());
+        System.out.println("Product to add" + productVariation.getProduct());
+        // Add product to the client's cart
+        cartService.addToCart(addToCartDto, productVariation, client);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Added to cart"), HttpStatus.CREATED);
     }
 

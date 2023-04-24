@@ -1,7 +1,7 @@
 package com.kuna_backend.controllers;
 
-import com.kuna_backend.models.Item;
-import com.kuna_backend.services.ItemService;
+import com.kuna_backend.models.Product;
+import com.kuna_backend.services.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,52 +19,52 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/item")
-public class ItemController {
+@RequestMapping("/product")
+public class ProductController {
 
     @Autowired
-    private ItemService itemService;
+    private ProductService productService;
 
-    // GET All Items / Endpoint
+    // GET All Products / Endpoint
     @GetMapping(path = "/all")
-    public List<Item> list(){
-        return (List<Item>) itemService.getAllItems();
+    public List<Product> list(){
+        return (List<Product>) productService.getAllProducts();
     }
 
-    // GET an Item by ID / Endpoint
+    // GET a Product by ID / Endpoint
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Item> get(@PathVariable Integer id) {
+    public ResponseEntity<Product> get(@PathVariable Integer id) {
         try {
-            Item item = itemService.getItem(id);
-            return new ResponseEntity<Item>(item, HttpStatus.OK);
+            Product product = productService.getProduct(id);
+            return new ResponseEntity<Product>(product, HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<Item>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
         }
     }
 
-    // CREATE an Item / Endpoint
+    // CREATE a Product / Endpoint
     @PostMapping(path = "/")
-    public void add (@RequestBody Item item) {
-        itemService.createItem(item);
+    public void add (@RequestBody Product product) {
+        productService.createProduct(product);
     }
 
-    // UPDATE an Item / Endpoint
+    // UPDATE a Product / Endpoint
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Item> update(@RequestBody Item item, @PathVariable Integer id) {
+    public ResponseEntity<Product> update(@RequestBody Product product, @PathVariable Integer id) {
         try {
-            Item existItem = itemService.getItem(id);
-            item.setId(id);
-            itemService.createItem(item);
+            Product existProduct = productService.getProduct(id);
+            product.setId(id);
+            productService.createProduct(product);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    //DELETE one Item by ID / Endpoint
+    //DELETE one Product by ID / Endpoint
     @DeleteMapping(path = "/{id}")
     public void delete (@PathVariable Integer id) {
-        itemService.deleteItem(id);
+        productService.deleteProduct(id);
     }
 
 }
