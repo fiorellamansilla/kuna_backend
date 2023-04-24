@@ -42,8 +42,7 @@ public class Product {
     private LocalDateTime modifiedAt;
 
     @OneToMany (mappedBy = "product", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private ProductVariation productVariations;
+    private List<ProductVariation> productVariations;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
@@ -120,11 +119,11 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
-    public ProductVariation getProductVariations() {
+    public List<ProductVariation> getProductVariations() {
         return productVariations;
     }
 
-    public void setProductVariations(ProductVariation productVariations) {
+    public void setProductVariations(List<ProductVariation> productVariations) {
         this.productVariations = productVariations;
     }
 
