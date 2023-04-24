@@ -11,18 +11,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.CascadeType;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @Entity
 @Table (name = "products")
@@ -47,7 +43,7 @@ public class Product {
 
     @OneToMany (mappedBy = "product", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<ProductVariation> productVariations;
+    private ProductVariation productVariations;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
@@ -124,11 +120,11 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
-    public List<ProductVariation> getProductVariations() {
+    public ProductVariation getProductVariations() {
         return productVariations;
     }
 
-    public void setProductVariations(List<ProductVariation> productVariations) {
+    public void setProductVariations(ProductVariation productVariations) {
         this.productVariations = productVariations;
     }
 
