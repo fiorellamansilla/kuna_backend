@@ -38,9 +38,9 @@ public class OrderItem {
     @JsonIgnore
     private Order order;
 
-    // One to one relationship with Product //
+    // One-to-one relationship with Product //
     @OneToOne
-    @JoinColumn(name = "item_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_variation_id", referencedColumnName = "id")
     private ProductVariation productVariation;
 
     public OrderItem() {

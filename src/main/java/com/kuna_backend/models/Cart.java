@@ -1,5 +1,6 @@
 package com.kuna_backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -27,12 +28,13 @@ public class Cart {
 
     // Many-to-one relationship with Product
     @ManyToOne
-    @JoinColumn (name = "item_id")
+    @JoinColumn (name = "product_variation_id", referencedColumnName = "id")
     private ProductVariation productVariation;
 
     // Many-to-one relationship with Client
     @ManyToOne
     @JoinColumn (name = "client_id")
+    @JsonIgnore
     private Client client;
 
     public Cart(ProductVariation productVariation, Integer quantity, Client client) {
@@ -40,6 +42,9 @@ public class Cart {
         this.quantity = quantity;
         this.productVariation = productVariation;
         this.createdAt = new Date();
+    }
+
+    public Cart() {
     }
 
     public Integer getId() {
