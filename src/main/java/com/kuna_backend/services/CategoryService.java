@@ -35,8 +35,8 @@ public class CategoryService {
         return categoryRepository.findById(categoryId);
     }
 
-    public void updateCategory(Integer categoryID, Category newCategory) {
-        Category category = categoryRepository.findById(categoryID).get();
+    public void updateCategory(Integer categoryId, Category newCategory) {
+        Category category = categoryRepository.findById(categoryId).get();
         category.setCategoryName(newCategory.getCategoryName());
         category.setDescription(newCategory.getDescription());
         category.setProducts(newCategory.getProducts());
@@ -44,5 +44,6 @@ public class CategoryService {
 
         categoryRepository.save(category);
     }
+
 
 }
