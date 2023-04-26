@@ -21,7 +21,7 @@ public class Category {
     private Integer id;
 
     @Column(name = "name_category", length = 128, nullable = false)
-    private String name;
+    private String categoryName;
 
     @Column(name = "desc_category", length = 2048)
     private String description;
@@ -35,9 +35,9 @@ public class Category {
     public Category() {
     }
 
-    public Category(Integer id, String name, String description, String imageUrl) {
+    public Category(Integer id, String categoryName, String description, String imageUrl) {
         this.id = id;
-        this.name = name;
+        this.categoryName = categoryName;
         this.description = description;
         this.imageUrl = imageUrl;
     }
@@ -50,12 +50,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getDescription() {
@@ -81,4 +81,5 @@ public class Category {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
+
 }
