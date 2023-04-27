@@ -2,6 +2,8 @@ package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.kuna_backend.dtos.product.ProductVariationDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -18,7 +20,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Table (name = "products")
@@ -41,7 +42,7 @@ public class Product {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
-    @OneToMany (mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductVariation> productVariations;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -119,7 +120,7 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
-    public List<ProductVariation> getProductVariations() {
+    public List<ProductVariationDto> getProductVariations() {
         return productVariations;
     }
 
