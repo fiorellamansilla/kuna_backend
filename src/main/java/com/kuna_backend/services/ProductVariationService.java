@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +37,14 @@ public class ProductVariationService {
         productVariationRepository.save(productVariation);
     }
 
-    public List<ProductVariation> getAllProductVariations() {
-        return (List<ProductVariation>) productVariationRepository.findAll();
+    public List<ProductVariationDto> listProductVariations() {
+        List<ProductVariation> productVariations = productVariationRepository.findAll();
+        List<ProductVariationDto> productVariationDtos = new ArrayList<>();
+        for (ProductVariation productVariation: productVariations) {
+            ProductVariationDto productVariationDto = getDtoFromProductVariation(productVariation);
+            productVariationDtos.add(productVariationDto);
+        }
+        return productVariationDtos;
     }
 
     public ProductVariation getProductVariationById(Integer productVariationId) throws ProductNotExistsException {
@@ -46,7 +53,7 @@ public class ProductVariationService {
         if (optionalProductVariation.isEmpty()) {
             throw new ProductNotExistsException("Product Variation id is invalid:" + productVariationId);
         }
-        return optionalProductVariation.get() ;
+        return optionalProductVariation.get();
     }
 
     public void deleteProductVariation (Integer id) {
