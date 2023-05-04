@@ -2,6 +2,7 @@ package com.kuna_backend.dtos.product;
 
 import com.kuna_backend.enums.Color;
 import com.kuna_backend.enums.Size;
+import com.kuna_backend.models.ProductVariation;
 
 public class ProductVariationDto {
 
@@ -14,6 +15,14 @@ public class ProductVariationDto {
     private Integer quantityStock;
 
     private Integer productId;
+
+    public ProductVariationDto(ProductVariation productVariation) {
+        this.setId(productVariation.getId());
+        this.setSize(productVariation.getSize());
+        this.setColor(productVariation.getColor());
+        this.setQuantityStock(productVariation.getQuantityStock());
+        this.setProductId(productVariation.getProduct().getId());
+    }
 
     public ProductVariationDto(Size size, Color color, Integer quantityStock, Integer productId) {
         this.size = size;
