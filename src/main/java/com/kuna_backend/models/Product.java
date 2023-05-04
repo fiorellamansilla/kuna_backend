@@ -2,7 +2,7 @@ package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.kuna_backend.dtos.product.ProductVariationDto;
+import com.kuna_backend.dtos.product.ProductDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -19,7 +19,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table (name = "products")
@@ -43,14 +43,20 @@ public class Product {
     private LocalDateTime modifiedAt;
 
     @OneToMany (mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProductVariation> productVariations;
+    @JsonIgnore
+    private Set<ProductVariation> productVariations;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnore
     Category category;
 
-    public Product() {
+    public Product(ProductDto productDto, Category category) {
+        this.name = productDto.getName();
+        this.description = productDto.getDescription();
+        this.price = productDto.getPrice();
+        this.imageUrl = productDto.getImageUrl();
+        this.category = category;
     }
 
     public Product(Integer id, String name, String description, Double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category) {
@@ -62,6 +68,9 @@ public class Product {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.category = category;
+    }
+
+    public Product() {
     }
 
     public Integer getId() {
@@ -120,11 +129,11 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
-    public List<ProductVariationDto> getProductVariations() {
+    public Set<ProductVariation> getProductVariations() {
         return productVariations;
     }
 
-    public void setProductVariations(List<ProductVariation> productVariations) {
+    public void setProductVariations(Set<ProductVariation> productVariations) {
         this.productVariations = productVariations;
     }
 
