@@ -1,6 +1,10 @@
 package com.kuna_backend.controllers;
 
+import com.kuna_backend.common.ApiResponse;
+import com.kuna_backend.dtos.product.ProductDto;
+import com.kuna_backend.models.Category;
 import com.kuna_backend.models.Product;
+import com.kuna_backend.services.CategoryService;
 import com.kuna_backend.services.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +21,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/product")
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    ProductService productService;
+    @Autowired
+    CategoryService categoryService;
 
     // GET All Products / Endpoint
     @GetMapping(path = "/all")
@@ -35,7 +42,7 @@ public class ProductController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Product> get(@PathVariable Integer id) {
         try {
-            Product product = productService.getProduct(id);
+            Product product = productService.getProductById(id);
             return new ResponseEntity<Product>(product, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
@@ -43,23 +50,29 @@ public class ProductController {
     }
 
     // CREATE a Product / Endpoint
-    @PostMapping(path = "/")
-    public void add (@RequestBody Product product) {
-        productService.createProduct(product);
+    @PostMapping(path = "/create")
+    public ResponseEntity<ApiResponse> createProduct (@RequestBody ProductDto productDto) {
+        Optional<Category> optionalCategory = categoryService.readCategory(productDto.getCategoryId());
+        if (!optionalCategory.isPresent()) {
+            return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The category is invalid"), HttpStatus.CONFLICT);
+        }
+        Category category = optionalCategory.get();
+        productService.createProduct(productDto, category);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "The Product has been created"), HttpStatus.CREATED);
     }
 
     // UPDATE a Product / Endpoint
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<Product> update(@RequestBody Product product, @PathVariable Integer id) {
-        try {
-            Product existProduct = productService.getProduct(id);
-            product.setId(id);
-            productService.createProduct(product);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+//    @PutMapping(path = "/{id}")
+//    public ResponseEntity<Product> update(@RequestBody Product product, @PathVariable Integer id) {
+//        try {
+//            Product existProduct = productService.getProduct(id);
+//            product.setId(id);
+//            productService.createProduct(product);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (NoSuchElementException e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
     //DELETE one Product by ID / Endpoint
     @DeleteMapping(path = "/{id}")
