@@ -51,7 +51,7 @@ public class ProductVariationService {
         Optional<ProductVariation> optionalProductVariation = productVariationRepository.findById(productVariationId);
         // Check if the product variation exists
         if (optionalProductVariation.isEmpty()) {
-            throw new ProductNotExistsException("Product Variation id is invalid:" + productVariationId);
+            throw new ProductNotExistsException("The Product Variation id is invalid: " + productVariationId);
         }
         return optionalProductVariation.get();
     }

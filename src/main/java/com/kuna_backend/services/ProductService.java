@@ -50,7 +50,7 @@ public class ProductService {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         // Check if the product exists
         if (optionalProduct.isEmpty()) {
-            throw new ProductNotExistsException("Product id is invalid:" + productId);
+            throw new ProductNotExistsException("The Product id is invalid: " + productId);
         }
         return optionalProduct.get();
     }

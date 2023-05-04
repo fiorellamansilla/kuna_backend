@@ -43,7 +43,6 @@ public class Product {
     private LocalDateTime modifiedAt;
 
     @OneToMany (mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
     private Set<ProductVariation> productVariations;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
