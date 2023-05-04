@@ -34,8 +34,9 @@ public class ProductController {
 
     // GET All Products / Endpoint
     @GetMapping(path = "/all")
-    public List<Product> list(){
-        return (List<Product>) productService.getAllProducts();
+    public ResponseEntity<List<ProductDto>> getProducts() {
+        List<ProductDto> body = productService.listProducts();
+        return new ResponseEntity<List<ProductDto>>(body, HttpStatus.OK);
     }
 
     // GET a Product by ID / Endpoint
