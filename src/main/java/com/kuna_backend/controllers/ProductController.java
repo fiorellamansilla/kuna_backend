@@ -10,6 +10,7 @@ import com.kuna_backend.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,8 +35,8 @@ public class ProductController {
 
     // GET All Products / Endpoint
     @GetMapping(path = "/all")
-    public ResponseEntity<List<ProductDto>> getProducts() {
-        List<ProductDto> body = productService.listProducts();
+    public ResponseEntity<List<ProductDto>> getProducts(@RequestParam(defaultValue = "0") Integer pageNumber, @RequestParam(defaultValue = "10") Integer pageSize) {
+        List<ProductDto> body = productService.listProducts(pageNumber, pageSize);
         return new ResponseEntity<List<ProductDto>>(body, HttpStatus.OK);
     }
 
