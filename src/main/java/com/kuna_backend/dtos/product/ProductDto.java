@@ -2,30 +2,32 @@ package com.kuna_backend.dtos.product;
 
 
 import com.kuna_backend.models.Product;
+import org.jetbrains.annotations.NotNull;
+
 
 public class ProductDto {
 
     private Integer id;
-    private String name;
-    private String imageUrl;
-    private Double price;
-    private String description;
-    private Integer categoryId;
+    private @NotNull String name;
+    private @NotNull Double price;
+    private @NotNull String description;
+    private @NotNull String imageUrl;
+    private @NotNull Integer categoryId;
 
     public ProductDto(Product product) {
         this.setId(product.getId());
         this.setName(product.getName());
-        this.setImageUrl(product.getImageUrl());
-        this.setDescription(product.getDescription());
         this.setPrice(product.getPrice());
+        this.setDescription(product.getDescription());
+        this.setImageUrl(product.getImageUrl());
         this.setCategoryId(product.getCategory().getId());
     }
 
-    public ProductDto(String name, String imageUrl, Double price, String description, Integer categoryId) {
+    public ProductDto(@NotNull String name, @NotNull Double price, @NotNull String description, @NotNull String imageUrl, @NotNull Integer categoryId) {
         this.name = name;
-        this.imageUrl = imageUrl;
         this.price = price;
         this.description = description;
+        this.imageUrl = imageUrl;
         this.categoryId = categoryId;
     }
 
@@ -48,14 +50,6 @@ public class ProductDto {
         this.name = name;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public Double getPrice() {
         return price;
     }
@@ -70,6 +64,14 @@ public class ProductDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Integer getCategoryId() {

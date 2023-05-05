@@ -1,11 +1,15 @@
 package com.kuna_backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kuna_backend.dtos.product.ProductVariationDto;
 import com.kuna_backend.enums.Color;
 import com.kuna_backend.enums.Size;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,28 +27,35 @@ public class ProductVariation {
 
     @Column (name = "size", length = 64, nullable = false)
     @Enumerated(EnumType.STRING)
-    Size size;
+    private Size size;
 
     @Column (name = "color", length = 64, nullable = false)
     @Enumerated(EnumType.STRING)
-    Color color;
+    private Color color;
 
     @Column(name = "quantity_stock", nullable = false)
-    Integer quantityStock;
+    private Integer quantityStock;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+    @JsonIgnore
+    Product product;
 
-    public ProductVariation() {
+    public ProductVariation (ProductVariationDto productVariationDto, Product product) {
+        this.size = productVariationDto.getSize();
+        this.color = productVariationDto.getColor();
+        this.quantityStock = productVariationDto.getQuantityStock();
+        this.product = product;
     }
-
     public ProductVariation(Integer id, Size size, Color color, Integer quantityStock, Product product) {
         this.id = id;
         this.size = size;
         this.color = color;
         this.quantityStock = quantityStock;
         this.product = product;
+    }
+
+    public ProductVariation() {
     }
 
     public Integer getId() {
