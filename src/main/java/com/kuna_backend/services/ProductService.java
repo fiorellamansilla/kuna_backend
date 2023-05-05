@@ -8,6 +8,9 @@ import com.kuna_backend.repositories.ProductRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,10 +39,12 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public List<ProductDto> listProducts() {
-        List<Product> products = productRepository.findAll();
+    // Method for GET all Products endpoint with Pagination
+    public List<ProductDto> listProducts(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Product> productPage = productRepository.findAll(pageable);
         List<ProductDto> productDtos = new ArrayList<>();
-        for (Product product: products) {
+        for (Product product: productPage) {
             ProductDto productDto = getDtoFromProduct(product);
             productDtos.add(productDto);
         }
