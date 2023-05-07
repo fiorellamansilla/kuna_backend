@@ -35,10 +35,10 @@ public class Product {
     private Double price;
     @Column (name = "image_url", length = 256, nullable = false)
     private String imageUrl;
-    @Column (name = "created_at", nullable = false)
+    @Column (name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
-    @Column (name = "modified_at", nullable = false)
+    @Column (name = "modified_at")
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
