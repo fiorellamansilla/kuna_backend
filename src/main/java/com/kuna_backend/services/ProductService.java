@@ -8,8 +8,12 @@ import com.kuna_backend.repositories.ProductRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,15 +38,24 @@ public class ProductService {
         Product product = getProductFromDto(productDto, category);
         productRepository.save(product);
     }
-    public List<Product> getAllProducts() {
-        return (List<Product>) productRepository.findAll();
+
+    // Method for GET all Products endpoint with Pagination
+    public List<ProductDto> listProducts(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Product> productPage = productRepository.findAll(pageable);
+        List<ProductDto> productDtos = new ArrayList<>();
+        for (Product product: productPage) {
+            ProductDto productDto = getDtoFromProduct(product);
+            productDtos.add(productDto);
+        }
+        return productDtos;
     }
 
     public Product getProductById(Integer productId) throws ProductNotExistsException {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         // Check if the product exists
         if (optionalProduct.isEmpty()) {
-            throw new ProductNotExistsException("Product id is invalid:" + productId);
+            throw new ProductNotExistsException("The Product id is invalid: " + productId);
         }
         return optionalProduct.get();
     }

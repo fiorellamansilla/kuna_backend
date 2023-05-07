@@ -10,6 +10,7 @@ import com.kuna_backend.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,13 +35,14 @@ public class ProductController {
 
     // GET All Products / Endpoint
     @GetMapping(path = "/all")
-    public List<Product> list(){
-        return (List<Product>) productService.getAllProducts();
+    public ResponseEntity<List<ProductDto>> getProducts(@RequestParam(defaultValue = "0") Integer pageNumber, @RequestParam(defaultValue = "10") Integer pageSize) {
+        List<ProductDto> body = productService.listProducts(pageNumber, pageSize);
+        return new ResponseEntity<List<ProductDto>>(body, HttpStatus.OK);
     }
 
     // GET a Product by ID / Endpoint
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Product> get(@PathVariable Integer id) {
+    public ResponseEntity<Product> getProductById(@PathVariable Integer id) {
         try {
             Product product = productService.getProductById(id);
             return new ResponseEntity<Product>(product, HttpStatus.OK);
@@ -76,7 +78,7 @@ public class ProductController {
 
     //DELETE one Product by ID / Endpoint
     @DeleteMapping(path = "/{id}")
-    public void delete (@PathVariable Integer id) {
+    public void deleteProductById (@PathVariable Integer id) {
         productService.deleteProduct(id);
     }
 
