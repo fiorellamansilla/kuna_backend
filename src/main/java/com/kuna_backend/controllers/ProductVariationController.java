@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -58,5 +57,17 @@ public class ProductVariationController {
         } catch (NoSuchElementException e) {
             return new ResponseEntity<ProductVariation>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    // UPDATE a Product Variation by ID - Endpoint
+    @PostMapping("/update/{productVariationId}")
+    public ResponseEntity<ApiResponse> updateProductVariation (@PathVariable("productVariationId") Integer productVariationId, @RequestBody ProductVariationDto productVariationDto) {
+        Optional<Product> optionalProduct = productService.readProduct(productVariationDto.getProductId());
+        if (!optionalProduct.isPresent()) {
+            return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The type of Product is invalid"), HttpStatus.CONFLICT);
+        }
+        Product product = optionalProduct.get();
+        productVariationService.updateProductVariation(productVariationId, productVariationDto, product);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "The Product Variation has been updated"), HttpStatus.OK);
     }
 }
