@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,6 +52,7 @@ public class ProductService {
         return productDtos;
     }
 
+    // Get a specific Product by ID method
     public Product getProductById(Integer productId) throws ProductNotExistsException {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         // Check if the product exists
@@ -58,6 +60,15 @@ public class ProductService {
             throw new ProductNotExistsException("The Product id is invalid: " + productId);
         }
         return optionalProduct.get();
+    }
+
+    // Update a specific Product by ID method
+    public void updateProduct(Integer productId, ProductDto productDto, Category category) {
+        Product product = getProductFromDto(productDto, category);
+        product.setId(productId);
+        product.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+        product.setModifiedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+        productRepository.save(product);
     }
 
     public Optional<Product> readProduct(Integer productId) {

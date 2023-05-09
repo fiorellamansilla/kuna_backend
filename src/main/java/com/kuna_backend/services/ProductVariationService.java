@@ -8,9 +8,6 @@ import com.kuna_backend.repositories.ProductVariationRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,12 +31,13 @@ public class ProductVariationService {
         return productVariation;
     }
 
-    // Create Product Variation - method //
+    // Create a Product Variation method //
     public void createProductVariation (ProductVariationDto productVariationDto, Product product) {
         ProductVariation productVariation = getProductVariationFromDto(productVariationDto, product);
         productVariationRepository.save(productVariation);
     }
 
+    // List All Product Variations method for GET endpoint
     public List<ProductVariationDto> listProductVariations() {
         List<ProductVariation> productVariations = productVariationRepository.findAll();
         List<ProductVariationDto> productVariationDtos = new ArrayList<>();
@@ -50,6 +48,7 @@ public class ProductVariationService {
         return productVariationDtos;
     }
 
+    // Get a specific Product Variation by ID method
     public ProductVariation getProductVariationById(Integer productVariationId) throws ProductNotExistsException {
         Optional<ProductVariation> optionalProductVariation = productVariationRepository.findById(productVariationId);
         // Check if the product variation exists
@@ -59,6 +58,12 @@ public class ProductVariationService {
         return optionalProductVariation.get();
     }
 
+    // Update a specific Product Variation by ID method
+    public void updateProductVariation(Integer productVariationId, ProductVariationDto productVariationDto, Product product) {
+        ProductVariation productVariation = getProductVariationFromDto(productVariationDto, product);
+        productVariation.setId(productVariationId);
+        productVariationRepository.save(productVariation);
+    }
     public void deleteProductVariation (Integer id) {
         productVariationRepository.deleteById(id);
     }
