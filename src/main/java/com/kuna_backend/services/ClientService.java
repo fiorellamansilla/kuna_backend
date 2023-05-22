@@ -62,7 +62,6 @@ public class ClientService {
     }
 
     // Login Client method
-
     public SignInResponseDto signIn(SignInDto signInDto)  {
 
         // Check if Client exists
