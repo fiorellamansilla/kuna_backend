@@ -19,7 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -33,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
@@ -115,22 +113,23 @@ public class ClientServiceTest {
         // Arrange
         String email = "test@example.com";
         String password = "password";
+        String hashedPassword = passwordEncoder.encode(password);
 
-        // Mock the client retrieval from repository
+        // Mock the input data
         Client client = new Client();
         client.setEmail(email);
-        client.setPassword(passwordEncoder.encode(password)); // Mock the hashed password
+        client.setPassword(hashedPassword); // Mock the hashed password
 
-        when(clientRepository.findByEmail(email)).thenReturn(client);
-        when(passwordEncoder.matches(password, client.getPassword())).thenReturn(true);
+        SignInDto signInDto = new SignInDto(email, password);
+
+        when(clientRepository.findByEmail(signInDto.getEmail())).thenReturn(client);
+        when(passwordEncoder.matches(signInDto.getPassword(), client.getPassword())).thenReturn(true);
 
         // Mock the authentication token retrieval from authentication service
         AuthenticationToken token = new AuthenticationToken();
         token.setToken("test_token");
 
         when(authenticationService.getToken(client)).thenReturn(token);
-
-        SignInDto signInDto = new SignInDto(email, password);
 
         // Act
         SignInResponseDto responseDto = clientService.signIn(signInDto);
@@ -141,8 +140,8 @@ public class ClientServiceTest {
         assertEquals("test_token", responseDto.getToken());
 
         // Verify that the client repository method and password encoder method were called
-        verify(clientRepository).findByEmail(email);
-        verify(passwordEncoder).matches(password, client.getPassword());
+        verify(clientRepository).findByEmail(signInDto.getEmail());
+        verify(passwordEncoder).matches(signInDto.getPassword(), client.getPassword());
 
         // Verify that the authentication service method was called
         verify(authenticationService).getToken(client);
