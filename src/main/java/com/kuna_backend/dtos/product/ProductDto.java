@@ -1,9 +1,7 @@
 package com.kuna_backend.dtos.product;
 
-
 import com.kuna_backend.models.Product;
 import org.jetbrains.annotations.NotNull;
-
 
 public class ProductDto {
 
