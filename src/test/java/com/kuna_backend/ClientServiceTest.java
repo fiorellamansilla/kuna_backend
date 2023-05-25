@@ -9,14 +9,12 @@ import com.kuna_backend.exceptions.CustomException;
 import com.kuna_backend.models.AuthenticationToken;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.repositories.ClientRepository;
-
 import com.kuna_backend.services.AuthenticationService;
 import com.kuna_backend.services.ClientService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -110,40 +108,31 @@ public class ClientServiceTest {
     @Test
     void signIn_WithValidCredentials_ReturnsToken() {
 
-        // Arrange
-        String email = "test@example.com";
-        String password = "password";
-        String hashedPassword = passwordEncoder.encode(password);
+        String email = "example@test.com";
+        String password = "password_test";
 
-        // Mock the input data
         Client client = new Client();
         client.setEmail(email);
-        client.setPassword(hashedPassword); // Mock the hashed password
+        client.setPassword(passwordEncoder.encode(password));
 
-        SignInDto signInDto = new SignInDto(email, password);
+        SignInDto signInDto = new SignInDto();
+        signInDto.setEmail(email);
+        signInDto.setPassword(password);
 
         when(clientRepository.findByEmail(signInDto.getEmail())).thenReturn(client);
         when(passwordEncoder.matches(signInDto.getPassword(), client.getPassword())).thenReturn(true);
 
-        // Mock the authentication token retrieval from authentication service
         AuthenticationToken token = new AuthenticationToken();
-        token.setToken("test_token");
-
+        token.setToken("token");
         when(authenticationService.getToken(client)).thenReturn(token);
 
-        // Act
-        SignInResponseDto responseDto = clientService.signIn(signInDto);
+        SignInResponseDto response = clientService.signIn(signInDto);
 
-        // Assert
-        assertNotNull(responseDto);
-        assertEquals("Success", responseDto.getStatus());
-        assertEquals("test_token", responseDto.getToken());
+        assertEquals("Success", response.getStatus());
+        assertEquals(token.getToken(), response.getToken());
 
-        // Verify that the client repository method and password encoder method were called
         verify(clientRepository).findByEmail(signInDto.getEmail());
         verify(passwordEncoder).matches(signInDto.getPassword(), client.getPassword());
-
-        // Verify that the authentication service method was called
         verify(authenticationService).getToken(client);
     }
 
@@ -193,11 +182,11 @@ public class ClientServiceTest {
 
     @Test
     public void hashPassword_WithBlankPassword_ShouldThrowIllegalArgumentException() {
-        // Arrange
+
         String password = "";
 
-        // Act and Assert
         assertThrows(IllegalArgumentException.class, () -> clientService.hashPassword(password));
+
     }
 
     @Test
@@ -206,19 +195,19 @@ public class ClientServiceTest {
         String password = "password";
         String hashedPassword = clientService.hashPassword(password);
 
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
         Assertions.assertNotNull(hashedPassword);
-        Assertions.assertTrue(PasswordEncoderFactories.createDelegatingPasswordEncoder().matches(password, hashedPassword));
+        Assertions.assertTrue(passwordEncoder.matches(password, hashedPassword));
     }
 
     @Test
     public void getAllClients_ShouldReturnListOfClients() {
-        // Arrange
+
         when(clientRepository.findAll()).thenReturn(java.util.List.of(new Client(), new Client()));
 
-        // Act
         List<Client> clients = clientService.getAllClients();
 
-        // Assert
         assertNotNull(clients);
         assertEquals(2, clients.size());
         verify(clientRepository).findAll();
@@ -226,15 +215,13 @@ public class ClientServiceTest {
 
     @Test
     public void getClient_WithValidId_ShouldReturnClient() {
-        // Arrange
-        int clientId = 1;
+
+        Integer clientId = 1;
         Client client = new Client();
         when(clientRepository.findById(clientId)).thenReturn(Optional.of(client));
 
-        // Act
         Client result = clientService.getClient(clientId);
 
-        // Assert
         assertNotNull(result);
         assertEquals(client, result);
         verify(clientRepository).findById(clientId);
@@ -242,24 +229,23 @@ public class ClientServiceTest {
 
     @Test
     public void getClient_WithInvalidId_ShouldThrowNoSuchElementException() {
-        // Arrange
-        int clientId = 1;
+
+        Integer clientId = 1;
+
         when(clientRepository.findById(clientId)).thenReturn(Optional.empty());
 
-        // Act and Assert
         assertThrows(NoSuchElementException.class, () -> clientService.getClient(clientId));
+
         verify(clientRepository).findById(clientId);
     }
 
     @Test
     public void deleteClient_WithValidId_ShouldDeleteClient() {
-        // Arrange
-        int clientId = 1;
 
-        // Act
+        Integer clientId = 1;
+
         clientService.deleteClient(clientId);
 
-        // Assert
         verify(clientRepository).deleteById(clientId);
     }
 
