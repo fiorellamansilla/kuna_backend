@@ -56,7 +56,7 @@ public class CartService  {
 
     public void deleteCartItem(int id, int clientId) throws CartItemNotExistException {
         if (!cartRepository.existsById(id))
-            throw new CartItemNotExistException("Cart product id is invalid: " + id);
+            throw new CartItemNotExistException("The Product Id is invalid " + id);
         cartRepository.deleteById(id);
     }
 
