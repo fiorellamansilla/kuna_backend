@@ -29,7 +29,7 @@ public class ProductVariationServiceTest {
 
     @Mock
     private ProductVariationRepository productVariationRepository;
-    
+
     @InjectMocks
     private ProductVariationService productVariationService;
 
@@ -48,10 +48,8 @@ public class ProductVariationServiceTest {
         productVariation.setSize(Size.NEWBORN);
         productVariation.setProduct(product);
 
-        // Call the getDtoFromProduct method
         ProductVariationDto productVariationDto = ProductVariationService.getDtoFromProductVariation(productVariation);
 
-        // Verify that the returned ProductDto has the expected properties
         assertEquals(productVariation.getId(), productVariationDto.getId());
         assertEquals(productVariation.getSize(), productVariationDto.getSize());
         assertEquals(productVariation.getProduct(), product);
@@ -89,6 +87,7 @@ public class ProductVariationServiceTest {
 
         Product product1 = new Product();
         product1.setId(1);
+
         Product product2 = new Product();
         product2.setId(2);
 
