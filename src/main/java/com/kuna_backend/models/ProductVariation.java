@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kuna_backend.dtos.product.ProductVariationDto;
 import com.kuna_backend.enums.Color;
 import com.kuna_backend.enums.Size;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,7 +34,7 @@ public class ProductVariation {
     @Column(name = "quantity_stock", nullable = false)
     private Integer quantityStock;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @JsonIgnore
     Product product;

@@ -7,8 +7,8 @@ import com.kuna_backend.models.ProductVariation;
 public class CartItemDto {
     private Integer id;
     private Integer quantity;
-    private ProductVariation productVariation;
     private Product product;
+    private ProductVariation productVariation;
 
     public CartItemDto() {
     }
@@ -16,6 +16,7 @@ public class CartItemDto {
     public CartItemDto(Cart cart) {
         this.id = cart.getId();
         this.quantity = cart.getQuantity();
+        this.setProduct(cart.getProductVariation().getProduct());
         this.setProductVariation(cart.getProductVariation());
     }
 
