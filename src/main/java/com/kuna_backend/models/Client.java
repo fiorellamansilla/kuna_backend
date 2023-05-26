@@ -62,6 +62,9 @@ public class Client {
         this.password = password;
     }
 
+    public Client(String email, String password) {
+    }
+
     public Integer getId() {
         return id;
     }

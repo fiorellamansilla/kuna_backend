@@ -4,6 +4,12 @@ public class SignInDto {
     private String email;
     private String password;
 
+    public SignInDto() {
+    }
+
+    public SignInDto(String email, String password) {
+    }
+
     public String getEmail() {
         return email;
     }

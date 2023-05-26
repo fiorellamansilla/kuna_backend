@@ -11,23 +11,24 @@ import com.kuna_backend.models.AuthenticationToken;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.repositories.ClientRepository;
 import com.kuna_backend.utils.Helper;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import static com.kuna_backend.config.MessageStrings.USER_CREATED;
 
 import java.util.List;
 import java.util.Objects;
+
+import static com.kuna_backend.config.MessageStrings.USER_CREATED;
 
 @Service
 public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
-    AuthenticationService authenticationService;
+    private AuthenticationService authenticationService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     // Register a Client method
@@ -39,8 +40,7 @@ public class ClientService {
         }
 
         // Encrypt the password
-        String encryptedPassword = signupDto.getPassword();
-        encryptedPassword = hashPassword(signupDto.getPassword());
+        String encryptedPassword = hashPassword(signupDto.getPassword());
 
         Client client = new Client(signupDto.getFirstName(), signupDto.getLastName(), signupDto.getEmail(), encryptedPassword);
         Client createdClient;
@@ -62,7 +62,6 @@ public class ClientService {
     }
 
     // Login Client method
-
     public SignInResponseDto signIn(SignInDto signInDto)  {
 
         // Check if Client exists
@@ -70,8 +69,6 @@ public class ClientService {
         if (!Helper.notNull(client)){
             throw new AuthenticationFailException("Client is not valid");
         }
-
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
         // Compare hashed password stored in database with plaintext password provided during SignIn
         if (!passwordEncoder.matches(signInDto.getPassword(), client.getPassword())) {

@@ -20,8 +20,10 @@ dependencies {
     implementation 'com.stripe:stripe-java:22.0.0'
     implementation 'org.jetbrains:annotations:20.1.0'
     implementation 'org.springframework.security:spring-security-crypto:5.5.1'
+    implementation 'junit:junit-dep:4.11'
     runtimeOnly 'mysql:mysql-connector-java:8.0.30'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.1'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.2.0'
 }
 
 flyway {
