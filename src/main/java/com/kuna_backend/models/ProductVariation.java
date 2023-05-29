@@ -58,6 +58,9 @@ public class ProductVariation {
     public ProductVariation() {
     }
 
+    public ProductVariation(Integer productVariationId, ProductVariationDto productVariationDto, Product product) {
+    }
+
     public Integer getId() {
         return id;
     }

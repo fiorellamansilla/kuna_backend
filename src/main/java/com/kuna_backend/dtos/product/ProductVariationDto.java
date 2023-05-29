@@ -32,6 +32,9 @@ public class ProductVariationDto {
         this.productId = productId;
     }
 
+    public ProductVariationDto() {
+    }
+
     public Integer getId() {
         return id;
     }

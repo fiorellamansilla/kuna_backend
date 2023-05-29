@@ -72,6 +72,9 @@ public class Product {
     public Product() {
     }
 
+    public Product(Integer productId, ProductDto productDto, Category category) {
+    }
+
     public Integer getId() {
         return id;
     }
