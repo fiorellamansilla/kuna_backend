@@ -24,17 +24,21 @@ public class CartService  {
 
     public CartService() {
     }
+
     public CartService(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
     }
 
     public void addToCart (AddToCartDto addToCartDto, ProductVariation productVariation, Client client) {
+
         Cart cart = new Cart (productVariation, addToCartDto.getQuantity(), client);
+
         // Save the cart
         cartRepository.save(cart);
     }
 
     public CartDto listCartItems(Client client) {
+
         List<Cart> cartList = cartRepository.findAllByClientOrderByCreatedAtDesc(client);
         List<CartItemDto> cartItems = new ArrayList<>();
 
@@ -55,9 +59,11 @@ public class CartService  {
     }
 
     public void deleteCartItem(int id, int clientId) throws CartItemNotExistException {
+
         if (!cartRepository.existsById(id))
-            throw new CartItemNotExistException("The Product Id is invalid " + id);
+            throw new CartItemNotExistException("The Product Id is invalid: " + id);
         cartRepository.deleteById(id);
+
     }
 
     public void deleteCartItems (int clientId) {
@@ -67,5 +73,4 @@ public class CartService  {
     public void deleteClientCartItems (Client client) {
         cartRepository.deleteByClient(client);
     }
-
 }
