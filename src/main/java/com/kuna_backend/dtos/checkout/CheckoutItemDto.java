@@ -2,7 +2,7 @@ package com.kuna_backend.dtos.checkout;
 
 public class CheckoutItemDto {
 
-    private String itemName;
+    private String productName;
     private int quantity;
     private double price;
     private int productVariationId;
@@ -11,20 +11,20 @@ public class CheckoutItemDto {
     public CheckoutItemDto() {
     }
 
-    public CheckoutItemDto(String itemName, int quantity, double price, int productVariationId, int clientId) {
-        this.itemName = itemName;
+    public CheckoutItemDto(String productName, int quantity, double price, int productVariationId, int clientId) {
+        this.productName = productName;
         this.quantity = quantity;
         this.price = price;
         this.productVariationId = productVariationId;
         this.clientId = clientId;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setProductName (String productName) {
+        this.productName = productName;
     }
 
     public int getQuantity() {
