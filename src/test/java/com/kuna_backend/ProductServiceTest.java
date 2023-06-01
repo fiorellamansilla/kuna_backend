@@ -1,4 +1,4 @@
-package com.kuna_backend;
+package com.kuna_backend.services;
 
 import com.kuna_backend.dtos.product.ProductDto;
 import com.kuna_backend.exceptions.ProductNotExistsException;

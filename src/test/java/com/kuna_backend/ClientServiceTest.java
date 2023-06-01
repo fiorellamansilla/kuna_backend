@@ -1,4 +1,4 @@
-package com.kuna_backend;
+package com.kuna_backend.services;
 
 import com.kuna_backend.dtos.ResponseDto;
 import com.kuna_backend.dtos.client.SignInDto;
