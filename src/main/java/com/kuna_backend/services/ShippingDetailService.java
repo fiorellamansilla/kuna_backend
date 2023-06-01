@@ -14,7 +14,9 @@ public class ShippingDetailService {
     private ShippingDetailRepository shippingDetailRepository;
 
     public ShippingDetail addShippingDetail(ShippingDetailDto shippingDetailDto, Client client) {
+
         ShippingDetail shippingDetail = new ShippingDetail();
+
         shippingDetail.setFullName(shippingDetailDto.getFullName());
         shippingDetail.setAddress(shippingDetailDto.getAddress());
         shippingDetail.setCity(shippingDetailDto.getCity());
@@ -22,6 +24,9 @@ public class ShippingDetailService {
         shippingDetail.setCountry(shippingDetailDto.getCountry());
         shippingDetail.setPhone(shippingDetailDto.getPhone());
         shippingDetail.setClient(client);
+
         return shippingDetailRepository.save(shippingDetail);
+
     }
+
 }
