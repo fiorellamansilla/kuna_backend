@@ -23,6 +23,9 @@ public class ShippingDetailDto {
         this.phone = phone;
     }
 
+    public ShippingDetailDto() {
+    }
+
     public String getFullName() {
         return fullName;
     }
