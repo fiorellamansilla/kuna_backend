@@ -1,4 +1,4 @@
-package com.kuna_backend.services;
+package com.kuna_backend;
 
 import com.kuna_backend.config.MessageStrings;
 import com.kuna_backend.exceptions.AuthenticationFailException;

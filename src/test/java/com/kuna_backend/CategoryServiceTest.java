@@ -1,4 +1,4 @@
-package com.kuna_backend.services;
+package com.kuna_backend;
 
 import com.kuna_backend.models.Category;
 import com.kuna_backend.repositories.CategoryRepository;
