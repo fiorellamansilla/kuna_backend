@@ -16,7 +16,7 @@ To set up and run the application, follow the instructions below:
 1. Clone the repository to your local machine:
 
    ```shell
-   git clone https://github.com/your/repository.git
+   git clone https:https://github.com/fiorellamansilla/kuna_backend
 
 2. Navigate to the project directory:
 
