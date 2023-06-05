@@ -1,7 +1,6 @@
 package com.kuna_backend.controllers;
 
 import com.kuna_backend.exceptions.AuthenticationFailException;
-import com.kuna_backend.models.Client;
 import com.kuna_backend.models.ShippingDetail;
 import com.kuna_backend.services.AuthenticationService;
 import com.kuna_backend.services.ShippingDetailService;
@@ -41,9 +40,9 @@ public class ShippingDetailController {
 
         authenticationService.authenticate(token);
 
-        Client client = authenticationService.getClient(token);
+        authenticationService.getClient(token);
 
-        ShippingDetail shippingDetail = shippingDetailService.getShippingDetail(id, client);
+        ShippingDetail shippingDetail = shippingDetailService.getShippingDetail(id);
 
         return new ResponseEntity<>(shippingDetail, HttpStatus.OK);
     }
