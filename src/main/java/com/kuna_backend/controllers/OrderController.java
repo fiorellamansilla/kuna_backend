@@ -54,7 +54,7 @@ public class OrderController {
         // Retrieve Client
         Client client = authenticationService.getClient(token);
         // Retrieve Payment
-        Payment payment = paymentService.getPayment(stripeToken);
+        Payment payment = paymentService.getPaymentById(stripeToken);
         // Save the shipping details
         ShippingDetail shippingDetail = shippingDetailService.addShippingDetail(shippingDetailDto, client);
         // Place the order

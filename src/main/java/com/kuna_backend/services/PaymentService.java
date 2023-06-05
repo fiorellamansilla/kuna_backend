@@ -22,23 +22,35 @@ import java.util.List;
 public class PaymentService {
 
     @Autowired
-    private PaymentRepository paymentRepository;
+    public PaymentRepository paymentRepository;
 
     @Value("${BASE_URL}")
-    private String baseURL;
+    public String baseURL;
 
     @Value("${STRIPE_SECRET_KEY}")
-    private String apiKey;
+    public String apiKey;
 
     // Create total Price for an Order
-    SessionCreateParams.LineItem.PriceData createPriceData(CheckoutItemDto checkoutItemDto) {
+    public SessionCreateParams.LineItem.PriceData createPriceData(CheckoutItemDto checkoutItemDto) {
+
         return SessionCreateParams.LineItem.PriceData.builder()
                 .setCurrency("usd")
                 .setUnitAmount((long)(checkoutItemDto.getPrice()*100))
                 .setProductData(
                         SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                .setName(checkoutItemDto.getItemName())
+                                .setName(checkoutItemDto.getProductName())
                                 .build())
+                .build();
+    }
+
+    // Build each Item in the Stripe checkout page
+    public SessionCreateParams.LineItem createSessionLineItem(CheckoutItemDto checkoutItemDto) {
+
+        return SessionCreateParams.LineItem.builder()
+                // Set price for each Item
+                .setPriceData(createPriceData(checkoutItemDto))
+                // Set quantity for each Item
+                .setQuantity(Long.parseLong(String.valueOf(checkoutItemDto.getQuantity())))
                 .build();
     }
 
@@ -68,16 +80,7 @@ public class PaymentService {
                 .setSuccessUrl(successURL)
                 .build();
         return Session.create(params);
-    }
 
-    // Build each Item in the Stripe checkout page
-    SessionCreateParams.LineItem createSessionLineItem(CheckoutItemDto checkoutItemDto) {
-        return SessionCreateParams.LineItem.builder()
-                // Set price for each Item
-                .setPriceData(createPriceData(checkoutItemDto))
-                // Set quantity for each Item
-                .setQuantity(Long.parseLong(String.valueOf(checkoutItemDto.getQuantity())))
-                .build();
     }
 
     // Save Payment after Checkout session
@@ -95,6 +98,7 @@ public class PaymentService {
         payment.setProvider("Stripe");
         payment.setPaymentDate(new Date(session.getCreated() * 1000L));
         payment.setClient(client);
+
         // Save payment into the database
         paymentRepository.save(payment);
     }
@@ -103,11 +107,8 @@ public class PaymentService {
         return (List<Payment>) paymentRepository.findAll();
     }
 
-    public Payment getPayment (String stripeToken) {
+    public Payment getPaymentById (String stripeToken) {
         return paymentRepository.findPaymentByStripeToken(stripeToken);
     }
 
-    public void deletePayment (Integer id) {
-        paymentRepository.deleteById(id);
-    }
 }
