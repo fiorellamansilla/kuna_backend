@@ -7,6 +7,9 @@ import com.kuna_backend.repositories.ShippingDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ShippingDetailService {
 
@@ -14,7 +17,9 @@ public class ShippingDetailService {
     private ShippingDetailRepository shippingDetailRepository;
 
     public ShippingDetail addShippingDetail(ShippingDetailDto shippingDetailDto, Client client) {
+
         ShippingDetail shippingDetail = new ShippingDetail();
+
         shippingDetail.setFullName(shippingDetailDto.getFullName());
         shippingDetail.setAddress(shippingDetailDto.getAddress());
         shippingDetail.setCity(shippingDetailDto.getCity());
@@ -22,6 +27,23 @@ public class ShippingDetailService {
         shippingDetail.setCountry(shippingDetailDto.getCountry());
         shippingDetail.setPhone(shippingDetailDto.getPhone());
         shippingDetail.setClient(client);
+
         return shippingDetailRepository.save(shippingDetail);
+
     }
+
+    public List<ShippingDetail> getAllShippingDetails() {
+        return (List<ShippingDetail>) shippingDetailRepository.findAll();
+    }
+
+    public ShippingDetail getShippingDetail (Integer id) throws ClassNotFoundException {
+
+        Optional<ShippingDetail> shippingDetail = shippingDetailRepository.findById(id);
+
+        if (shippingDetail.isPresent()) {
+            return shippingDetail.get();
+        }
+        throw new ClassNotFoundException("Shipping detail not found");
+    }
+
 }
