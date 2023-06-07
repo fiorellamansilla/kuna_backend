@@ -30,7 +30,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column (name = "total_amount", nullable = false)
-    private Double totalAmount;
+    private double totalAmount;
     @Column (name = "order_status", length = 64)
     @Enumerated (EnumType.STRING)
     private OrderStatus orderStatus = OrderStatus.CONFIRMED;
@@ -75,11 +75,11 @@ public class Order {
         this.id = id;
     }
 
-    public Double getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Double totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
