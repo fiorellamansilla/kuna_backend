@@ -21,7 +21,7 @@ To set up and run the application, follow the instructions below:
 2. Navigate to the project directory:
 
     ```shell
-   cd project-directory
+   cd kuna_backend
    
 3. Build the project using Gradle:
 
