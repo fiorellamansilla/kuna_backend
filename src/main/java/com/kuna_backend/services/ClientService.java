@@ -5,6 +5,7 @@ import com.kuna_backend.dtos.ResponseDto;
 import com.kuna_backend.dtos.client.SignInDto;
 import com.kuna_backend.dtos.client.SignInResponseDto;
 import com.kuna_backend.dtos.client.SignupDto;
+import com.kuna_backend.enums.Role;
 import com.kuna_backend.exceptions.AuthenticationFailException;
 import com.kuna_backend.exceptions.CustomException;
 import com.kuna_backend.models.AuthenticationToken;
@@ -43,6 +44,15 @@ public class ClientService {
         String encryptedPassword = hashPassword(signupDto.getPassword());
 
         Client client = new Client(signupDto.getFirstName(), signupDto.getLastName(), signupDto.getEmail(), encryptedPassword);
+
+        // Assign a role based on the isEmailAdmin condition
+
+        if (isEmailAdmin(signupDto.getEmail())) {
+            client.setRole(Role.ADMIN);
+        } else {
+            client.setRole(Role.USER);
+        }
+
         Client createdClient;
 
         try {
@@ -98,6 +108,12 @@ public class ClientService {
         PasswordEncoder passwordEncoder =  PasswordEncoderFactories.createDelegatingPasswordEncoder();
         // We call the 'encode' method on the 'passwordEncoder' instance to hash the password using the default algorithm ('bcrypt').
         return passwordEncoder.encode(password);
+    }
+
+    // Method to check if the email matches the pattern for an admin
+    private boolean isEmailAdmin (String email) {
+
+        return email.endsWith("babykuna.com");
     }
 
     public List<Client> getAllClients() {
