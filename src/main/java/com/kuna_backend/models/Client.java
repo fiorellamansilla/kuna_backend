@@ -38,12 +38,15 @@ public class Client {
     @Column(name = "password", length = 256, nullable = false)
     private String password;
 
+    @Column(name = "role", length = 64)
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
     private Role role;
 
-    @Column(name = "is_blocked", nullable = false)
+    @Column(name = "is_blocked")
     private boolean isBlocked;
+
+    @Column(name = "failed_attempts")
+    private Integer failedAttempts = 0;
 
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
@@ -69,19 +72,14 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String email, String password, Role role, boolean isBlocked) {
+    public Client(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.role = role;
-        this.isBlocked = isBlocked;
     }
 
     public Client(String email, String password) {
-    }
-
-    public Client(String firstName, String lastName, String email, String encryptedPassword) {
     }
 
     public Integer getId() {
@@ -138,6 +136,14 @@ public class Client {
 
     public void setBlocked(boolean blocked) {
         isBlocked = blocked;
+    }
+
+    public Integer getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(Integer failedAttempts) {
+        this.failedAttempts = failedAttempts;
     }
 
     public LocalDateTime getCreatedAt() {

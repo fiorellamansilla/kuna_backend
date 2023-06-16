@@ -1,0 +1,1 @@
+ALTER TABLE client MODIFY role VARCHAR(64) AFTER email;
