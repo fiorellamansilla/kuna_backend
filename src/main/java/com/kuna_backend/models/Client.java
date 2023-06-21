@@ -1,17 +1,18 @@
 package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.kuna_backend.enums.Role;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.FetchType;
-
+import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -24,17 +25,33 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(name = "first_name", length = 64, nullable = false)
     private String firstName;
+
     @Column(name = "last_name", length = 64, nullable = false)
     private String lastName;
+
     @Column(name = "email", length = 64, nullable = false)
     private String email;
+
     @Column(name = "password", length = 256, nullable = false)
     private String password;
+
+    @Column(name = "role", length = 64)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Column(name = "is_blocked")
+    private boolean isBlocked;
+
+    @Column(name = "failed_attempts")
+    private Integer failedAttempts = 0;
+
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
+
     @Column(name = "modified_at", nullable = false)
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
@@ -103,6 +120,30 @@ public class Client {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
+    }
+
+    public Integer getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(Integer failedAttempts) {
+        this.failedAttempts = failedAttempts;
     }
 
     public LocalDateTime getCreatedAt() {

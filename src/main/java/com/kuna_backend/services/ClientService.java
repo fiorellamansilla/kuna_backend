@@ -5,6 +5,7 @@ import com.kuna_backend.dtos.ResponseDto;
 import com.kuna_backend.dtos.client.SignInDto;
 import com.kuna_backend.dtos.client.SignInResponseDto;
 import com.kuna_backend.dtos.client.SignupDto;
+import com.kuna_backend.enums.Role;
 import com.kuna_backend.exceptions.AuthenticationFailException;
 import com.kuna_backend.exceptions.CustomException;
 import com.kuna_backend.models.AuthenticationToken;
@@ -33,6 +34,7 @@ public class ClientService {
 
     // Register a Client method
     public ResponseDto signUp(SignupDto signupDto) throws CustomException {
+
         // Check to see if the current email address has already been registered
         if (Objects.nonNull(clientRepository.findByEmail(signupDto.getEmail()))) {
             // We already have a Client with this e-mail account
@@ -43,6 +45,14 @@ public class ClientService {
         String encryptedPassword = hashPassword(signupDto.getPassword());
 
         Client client = new Client(signupDto.getFirstName(), signupDto.getLastName(), signupDto.getEmail(), encryptedPassword);
+
+        // Assign a role based on the isEmailAdmin condition
+        if (signupDto.getEmail().endsWith("babykuna.com")) {
+            client.setRole(Role.ADMIN);
+        } else {
+            client.setRole(Role.CUSTOMER);
+        }
+
         Client createdClient;
 
         try {
@@ -56,7 +66,7 @@ public class ClientService {
             ResponseDto responseDto = new ResponseDto("success", USER_CREATED);
             return responseDto;
         } catch (Exception e) {
-            // Handle Error with the Registration
+            // Handle Error with the Registrations
             throw new CustomException(e.getMessage());
         }
     }
@@ -64,18 +74,41 @@ public class ClientService {
     // Login Client method
     public SignInResponseDto signIn(SignInDto signInDto)  {
 
-        // Check if Client exists
+        // Check if the Client exists
         Client client = clientRepository.findByEmail(signInDto.getEmail());
         if (!Helper.notNull(client)){
-            throw new AuthenticationFailException("Client is not valid");
+            throw new AuthenticationFailException("The Client is not valid");
+        }
+
+        // Check if the Client is already blocked
+        if (client.isBlocked()) {
+            throw new AuthenticationFailException("The Client is blocked");
         }
 
         // Compare hashed password stored in database with plaintext password provided during SignIn
         if (!passwordEncoder.matches(signInDto.getPassword(), client.getPassword())) {
-            // If password doesn't match
-            throw new AuthenticationFailException(MessageStrings.WRONG_PASSWORD);
+
+            // Increment the failed authentication attempts
+            int failedAttempts = client.getFailedAttempts() + 1;
+            client.setFailedAttempts(failedAttempts);
+            clientRepository.save(client);
+
+            // Check if the Client has reached the maximum failed attempts
+            if (failedAttempts >= 5) {
+                client.setBlocked(true);
+                clientRepository.save(client);
+                throw new AuthenticationFailException("The client is blocked due to repeated failed attempts");
+            } else {
+                throw new AuthenticationFailException(MessageStrings.WRONG_PASSWORD);
+            }
         }
-        // If the password match
+
+        // If the password matches, reset the amount of failed attempts to 0
+        if (client.getFailedAttempts() > 0) {
+            client.setFailedAttempts(0);
+            clientRepository.save(client);
+        }
+
         AuthenticationToken token = authenticationService.getToken(client);
 
         // Retrieve the token
