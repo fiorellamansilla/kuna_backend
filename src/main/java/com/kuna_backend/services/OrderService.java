@@ -44,6 +44,10 @@ public class OrderService {
         newOrder.setPayment(payment);
         newOrder.setTotalAmount(cartDto.getTotalCost());
         newOrder.setOrderStatus(OrderStatus.CONFIRMED);
+
+        // Generate tracking number
+        newOrder.generateTrackingNumber();
+
         orderRepository.save(newOrder);
 
         for (CartItemDto cartItemDto : cartItemDtoList) {

@@ -2,26 +2,26 @@ package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kuna_backend.enums.OrderStatus;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.FetchType;
-
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table (name = "orders")
@@ -144,6 +144,14 @@ public class Order {
     }
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    // Generate a self-generated tracking number
+    @PrePersist
+    public void generateTrackingNumber() {
+        if (trackingNumber == null) {
+            trackingNumber = UUID.randomUUID().toString();
+        }
     }
 
 }
