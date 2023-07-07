@@ -8,9 +8,11 @@ import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Order;
 import com.kuna_backend.models.OrderItem;
 import com.kuna_backend.models.Payment;
+import com.kuna_backend.models.ProductVariation;
 import com.kuna_backend.models.ShippingDetail;
 import com.kuna_backend.repositories.OrderItemsRepository;
 import com.kuna_backend.repositories.OrderRepository;
+import com.kuna_backend.repositories.ProductVariationRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,8 @@ public class OrderService {
     OrderRepository orderRepository;
     @Autowired
     OrderItemsRepository orderItemsRepository;
+    @Autowired
+    ProductVariationRepository productVariationRepository;
 
 
     public void placeOrder (Client client, Payment payment, ShippingDetail shippingDetail) {
@@ -47,7 +51,6 @@ public class OrderService {
 
         // Generate tracking number
         newOrder.generateTrackingNumber();
-
         orderRepository.save(newOrder);
 
         for (CartItemDto cartItemDto : cartItemDtoList) {
@@ -66,9 +69,26 @@ public class OrderService {
         newOrder.setShippingDetail(shippingDetail);
         orderRepository.save(newOrder);
 
+        // Update the quantity stock of each product variation when the order is placed
+        updateProductVariationQuantityStock(cartDto);
+
         // Delete items from cart after the client has placed the order
         cartService.deleteClientCartItems(client);
     }
+
+    // Method for updating the quantity stock number from each Product Variation
+    private void updateProductVariationQuantityStock(CartDto cartDto) {
+
+        List<CartItemDto> cartItemDtoList = cartDto.getCartItems();
+
+        for (CartItemDto cartItemDto : cartItemDtoList) {
+            ProductVariation productVariation = cartItemDto.getProductVariation();
+            int updatedQuantityStock = productVariation.getQuantityStock() - cartItemDto.getQuantity();
+            productVariation.setQuantityStock(updatedQuantityStock);
+            productVariationRepository.save(productVariation);
+        }
+    }
+
 
     public List<Order> listOrders(Client client) {
         return orderRepository.findAllByClientOrderByCreatedAtDesc(client);
