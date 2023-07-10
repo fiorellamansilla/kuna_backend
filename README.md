@@ -57,7 +57,7 @@ To set up and run the application, follow the instructions below:
    ```shell
    docker-compose up -d
 
-6. Create a MySQL database for the application.<br />
+6. Use the test data from 'data.sql' file for the application.<br />
 
 
 7. Configure the database connection by modifying the flyway block in the build.gradle file:
