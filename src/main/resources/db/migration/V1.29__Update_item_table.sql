@@ -1,3 +1,5 @@
+RENAME TABLE item TO products;
+
 ALTER TABLE products
     ADD COLUMN category_id INT NOT NULL AFTER price;
 
