@@ -42,8 +42,10 @@ public class Product {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
 
+    // List <Product variations> (Array List impl.)
+    // productvariation1.getQuantityStock
     @OneToMany (mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ProductVariation> productVariations;
+    private Set<ProductVariation> productVariations; // Change to ArrayList
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
