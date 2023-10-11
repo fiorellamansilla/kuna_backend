@@ -37,7 +37,7 @@ public class ProductVariation {
     @ManyToOne()
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @JsonIgnore
-    Product product;
+    protected Product product;
 
     public ProductVariation (ProductVariationDto productVariationDto, Product product) {
         this.size = productVariationDto.getSize();
