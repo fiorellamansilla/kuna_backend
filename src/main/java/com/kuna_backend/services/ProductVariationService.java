@@ -2,10 +2,8 @@ package com.kuna_backend.services;
 
 import com.kuna_backend.dtos.product.ProductVariationDto;
 import com.kuna_backend.exceptions.ProductNotExistsException;
-import com.kuna_backend.models.Product;
 import com.kuna_backend.models.ProductVariation;
 import com.kuna_backend.repositories.ProductVariationRepository;
-
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,17 +22,6 @@ public class ProductVariationService {
     public static ProductVariationDto getDtoFromProductVariation(ProductVariation productVariation) {
         ProductVariationDto productVariationDto = new ProductVariationDto(productVariation);
         return productVariationDto;
-    }
-
-    public static ProductVariation getProductVariationFromDto(ProductVariationDto productVariationDto, Product product) {
-        ProductVariation productVariation = new ProductVariation(productVariationDto, product);
-        return productVariation;
-    }
-
-    // Create a Product Variation method //
-    public void createProductVariation (ProductVariationDto productVariationDto, Product product) {
-        ProductVariation productVariation = getProductVariationFromDto(productVariationDto, product);
-        productVariationRepository.save(productVariation);
     }
 
     // List All Product Variations method for GET endpoint
@@ -58,12 +45,6 @@ public class ProductVariationService {
         return optionalProductVariation.get();
     }
 
-    // Update a specific Product Variation by ID method
-    public void updateProductVariation(Integer productVariationId, ProductVariationDto productVariationDto, Product product) {
-        ProductVariation productVariation = getProductVariationFromDto(productVariationDto, product);
-        productVariation.setId(productVariationId);
-        productVariationRepository.save(productVariation);
-    }
     public void deleteProductVariation (Integer id) {
         productVariationRepository.deleteById(id);
     }
