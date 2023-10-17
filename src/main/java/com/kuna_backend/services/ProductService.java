@@ -95,7 +95,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    // Update a specific Product Variation associated with a Product
+    // Update only the attributes of a specific Product Variation associated with a Product
     public Product updateProductVariation(Integer productId, Integer productVariationId, ProductVariationDto updatedVariationDto) {
 
         // Retrieve the specific Product
