@@ -8,6 +8,7 @@ import com.kuna_backend.models.Product;
 import com.kuna_backend.models.ProductVariation;
 import com.kuna_backend.repositories.ProductRepository;
 import com.kuna_backend.repositories.ProductVariationRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -94,24 +95,46 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    //TODO: Implement an Update product variations from a Product method. This is necessary because so the stock can get easily updated.
+    // Update a specific Product Variation associated with a Product
+    public Product updateProductVariation(Integer productId, Integer productVariationId, ProductVariationDto updatedVariationDto) {
 
-    public void updateProductVariation(Integer productVariationId, ProductVariationDto productVariationDto, Product product) {
-        ProductVariation productVariation = getProductVariationFromDto(productVariationDto, product);
-        productVariation.setId(productVariationId);
+        // Retrieve the specific Product
+        Product product = getProductById(productId);
+
+        // Retrieve the specific ProductVariation to update
+        ProductVariation productVariation = productVariationRepository.findById(productVariationId)
+                .orElseThrow(() -> new EntityNotFoundException("ProductVariation not found"));
+
+        // Update the ProductVariation attributes
+        productVariation.setSize(updatedVariationDto.getSize());
+        productVariation.setColor(updatedVariationDto.getColor());
+        productVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
+
+        // Save the updated ProductVariation
         productVariationRepository.save(productVariation);
+
+        // Save and return the updated Product
+        return productRepository.save(product);
+    }
+
+    // Update only the attributes of the Product
+    public Product updateProduct(Integer productId, ProductDto updatedProductDto, Category category) {
+
+        // Retrieve the specific Product
+        Product product = getProductById(productId);
+
+        product.setName(updatedProductDto.getName());
+        product.setPrice(updatedProductDto.getPrice());
+        product.setDescription(updatedProductDto.getDescription());
+        product.setImageUrl(updatedProductDto.getImageUrl());
+        product.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+        product.setModifiedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+
+        // Save and return the updated Product
+        return productRepository.save(product);
     }
 
     // TODO: Evaluate what to do with these methods from Product.
-    // TODO: Implement a method for Updating the Product attributes without the Variations. i.e the price.
-    // Update a specific Product by ID method
-    public void updateProduct(Integer productId, ProductDto productDto, Category category) {
-        Product product = getProductFromDto(productDto, category);
-        product.setId(productId);
-        product.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-        product.setModifiedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-        productRepository.save(product);
-    }
 
     public Optional<Product> readProduct(Integer productId) {
         return productRepository.findById(productId);
