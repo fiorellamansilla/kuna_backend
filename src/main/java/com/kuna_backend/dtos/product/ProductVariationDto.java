@@ -7,14 +7,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class ProductVariationDto {
 
-    private Integer id;
-
+    private @NotNull Integer id;
     private Size size;
-
     private Color color;
-
     private @NotNull Integer quantityStock;
-
     private @NotNull Integer productId;
 
     public ProductVariationDto(ProductVariation productVariation) {
@@ -73,5 +69,10 @@ public class ProductVariationDto {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
+    }
+
+    // Implemented a method to retrieve all attribute values as an array
+    public Object[] getVariations() {
+        return new Object[]{id, size, color, quantityStock, productId};
     }
 }
