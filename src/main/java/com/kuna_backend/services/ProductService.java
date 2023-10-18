@@ -73,6 +73,7 @@ public class ProductService {
         return productVariation;
     }
 
+    // Creates a Product Variation assigned to a specific Product when updating it.
     public Product createProductVariationForProduct (Integer productId, ProductVariationDto productVariationDto) {
 
         // Retrieve the specific Product based on the ID.
