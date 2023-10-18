@@ -29,7 +29,6 @@ public class ProductService {
     @Autowired
     private ProductVariationRepository productVariationRepository;
 
-    // PRODUCT
     public static ProductDto getDtoFromProduct(Product product) {
         ProductDto productDto = new ProductDto(product);
         return productDto;
@@ -68,7 +67,7 @@ public class ProductService {
         return optionalProduct.get();
     }
 
-    // PRODUCT VARIATIONS
+    // PRODUCT VARIATION
     public static ProductVariation getProductVariationFromDto(ProductVariationDto productVariationDto, Product product) {
         ProductVariation productVariation = new ProductVariation(productVariationDto, product);
         return productVariation;
