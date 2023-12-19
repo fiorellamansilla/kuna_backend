@@ -38,8 +38,7 @@ public class ProductService {
         return product;
     }
 
-    //TODO: Commit on this specific method for retrieving only the Product before updating it with variations
-    //Get a specific Product by ID without its Variations
+    //Get only a specific Product by ID without its Variations
     public Product getProductById(Integer productId) throws ProductNotExistsException {
         // Fetch the product by ID
         Optional<Product> optionalProduct = productRepository.findById(productId);
@@ -92,8 +91,6 @@ public class ProductService {
         // Save and return the updated Product
         return productRepository.save(product);
     }
-
-    // TODO: Do a commit on refactoring this method for retrieving the final product
     //Get a specific Product by ID with its Variations
     public Product getProductByIdWithVariations(Integer productId) throws ProductNotExistsException {
         // Fetch the product by ID
