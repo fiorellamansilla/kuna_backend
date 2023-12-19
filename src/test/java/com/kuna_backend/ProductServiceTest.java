@@ -1,16 +1,21 @@
 package com.kuna_backend;
 
 import com.kuna_backend.dtos.product.ProductDto;
+import com.kuna_backend.dtos.product.ProductVariationDto;
 import com.kuna_backend.exceptions.ProductNotExistsException;
 import com.kuna_backend.models.Category;
 import com.kuna_backend.models.Product;
+import com.kuna_backend.models.ProductVariation;
 import com.kuna_backend.repositories.ProductRepository;
+import com.kuna_backend.repositories.ProductVariationRepository;
 import com.kuna_backend.services.ProductService;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.kuna_backend.enums.Color.BEIGE;
+import static com.kuna_backend.enums.Size.NEWBORN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,12 +34,15 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
+@ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
-    @Mock
-    private ProductRepository productRepository;
 
     @InjectMocks
     private ProductService productService;
+    @Mock
+    private ProductRepository productRepository;
+    @Mock
+    private ProductVariationRepository productVariationRepository;
 
     @BeforeEach
     public void setUp() {
@@ -76,6 +86,19 @@ public class ProductServiceTest {
         assertEquals(category, product.getCategory());
     }
 
+    //TODO: Commit create a Test for method Get Only product By Id
+    @Test
+    public void testGetProductById() throws ProductNotExistsException {
+
+        Integer productId = 1;
+        Product product = new Product();
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+
+        Product result = productService.getProductById(productId);
+
+        assertEquals(product, result);
+    }
+
     @Test
     public void createProduct_ShouldSaveProduct() {
 
@@ -113,25 +136,72 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void getProductById_WithValidId_ShouldReturnProduct() throws ProductNotExistsException {
+    public void testGetProductVariationFromDto() {
+
+        ProductVariationDto productVariationDto = new ProductVariationDto();
+        productVariationDto.setSize(NEWBORN);
+        productVariationDto.setColor(BEIGE);
+
+        Product product = new Product();
+
+        ProductVariation productVariation = ProductService.getProductVariationFromDto(productVariationDto, product);
+
+        assertEquals(productVariationDto.getSize(), productVariation.getSize());
+        assertEquals(productVariationDto.getColor(), productVariation.getColor());
+        assertEquals(product, productVariation.getProduct());
+    }
+
+    //TODO: Do commit for creating method createProductVariationForProduct
+    @Test
+    public void testCreateProductVariationForProduct(){
+
+        Integer productId = 1;
+        Product existingProduct = new Product();
+
+        ProductVariationDto productVariationDto = new ProductVariationDto(NEWBORN, BEIGE, 10, productId);
+
+        // Mock the getProductVariationFromDto method
+        ProductVariation productVariation = ProductService.getProductVariationFromDto(productVariationDto, existingProduct);
+
+        when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
+        when(productRepository.save(any(Product.class))).thenReturn(existingProduct);
+        when(productVariationRepository.save(any(ProductVariation.class))).thenReturn(productVariation);
+
+        // Call the method under test
+        Product updatedProduct = productService.createProductVariationForProduct(productId, productVariationDto);
+
+        // Verify the interactions
+        verify(productRepository, times(1)).findById(productId);
+        verify(productVariationRepository, times(1)).save(any(ProductVariation.class));
+        verify(productRepository, times(1)).save(any(Product.class));
+
+        // Assert the updatedProduct
+        assertNotNull(updatedProduct);
+        assertEquals(existingProduct, updatedProduct);
+    }
+
+    //TODO: Do a commit about refactoring this method according to ProductService changes
+    @Test
+    public void getProductByIdWithVariations_WithValidId_ShouldReturnProduct() throws ProductNotExistsException {
 
         Integer productId = 1;
         Product product = new Product();
-        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(productRepository.findByIdWithVariations(productId)).thenReturn(Optional.of(product));
 
-        Product result = productService.getProductById(productId);
+        Product result = productService.getProductByIdWithVariations(productId);
 
         assertEquals(product, result);
     }
 
+    //TODO: Commit on refactor
     @Test
-    public void getProductById_WithInvalidId_ShouldThrowException() {
+    public void getProductByIdWithVariations_WithInvalidId_ShouldThrowException() {
 
         Integer productId = 1;
-        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+        when(productRepository.findByIdWithVariations(productId)).thenReturn(Optional.empty());
 
         assertThrows(ProductNotExistsException.class, () -> {
-            productService.getProductById(productId);
+            productService.getProductByIdWithVariations(productId);
         });
     }
 
