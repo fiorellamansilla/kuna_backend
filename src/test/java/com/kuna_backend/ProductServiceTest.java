@@ -86,7 +86,6 @@ public class ProductServiceTest {
         assertEquals(category, product.getCategory());
     }
 
-    //TODO: Commit create a Test for method Get Only product By Id
     @Test
     public void testGetProductById() throws ProductNotExistsException {
 
@@ -151,7 +150,6 @@ public class ProductServiceTest {
         assertEquals(product, productVariation.getProduct());
     }
 
-    //TODO: Do commit for creating method createProductVariationForProduct
     @Test
     public void testCreateProductVariationForProduct(){
 
@@ -180,7 +178,6 @@ public class ProductServiceTest {
         assertEquals(existingProduct, updatedProduct);
     }
 
-    //TODO: Do a commit about refactoring this method according to ProductService changes
     @Test
     public void getProductByIdWithVariations_WithValidId_ShouldReturnProduct() throws ProductNotExistsException {
 
@@ -193,7 +190,6 @@ public class ProductServiceTest {
         assertEquals(product, result);
     }
 
-    //TODO: Commit on refactor
     @Test
     public void getProductByIdWithVariations_WithInvalidId_ShouldThrowException() {
 
