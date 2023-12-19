@@ -20,6 +20,10 @@ public class CartItemDto {
         this.setProductVariation(cart.getProductVariation());
     }
 
+    // TODO : Implement method for transfering data from CartItemDto to Checkout Item dto.
+//    public CheckoutItemDto toCheckoutItemDto {
+//    }
+
     @Override
     public String toString() {
         return "CartDto{" +

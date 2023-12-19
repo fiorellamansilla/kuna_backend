@@ -1,25 +1,24 @@
 package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.kuna_backend.dtos.product.ProductDto;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table (name = "products")
@@ -41,9 +40,8 @@ public class Product {
     @Column (name = "modified_at")
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
-
     @OneToMany (mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ProductVariation> productVariations;
+    protected List<ProductVariation> productVariations; // Refactored Data Structure to ArrayList
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
@@ -56,6 +54,7 @@ public class Product {
         this.price = productDto.getPrice();
         this.imageUrl = productDto.getImageUrl();
         this.category = category;
+        productVariations = new ArrayList<>();
     }
 
     public Product(Integer id, String name, String description, Double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category) {
@@ -67,12 +66,15 @@ public class Product {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.category = category;
+        productVariations = new ArrayList<>();
     }
 
     public Product() {
+        productVariations = new ArrayList<>();
     }
 
     public Product(Integer productId, ProductDto productDto, Category category) {
+        productVariations = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -131,11 +133,11 @@ public class Product {
         this.modifiedAt = modifiedAt;
     }
 
-    public Set<ProductVariation> getProductVariations() {
+    public List<ProductVariation> getProductVariations() {
         return productVariations;
     }
 
-    public void setProductVariations(Set<ProductVariation> productVariations) {
+    public void setProductVariations(List<ProductVariation> productVariations) {
         this.productVariations = productVariations;
     }
 
