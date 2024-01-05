@@ -38,7 +38,7 @@ public class ProductService {
         return product;
     }
 
-    //Get only a specific Product by ID without its Variations
+    // Retrieves a specific Product by ID without its Variations
     public Product getProductById(Integer productId) throws ProductNotExistsException {
         // Fetch the product by ID
         Optional<Product> optionalProduct = productRepository.findById(productId);
