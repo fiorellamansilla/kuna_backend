@@ -8,7 +8,6 @@ import com.kuna_backend.models.Product;
 import com.kuna_backend.models.ProductVariation;
 import com.kuna_backend.repositories.ProductRepository;
 import com.kuna_backend.repositories.ProductVariationRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,13 +38,24 @@ public class ProductService {
         return product;
     }
 
-    // Create a Product - method //
+    //Get only a specific Product by ID without its Variations
+    public Product getProductById(Integer productId) throws ProductNotExistsException {
+        // Fetch the product by ID
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        // Check if the product exists
+        if (optionalProduct.isEmpty()) {
+            throw new ProductNotExistsException("The Product id is invalid: " + productId);
+        }
+        return optionalProduct.get();
+    }
+
+    // Creates a Product only with its respective Category
     public void createProduct(ProductDto productDto, Category category) {
         Product product = getProductFromDto(productDto, category);
         productRepository.save(product);
     }
 
-    // Method for GET all Products endpoint with Pagination
+    //Method for GET all Products endpoint with Pagination
     public List<ProductDto> listProducts(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Product> productPage = productRepository.findAll(pageable);
@@ -55,16 +65,6 @@ public class ProductService {
             productDtos.add(productDto);
         }
         return productDtos;
-    }
-
-    // Get a specific Product by ID method
-    public Product getProductById(Integer productId) throws ProductNotExistsException {
-        Optional<Product> optionalProduct = productRepository.findById(productId);
-        // Check if the product exists
-        if (optionalProduct.isEmpty()) {
-            throw new ProductNotExistsException("The Product id is invalid: " + productId);
-        }
-        return optionalProduct.get();
     }
 
     // PRODUCT VARIATION
@@ -82,11 +82,8 @@ public class ProductService {
         // Create a new Product Variation entity and populate with the corresponding data from ProductVariationDto
         ProductVariation productVariation = getProductVariationFromDto(productVariationDto, product);
 
-        // Set the Product to which the ProductVariation belongs
-        productVariation.setProduct(product);
-
-        // Save the new ProductVariation entity in the database, which will generate an unique ID for it.
-        productVariation = productVariationRepository.save(productVariation);
+        // Save the new ProductVariation entity in the database, which will generate a unique ID for it.
+        productVariationRepository.save(productVariation);
 
         // Add the ProductVariation to the Product's collection
         product.getProductVariations().add(productVariation);
@@ -94,30 +91,18 @@ public class ProductService {
         // Save and return the updated Product
         return productRepository.save(product);
     }
-
-    // Update only the attributes of a specific Product Variation associated with a Product
-    public Product updateProductVariation(Integer productId, Integer productVariationId, ProductVariationDto updatedVariationDto) {
-
-        // Retrieve the specific Product
-        Product product = getProductById(productId);
-
-        // Retrieve the specific ProductVariation to update
-        ProductVariation productVariation = productVariationRepository.findById(productVariationId)
-                .orElseThrow(() -> new EntityNotFoundException("ProductVariation not found"));
-
-        // Update the ProductVariation attributes
-        productVariation.setSize(updatedVariationDto.getSize());
-        productVariation.setColor(updatedVariationDto.getColor());
-        productVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
-
-        // Save the updated ProductVariation
-        productVariationRepository.save(productVariation);
-
-        // Save and return the updated Product
-        return productRepository.save(product);
+    //Get a specific Product by ID with its Variations
+    public Product getProductByIdWithVariations(Integer productId) throws ProductNotExistsException {
+        // Fetch the product by ID
+        Optional<Product> optionalProduct = productRepository.findByIdWithVariations(productId);
+        // Check if the product exists
+        if (optionalProduct.isEmpty()) {
+            throw new ProductNotExistsException("The Product id is invalid: " + productId);
+        }
+        return optionalProduct.get();
     }
 
-    // Update only the attributes of the Product
+    // Update only the attributes of a specific Product by ID
     public Product updateProduct(Integer productId, ProductDto updatedProductDto, Category category) {
 
         // Retrieve the specific Product
@@ -135,11 +120,6 @@ public class ProductService {
     }
 
     // TODO: Evaluate what to do with these methods from Product.
-
-    public Optional<Product> readProduct(Integer productId) {
-        return productRepository.findById(productId);
-    }
-
     public void deleteProduct (Integer id) {
         productRepository.deleteById(id);
     }

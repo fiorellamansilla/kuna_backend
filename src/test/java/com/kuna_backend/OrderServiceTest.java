@@ -12,6 +12,7 @@ import com.kuna_backend.models.Payment;
 import com.kuna_backend.models.ShippingDetail;
 import com.kuna_backend.repositories.OrderItemsRepository;
 import com.kuna_backend.repositories.OrderRepository;
+import com.kuna_backend.repositories.ProductVariationRepository;
 import com.kuna_backend.services.CartService;
 import com.kuna_backend.services.OrderService;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +44,9 @@ public class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private ProductVariationRepository productVariationRepository;
 
     @Mock
     private OrderItemsRepository orderItemsRepository;
@@ -98,6 +102,7 @@ public class OrderServiceTest {
 
         List<CartItemDto> cartItemDtoList = OrderTestDataBuilder.buildCartItemDtoList();
         CartDto cartDto = OrderTestDataBuilder.buildCartDto(cartItemDtoList, 100.0);
+
 
         when(cartService.listCartItems(client)).thenReturn(cartDto);
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));

@@ -46,6 +46,7 @@ public class OrderTestDataBuilder {
         ProductVariation variation1 = new ProductVariation();
         variation1.setId(1);
         variation1.setProduct(product1);
+        variation1.setQuantityStock(5);
         CartItemDto cartItemDto1 = buildCartItemDto(1, product1, variation1, 2);
         cartItems.add(cartItemDto1);
 
@@ -54,6 +55,7 @@ public class OrderTestDataBuilder {
         ProductVariation variation2 = new ProductVariation();
         variation2.setId(2);
         variation2.setProduct(product2);
+        variation2.setQuantityStock(5);
         CartItemDto cartItemDto2 = buildCartItemDto(2, product2, variation2, 1);
         cartItems.add(cartItemDto2);
 

@@ -4,6 +4,7 @@ import com.kuna_backend.dtos.product.ProductVariationDto;
 import com.kuna_backend.exceptions.ProductNotExistsException;
 import com.kuna_backend.models.ProductVariation;
 import com.kuna_backend.repositories.ProductVariationRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,23 @@ public class ProductVariationService {
             throw new ProductNotExistsException("The Product Variation id is invalid: " + productVariationId);
         }
         return optionalProductVariation.get();
+    }
+
+    // TODO: Refactor the POST endpoint for updating in the Product Variation controller.
+    //Update only the attributes of a specific Product Variation associated with a Product
+    public ProductVariation updateProductVariation(Integer productVariationId, ProductVariationDto updatedVariationDto) {
+
+        // Retrieve the specific ProductVariation to update
+        ProductVariation productVariation = productVariationRepository.findById(productVariationId)
+                .orElseThrow(() -> new EntityNotFoundException("ProductVariation not found"));
+
+        // Update the ProductVariation attributes
+        productVariation.setSize(updatedVariationDto.getSize());
+        productVariation.setColor(updatedVariationDto.getColor());
+        productVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
+
+        // Save the updated ProductVariation
+        return productVariationRepository.save(productVariation);
     }
 
     public void deleteProductVariation (Integer id) {
