@@ -166,5 +166,48 @@ public class ProductControllerTest {
         verify(productService, never()).updateProduct(anyInt(), any(ProductDto.class), any(Category.class));
     }
 
-    //TODO: Create Test for delete endpoint
+    @Test
+    public void deleteProductById_shouldReturnSuccessResponse() {
+
+        Integer productId = 1;
+
+        when(productService.deleteProduct(productId)).thenReturn(true);
+
+        ResponseEntity<ApiResponse> response = productController.deleteProductById(productId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(new ApiResponse(true, "The Product has been successfully deleted"), response.getBody());
+
+        verify(productService, times(1)).deleteProduct(eq(productId));
+    }
+
+    @Test
+    public void deleteProductById_shouldReturnNotFoundResponseForNonExistingProduct() {
+
+        Integer productId = 2;
+
+        when(productService.deleteProduct(productId)).thenReturn(false);
+
+        ResponseEntity<ApiResponse> response = productController.deleteProductById(productId);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(new ApiResponse(false, "Product not found"), response.getBody());
+
+        verify(productService, times(1)).deleteProduct(eq(productId));
+    }
+
+    @Test
+    public void deleteProductById_shouldReturnBadRequestResponseForInvalidProductId() {
+
+        Integer productId = -90;
+
+        ResponseEntity<ApiResponse> response = productController.deleteProductById(productId);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(new ApiResponse(false, "Invalid product ID"), response.getBody());
+
+        // Verify that the productService.deleteProduct method was not called in this case
+        verify(productService, never()).deleteProduct(anyInt());
+    }
+
     }
