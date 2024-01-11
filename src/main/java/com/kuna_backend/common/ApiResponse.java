@@ -1,6 +1,7 @@
 package com.kuna_backend.common;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class ApiResponse {
     private final boolean success;
@@ -21,5 +22,18 @@ public class ApiResponse {
 
     public String getTimestamp() {
         return LocalDateTime.now().toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ApiResponse that = (ApiResponse) obj;
+        return success == that.success && Objects.equals(message, that.message);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(success, message);
     }
 }
