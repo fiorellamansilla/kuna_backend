@@ -38,6 +38,12 @@ public class ProductService {
         return product;
     }
 
+    // Creates only the Product with its respective Category
+    public void createProduct(ProductDto productDto, Category category) {
+        Product product = getProductFromDto(productDto, category);
+        productRepository.save(product);
+    }
+
     // Retrieves a specific Product by ID without its Variations
     public Product getProductById(Integer productId) throws ProductNotExistsException {
         // Fetch the product by ID
@@ -49,13 +55,7 @@ public class ProductService {
         return optionalProduct.get();
     }
 
-    // Creates a Product only with its respective Category
-    public void createProduct(ProductDto productDto, Category category) {
-        Product product = getProductFromDto(productDto, category);
-        productRepository.save(product);
-    }
-
-    //Method for GET all Products endpoint with Pagination
+    // Retrieves a List of all the Products with Pagination
     public List<ProductDto> listProducts(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Product> productPage = productRepository.findAll(pageable);
@@ -65,41 +65,6 @@ public class ProductService {
             productDtos.add(productDto);
         }
         return productDtos;
-    }
-
-    // PRODUCT VARIATION
-    public static ProductVariation getProductVariationFromDto(ProductVariationDto productVariationDto, Product product) {
-        ProductVariation productVariation = new ProductVariation(productVariationDto, product);
-        return productVariation;
-    }
-
-    // Creates a Product Variation assigned to a specific Product when updating it.
-    public Product createProductVariationForProduct (Integer productId, ProductVariationDto productVariationDto) {
-
-        // Retrieve the specific Product based on the ID.
-        Product product = getProductById(productId);
-
-        // Create a new Product Variation entity and populate with the corresponding data from ProductVariationDto
-        ProductVariation productVariation = getProductVariationFromDto(productVariationDto, product);
-
-        // Save the new ProductVariation entity in the database, which will generate a unique ID for it.
-        productVariationRepository.save(productVariation);
-
-        // Add the ProductVariation to the Product's collection
-        product.getProductVariations().add(productVariation);
-
-        // Save and return the updated Product
-        return productRepository.save(product);
-    }
-    //Get a specific Product by ID with its Variations
-    public Product getProductByIdWithVariations(Integer productId) throws ProductNotExistsException {
-        // Fetch the product by ID
-        Optional<Product> optionalProduct = productRepository.findByIdWithVariations(productId);
-        // Check if the product exists
-        if (optionalProduct.isEmpty()) {
-            throw new ProductNotExistsException("The Product id is invalid: " + productId);
-        }
-        return optionalProduct.get();
     }
 
     // Update only the attributes of a specific Product by ID
@@ -124,4 +89,39 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    // Product Variation Creation - as a Product update
+    public static ProductVariation getProductVariationFromDto(ProductVariationDto productVariationDto, Product product) {
+        ProductVariation productVariation = new ProductVariation(productVariationDto, product);
+        return productVariation;
+    }
+
+    // Creates a Product Variation assigned to a specific Product when updating it.
+    public Product createProductVariationForProduct (Integer productId, ProductVariationDto productVariationDto) {
+
+        // Retrieve the specific Product based on the ID.
+        Product product = getProductById(productId);
+
+        // Create a new Product Variation entity and populate with the corresponding data from ProductVariationDto
+        ProductVariation productVariation = getProductVariationFromDto(productVariationDto, product);
+
+        // Save the new ProductVariation entity in the database, which will generate a unique ID for it.
+        productVariationRepository.save(productVariation);
+
+        // Add the ProductVariation to the Product's collection
+        product.getProductVariations().add(productVariation);
+
+        // Save and return the updated Product
+        return productRepository.save(product);
+    }
+
+    // Retrieves a specific Product by ID with its Variations
+    public Product getProductByIdWithVariations(Integer productId) throws ProductNotExistsException {
+        // Fetch the product by ID
+        Optional<Product> optionalProduct = productRepository.findByIdWithVariations(productId);
+        // Check if the product exists
+        if (optionalProduct.isEmpty()) {
+            throw new ProductNotExistsException("The Product id is invalid: " + productId);
+        }
+        return optionalProduct.get();
+    }
 }
