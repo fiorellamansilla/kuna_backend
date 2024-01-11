@@ -84,9 +84,15 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    // TODO: Evaluate what to do with these methods from Product.
-    public void deleteProduct (Integer id) {
-        productRepository.deleteById(id);
+    public boolean deleteProduct (Integer productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+
+        if(optionalProduct.isPresent()) {
+            productRepository.delete(optionalProduct.get());
+            return true; // Deletion successful
+        } else {
+            return false; // Product not found, deletion unsuccessful
+        }
     }
 
     // Product Variation Creation - as a Product update
