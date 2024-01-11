@@ -89,8 +89,21 @@ public class ProductController {
 
 
     //DELETE one Product by ID / Endpoint
-    @DeleteMapping(path = "/{id}")
-    public void deleteProductById (@PathVariable Integer id) {
-        productService.deleteProduct(id);
+    @DeleteMapping(path = "/{productId}")
+    public ResponseEntity<ApiResponse> deleteProductById (@PathVariable("productId") Integer productId) {
+
+        if(productId == null || productId <= 0){
+            return new ResponseEntity<>(new ApiResponse(false, "Invalid product ID"), HttpStatus.BAD_REQUEST);
+        }
+
+        // Attempt to delete the product
+        boolean deletionSuccessful = productService.deleteProduct(productId);
+
+        if (deletionSuccessful) {
+            return new ResponseEntity<>(new ApiResponse(true, "The Product has been successfully deleted"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ApiResponse(false, "Product not found"), HttpStatus.NOT_FOUND);
+        }
     }
+
 }
