@@ -40,7 +40,7 @@ public class ProductController {
     }
 
     // TODO: TEST GET ENDPOINT TO VERIFY IF THE PRODUCT VARIATION ARRAYLIST IS RETRIEVED
-    //GET a Product by ID / Endpoint
+    //GET a Product by ID with its Variations / Endpoint
     @GetMapping(path = "/{id}")
     public ResponseEntity<Product> getProductByIdWithVariations(@PathVariable Integer id) {
         try {
@@ -64,8 +64,7 @@ public class ProductController {
     }
 
     // TODO: TEST THIS POST ENDPOINT TO VERIFY IF PRODUCT VARIATION HAS BEEN CORRECTLY ASSIGNED TO A PRODUCT.
-    // TODO: TEST THAT PRODUCT HAS BEEN UPDATED WITH ITS RESPECTIVE VARIATIONS.
-    // CREATE a Product Variation for a specific Product - Endpoint
+    // CREATE a Product Variation for a specific Product when updating it - Endpoint
     @PostMapping(path = "/{productId}/variations")
     public ResponseEntity<ApiResponse> createProductVariationForProduct(@PathVariable("productId") Integer productId,
                                                                         @RequestBody ProductVariationDto productVariationDto) {
@@ -78,10 +77,10 @@ public class ProductController {
     // TODO: TEST THIS POST ENDPOINT TO VERIFY THAT ONLY ATTRIBUTES FROM THE PRODUCT HAVE BEEN UPDATED.
     // UPDATE a specific Product by ID - Endpoint
     @PostMapping(path = "/update/{productId}")
-    public ResponseEntity<ApiResponse> updateProduct(@PathVariable("productId") Integer productId, @RequestBody ProductDto productDto) {
+    public ResponseEntity<ApiResponse> updateProductOnly(@PathVariable("productId") Integer productId, @RequestBody ProductDto productDto) {
         Optional<Category> optionalCategory = categoryService.readCategory(productDto.getCategoryId());
         if (!optionalCategory.isPresent()) {
-            return new ResponseEntity<ApiResponse>(new ApiResponse(false, "This Category is invalid"), HttpStatus.CONFLICT);
+            return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Category NOT found"), HttpStatus.NOT_FOUND);
         }
         Category category = optionalCategory.get();
         productService.updateProduct(productId, productDto, category);
@@ -94,5 +93,4 @@ public class ProductController {
     public void deleteProductById (@PathVariable Integer id) {
         productService.deleteProduct(id);
     }
-
 }
