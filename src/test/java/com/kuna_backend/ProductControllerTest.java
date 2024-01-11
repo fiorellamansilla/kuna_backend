@@ -3,6 +3,7 @@ package com.kuna_backend;
 import com.kuna_backend.common.ApiResponse;
 import com.kuna_backend.controllers.ProductController;
 import com.kuna_backend.dtos.product.ProductDto;
+import com.kuna_backend.dtos.product.ProductVariationDto;
 import com.kuna_backend.models.Category;
 import com.kuna_backend.models.Product;
 import com.kuna_backend.services.CategoryService;
@@ -22,7 +23,9 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -92,7 +95,76 @@ public class ProductControllerTest {
 
         // Verify that the productService.createProduct method was called with the correct arguments
         verify(productService, times(1)).createProduct(eq(productDto), any(Category.class));
-
     }
 
-}
+    @Test
+    public void createProduct_shouldReturnConflictResponseWhenInvalidCategory() {
+
+        ProductDto productDto = new ProductDto();
+        productDto.setCategoryId(90);
+
+        Optional<Category> optionalCategory = Optional.empty();
+        when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
+
+        ResponseEntity<ApiResponse> response = productController.createProduct(productDto);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals(new ApiResponse(false, "The category is invalid"), response.getBody());
+
+        // Verify that the productService.createProduct method was not called in this case
+        verify(productService, never()).createProduct(any(ProductDto.class), any(Category.class));
+    }
+
+    @Test
+    public void createProductVariationForProduct_shouldReturnSuccessResponse() {
+
+        Integer productId = 1;
+        ProductVariationDto productVariationDto = new ProductVariationDto();
+        Product updatedProduct = new Product();
+
+        when(productService.createProductVariationForProduct(productId, productVariationDto)).thenReturn(updatedProduct);
+
+        ResponseEntity<ApiResponse> response = productController.createProductVariationForProduct(productId, productVariationDto);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(new ApiResponse(true, "Product Variation has been created and the Product has been updated"), response.getBody());
+    }
+
+    @Test
+    public void updateProductOnly_shouldReturnSuccessResponse() {
+
+        Integer productId = 1;
+        ProductDto productDto = new ProductDto();
+        productDto.setCategoryId(1);
+
+        Optional<Category> optionalCategory = Optional.of(new Category());
+        when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
+
+        ResponseEntity<ApiResponse> response = productController.updateProductOnly(productId, productDto);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(new ApiResponse(true, "The Product has been updated"), response.getBody());
+
+        verify(productService, times(1)).updateProduct(eq(productId), eq(productDto), any(Category.class));
+    }
+
+    @Test
+    public void updateProductOnly_shouldReturnNotFoundResponseWhenInvalidCategory() {
+
+        Integer productId = 1;
+        ProductDto productDto = new ProductDto();
+        productDto.setCategoryId(99);
+
+        Optional<Category> optionalCategory = Optional.empty();
+        when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
+
+        ResponseEntity<ApiResponse> response = productController.updateProductOnly(productId, productDto);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(new ApiResponse(false, "Category NOT found"), response.getBody());
+
+        verify(productService, never()).updateProduct(anyInt(), any(ProductDto.class), any(Category.class));
+    }
+
+    //TODO: Create Test for delete endpoint
+    }
