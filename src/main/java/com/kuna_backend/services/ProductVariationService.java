@@ -61,7 +61,16 @@ public class ProductVariationService {
         return productVariationRepository.save(existingProductVariation);
     }
 
-    public void deleteProductVariation (Integer id) {
-        productVariationRepository.deleteById(id);
+    // Delete a specific productVariation by Id
+    public boolean deleteProductVariation (Integer productVariationId) {
+        Optional<ProductVariation> optionalProductVariation = productVariationRepository.findById(productVariationId);
+
+        if(optionalProductVariation.isPresent()) {
+            productVariationRepository.delete(optionalProductVariation.get());
+            return true; // Deletion successful
+        } else {
+            return false; // ProductVariation not found, deletion unsuccessful
+        }
     }
+
 }
