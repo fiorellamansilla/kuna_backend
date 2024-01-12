@@ -8,24 +8,31 @@ import org.jetbrains.annotations.NotNull;
 public class ProductVariationDto {
 
     private @NotNull Integer id;
+    private Integer quantityStock;
     private Size size;
     private Color color;
-    private @NotNull Integer quantityStock;
-    private @NotNull Integer productId;
+    private Integer productId;
 
     public ProductVariationDto(ProductVariation productVariation) {
         this.setId(productVariation.getId());
+        this.setQuantityStock(productVariation.getQuantityStock());
         this.setSize(productVariation.getSize());
         this.setColor(productVariation.getColor());
-        this.setQuantityStock(productVariation.getQuantityStock());
         this.setProductId(productVariation.getProduct().getId());
     }
 
-    public ProductVariationDto(Size size, Color color, @NotNull Integer quantityStock, @NotNull Integer productId) {
+    public ProductVariationDto(Integer quantityStock, Size size, Color color, Integer productId) {
+        this.quantityStock = quantityStock;
         this.size = size;
         this.color = color;
-        this.quantityStock = quantityStock;
         this.productId = productId;
+    }
+
+    // Constructor for partial updates
+    public ProductVariationDto(Integer id, Integer quantityStock, Color color) {
+        this.id = id;
+        this.quantityStock = quantityStock;
+        this.color = color;
     }
 
     public ProductVariationDto() {
