@@ -4,7 +4,6 @@ import com.kuna_backend.dtos.product.ProductVariationDto;
 import com.kuna_backend.exceptions.ProductNotExistsException;
 import com.kuna_backend.models.ProductVariation;
 import com.kuna_backend.repositories.ProductVariationRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +24,16 @@ public class ProductVariationService {
         return productVariationDto;
     }
 
+    // Get a specific Product Variation by ID method
+    public ProductVariation getProductVariationById(Integer productVariationId) throws ProductNotExistsException {
+        Optional<ProductVariation> optionalProductVariation = productVariationRepository.findById(productVariationId);
+        // Check if the product variation exists
+        if (optionalProductVariation.isEmpty()) {
+            throw new ProductNotExistsException("The Product Variation id is invalid: " + productVariationId);
+        }
+        return optionalProductVariation.get();
+    }
+
     // List All Product Variations method for GET endpoint
     public List<ProductVariationDto> listProductVariations() {
         List<ProductVariation> productVariations = productVariationRepository.findAll();
@@ -36,31 +45,20 @@ public class ProductVariationService {
         return productVariationDtos;
     }
 
-    // Get a specific Product Variation by ID method
-    public ProductVariation getProductVariationById(Integer productVariationId) throws ProductNotExistsException {
-        Optional<ProductVariation> optionalProductVariation = productVariationRepository.findById(productVariationId);
-        // Check if the product variation exists
-        if (optionalProductVariation.isEmpty()) {
-            throw new ProductNotExistsException("The Product Variation id is invalid: " + productVariationId);
-        }
-        return optionalProductVariation.get();
-    }
-
-    // TODO: Refactor the POST endpoint for updating in the Product Variation controller.
-    //Update only the attributes of a specific Product Variation associated with a Product
+    //Update only certain attributes of a specific Product Variation
     public ProductVariation updateProductVariation(Integer productVariationId, ProductVariationDto updatedVariationDto) {
 
-        // Retrieve the specific ProductVariation to update
-        ProductVariation productVariation = productVariationRepository.findById(productVariationId)
-                .orElseThrow(() -> new EntityNotFoundException("ProductVariation not found"));
+        ProductVariation existingProductVariation = getProductVariationById(productVariationId);
 
-        // Update the ProductVariation attributes
-        productVariation.setSize(updatedVariationDto.getSize());
-        productVariation.setColor(updatedVariationDto.getColor());
-        productVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
+        /* Update only the attributes quantityStock or color from the existing Product Variation */
+        if (updatedVariationDto.getQuantityStock() != null){
+            existingProductVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
+        }
+        if (updatedVariationDto.getColor() != null){
+            existingProductVariation.setColor(updatedVariationDto.getColor());
+        }
 
-        // Save the updated ProductVariation
-        return productVariationRepository.save(productVariation);
+        return productVariationRepository.save(existingProductVariation);
     }
 
     public void deleteProductVariation (Integer id) {
