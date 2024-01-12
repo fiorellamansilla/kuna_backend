@@ -1,6 +1,7 @@
 package com.kuna_backend;
 
 import com.kuna_backend.dtos.product.ProductVariationDto;
+import com.kuna_backend.enums.Color;
 import com.kuna_backend.enums.Size;
 import com.kuna_backend.exceptions.ProductNotExistsException;
 import com.kuna_backend.models.Product;
@@ -18,7 +19,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -97,29 +104,99 @@ public class ProductVariationServiceTest {
                 () -> productVariationService.getProductVariationById(productVariationId));
     }
 
-//    @Test
-//    public void updateProductVariation_ShouldSaveModifiedProductVariation() {
-//
-//        Integer productVariationId = 1;
-//        ProductVariationDto productVariationDto = new ProductVariationDto();
-//        Product product = new Product();
-//        product.setId(1);
-//
-//        Optional<ProductVariation> optionalProductVariation = Optional.of(new ProductVariation(productVariationId, productVariationDto, product));
-//        when(productVariationRepository.findById(productVariationId)).thenReturn(optionalProductVariation);
-//
-//        productVariationService.updateProductVariation(1,1, productVariationDto);
-//
-//        verify(productRepository).save(any(Product.class));
-//    }
+    @Test
+    public void updateProductVariation_SuccessfulUpdate() {
+
+        Integer productVariationId = 1;
+        ProductVariation existingProductVariation = new ProductVariation();
+        existingProductVariation.setId(productVariationId);
+        existingProductVariation.setQuantityStock(5);
+        existingProductVariation.setColor(Color.BEIGE);
+
+        ProductVariationDto updatedVariationDto = new ProductVariationDto();
+        updatedVariationDto.setQuantityStock(10);
+
+        // Only the quantityStock will be updated. Color is not updated in this test
+        when(productVariationRepository.save(eq(existingProductVariation))).thenReturn(existingProductVariation);
+        when(productVariationRepository.findById(productVariationId)).thenReturn(Optional.of(existingProductVariation));
+
+        ProductVariation updatedProductVariation = productVariationService.updateProductVariation(productVariationId, updatedVariationDto);
+
+        assertNotNull(updatedProductVariation);
+        assertEquals(existingProductVariation.getQuantityStock(), updatedProductVariation.getQuantityStock()); // Check the updated attribute
+        assertEquals(existingProductVariation.getColor(), updatedProductVariation.getColor()); // Check that the color remains the same
+
+        verify(productVariationRepository, times(1)).findById(productVariationId);
+        // Verify that the productVariationRepository.save method was called with the correct argument
+        verify(productVariationRepository, times(1)).save(updatedProductVariation);
+    }
 
     @Test
-    public void deleteProductVariation_ShouldCallRepositoryDeleteById() {
+    public void updateProductVariation_ProductNotExistsException() {
+
+        Integer productVariationId = 1;
+        ProductVariationDto updatedVariationDto = new ProductVariationDto();
+
+        when(productVariationRepository.findById(productVariationId)).thenReturn(Optional.empty());
+
+        ProductNotExistsException exception = assertThrows(ProductNotExistsException.class,
+                () -> productVariationService.updateProductVariation(productVariationId, updatedVariationDto));
+
+        assertEquals("Product Variation not found with ID: " + productVariationId, exception.getMessage());
+
+        verify(productVariationRepository, times(1)).findById(productVariationId);
+        verify(productVariationRepository, never()).save(any(ProductVariation.class));
+    }
+
+    @Test
+    void updateProductVariation_NullProductVariationDto() {
 
         Integer productVariationId = 1;
 
-        productVariationService.deleteProductVariation(productVariationId);
-
-        verify(productVariationRepository, times(1)).deleteById(productVariationId);
+        assertThrows(IllegalArgumentException.class, () -> {
+            productVariationService.updateProductVariation(productVariationId, null);
+        });
     }
+
+
+    @Test
+    public void deleteProductVariation_shouldReturnTrueForExistingProductVariation() {
+
+        Integer productVariationId = 1;
+        ProductVariation productVariation = new ProductVariation();
+
+        when(productVariationRepository.findById(productVariationId)).thenReturn(java.util.Optional.of(productVariation));
+
+        boolean deletionSuccessful = productVariationService.deleteProductVariation(productVariationId);
+
+        assertTrue(deletionSuccessful);
+
+        verify(productVariationRepository, times(1)).delete(productVariation);
+    }
+
+    @Test
+    public void deleteProductVariation_shouldReturnFalseForNonExistingProduct() {
+
+        Integer productVariationId = 1;
+
+        when(productVariationRepository.findById(productVariationId)).thenReturn(java.util.Optional.empty());
+
+        boolean deletionSuccessful = productVariationService.deleteProductVariation(productVariationId);
+
+        assertFalse(deletionSuccessful);
+
+        verify(productVariationRepository, never()).delete(any());
+    }
+
+    @Test
+    public void deleteProductVariation_shouldReturnFalseForInvalidProductVariationId() {
+
+        Integer invalidProductVariationId = null;
+
+        boolean deletionSuccessful = productVariationService.deleteProductVariation(invalidProductVariationId);
+        assertFalse(deletionSuccessful);
+
+        verify(productVariationRepository, never()).delete(any());
+    }
+
 }
