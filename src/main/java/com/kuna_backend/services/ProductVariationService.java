@@ -50,12 +50,20 @@ public class ProductVariationService {
 
         ProductVariation existingProductVariation = getProductVariationById(productVariationId);
 
-        /* Update only the attributes quantityStock or color from the existing Product Variation */
-        if (updatedVariationDto.getQuantityStock() != null){
-            existingProductVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
+        if (existingProductVariation == null) {
+            // Handle the case where the existing product variation is not found.
+            throw new ProductNotExistsException("Product Variation not found with ID: " + productVariationId);
         }
-        if (updatedVariationDto.getColor() != null){
-            existingProductVariation.setColor(updatedVariationDto.getColor());
+
+        if(updatedVariationDto != null) {
+
+            /* Update only the attributes quantityStock or color from the existing Product Variation */
+            if (updatedVariationDto.getQuantityStock() != null){
+                existingProductVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
+            }
+            if (updatedVariationDto.getColor() != null){
+                existingProductVariation.setColor(updatedVariationDto.getColor());
+            }
         }
 
         return productVariationRepository.save(existingProductVariation);
