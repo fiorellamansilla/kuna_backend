@@ -1,5 +1,6 @@
 package com.kuna_backend.controllers;
 
+import com.kuna_backend.common.ApiResponse;
 import com.kuna_backend.dtos.product.ProductVariationDto;
 import com.kuna_backend.models.ProductVariation;
 import com.kuna_backend.services.ProductService;
@@ -7,8 +8,11 @@ import com.kuna_backend.services.ProductVariationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +28,17 @@ public class ProductVariationController {
     @Autowired
     ProductService productService;
 
+    // GET a Product Variation by ID - Endpoint
+    @GetMapping(path = "/{productVariationId}")
+    public ResponseEntity<ProductVariation> getProductVariationById(@PathVariable Integer productVariationId) {
+        try {
+            ProductVariation productVariation = productVariationService.getProductVariationById(productVariationId);
+            return new ResponseEntity<ProductVariation>(productVariation, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<ProductVariation>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     // GET All Product Variations - Endpoint
     @GetMapping(path = "/all")
     public ResponseEntity<List<ProductVariationDto>> getProductVariations() {
@@ -31,27 +46,37 @@ public class ProductVariationController {
         return new ResponseEntity<List<ProductVariationDto>>(body, HttpStatus.OK);
     }
 
-    // GET a Product Variation by ID - Endpoint
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<ProductVariation> getProductVariationById(@PathVariable Integer id) {
-        try {
-            ProductVariation productVariation = productVariationService.getProductVariationById(id);
-            return new ResponseEntity<ProductVariation>(productVariation, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<ProductVariation>(HttpStatus.NOT_FOUND);
+    //UPDATE a Product Variation by ID - Put Endpoint
+    @PutMapping("/update/{productVariationId}")
+    public ResponseEntity<ApiResponse> updateProductVariation (@PathVariable("productVariationId") Integer productVariationId,
+                                                               @RequestBody ProductVariationDto updatedVariationDto) {
+        try{
+            productVariationService.updateProductVariation(productVariationId, updatedVariationDto);
+
+            ApiResponse response = new ApiResponse(true, "Product Variation updated successfully");
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            ApiResponse response = new ApiResponse(false,"ProductVariationDto cannot be null for ID: " + productVariationId);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
 
-    //TODO: REFACTOR THIS UPDATE ENDPOINT REGARDING METHOD IN PRODUCTV ARIATION SERVICE
-    //UPDATE a Product Variation by ID - Endpoint
-//    @PostMapping("/update/{productVariationId}")
-//    public ResponseEntity<ApiResponse> updateProductVariation (@PathVariable("productVariationId") Integer productVariationId, @RequestBody ProductVariationDto productVariationDto) {
-//        Optional<Product> optionalProduct = productService.readProduct(productVariationDto.getProductId());
-//        if (!optionalProduct.isPresent()) {
-//            return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The type of Product is invalid"), HttpStatus.CONFLICT);
-//        }
-//        Product product = optionalProduct.get();
-//        productVariationService.updateProductVariation(productVariationId, productVariationDto);
-//        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "The Product Variation has been updated"), HttpStatus.OK);
-//    }
+    //DELETE one ProductVariation by ID / Endpoint
+    @DeleteMapping(path = "/{productVariationId}")
+    public ResponseEntity<ApiResponse> deleteProductVariationById (@PathVariable("productVariationId") Integer productVariationId) {
+
+        if(productVariationId == null || productVariationId <= 0){
+            return new ResponseEntity<>(new ApiResponse(false, "Invalid product Variation ID"), HttpStatus.BAD_REQUEST);
+        }
+
+        boolean deletionSuccessful = productVariationService.deleteProductVariation(productVariationId);
+
+        if (deletionSuccessful) {
+            return new ResponseEntity<>(new ApiResponse(true, "The Product Variation has been successfully deleted"), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ApiResponse(false, "Product Variation not found"), HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
