@@ -29,7 +29,7 @@ public class ProductVariationService {
         Optional<ProductVariation> optionalProductVariation = productVariationRepository.findById(productVariationId);
         // Check if the product variation exists
         if (optionalProductVariation.isEmpty()) {
-            throw new ProductNotExistsException("The Product Variation id is invalid: " + productVariationId);
+            throw new ProductNotExistsException("Product Variation not found with ID: " + productVariationId);
         }
         return optionalProductVariation.get();
     }
@@ -46,7 +46,12 @@ public class ProductVariationService {
     }
 
     //Update only certain attributes of a specific Product Variation
+    @Transactional
     public ProductVariation updateProductVariation(Integer productVariationId, ProductVariationDto updatedVariationDto) {
+
+        if (updatedVariationDto == null) {
+            throw new IllegalArgumentException("ProductVariationDto cannot be null for ID: " + productVariationId);
+        }
 
         ProductVariation existingProductVariation = getProductVariationById(productVariationId);
 
@@ -55,17 +60,16 @@ public class ProductVariationService {
             throw new ProductNotExistsException("Product Variation not found with ID: " + productVariationId);
         }
 
-        if(updatedVariationDto != null) {
-
-            /* Update only the attributes quantityStock or color from the existing Product Variation */
-            if (updatedVariationDto.getQuantityStock() != null){
-                existingProductVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
-            }
-            if (updatedVariationDto.getColor() != null){
-                existingProductVariation.setColor(updatedVariationDto.getColor());
-            }
+        /* Update only the attributes quantityStock or color from the existing Product Variation */
+        if (updatedVariationDto.getQuantityStock() != null){
+            existingProductVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
         }
 
+        if (updatedVariationDto.getColor() != null){
+            existingProductVariation.setColor(updatedVariationDto.getColor());
+        }
+
+        // Save the updated ProductVariation
         return productVariationRepository.save(existingProductVariation);
     }
 
