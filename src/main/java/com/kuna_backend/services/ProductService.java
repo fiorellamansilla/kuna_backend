@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -68,17 +68,26 @@ public class ProductService {
     }
 
     // Update only the attributes from a specific Product by ID
-    public Product updateProductOnly(Integer productId, ProductDto updatedProductDto, Category category) {
+    public Product updateProductOnly(Integer productId, ProductDto updatedProductDto) {
 
         // Retrieve the specific Product
         Product product = getProductById(productId);
 
-        product.setName(updatedProductDto.getName());
-        product.setPrice(updatedProductDto.getPrice());
-        product.setDescription(updatedProductDto.getDescription());
-        product.setImageUrl(updatedProductDto.getImageUrl());
-        product.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-        product.setModifiedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+        if (updatedProductDto.getName() != null) {
+            product.setName(updatedProductDto.getName());
+        }
+        if (updatedProductDto.getPrice() != null) {
+            product.setPrice(updatedProductDto.getPrice());
+        }
+        if (updatedProductDto.getDescription() != null) {
+            product.setDescription(updatedProductDto.getDescription());
+        }
+        if (updatedProductDto.getImageUrl() != null) {
+            product.setImageUrl(updatedProductDto.getImageUrl());
+        }
+
+        // Update timestamp
+        product.setModifiedAt(LocalDateTime.now());
 
         // Save and return the updated Product
         return productRepository.save(product);

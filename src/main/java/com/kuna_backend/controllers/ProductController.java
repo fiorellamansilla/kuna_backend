@@ -83,7 +83,7 @@ public class ProductController {
             return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Category NOT found"), HttpStatus.NOT_FOUND);
         }
         Category category = optionalCategory.get();
-        productService.updateProductOnly(productId, productDto, category);
+        productService.updateProductOnly(productId, productDto);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "The Product has been updated"), HttpStatus.OK);
     }
 

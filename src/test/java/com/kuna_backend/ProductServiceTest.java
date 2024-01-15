@@ -205,16 +205,15 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void updateProduct_ShouldSaveModifiedProduct() {
+    public void updateProductOnly_ShouldSaveModifiedProduct() {
 
         Integer productId = 1;
         ProductDto productDto = new ProductDto();
-        Category category = new Category();
 
         Optional<Product> optionalProduct = Optional.of(new Product(productId, productDto, category));
         when(productRepository.findById(productId)).thenReturn(optionalProduct);
 
-        productService.updateProductOnly(productId, productDto, category);
+        productService.updateProductOnly(productId, productDto);
 
         verify(productRepository).save(any(Product.class));
     }
