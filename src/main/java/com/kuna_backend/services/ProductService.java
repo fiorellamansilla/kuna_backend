@@ -67,8 +67,8 @@ public class ProductService {
         return productDtos;
     }
 
-    // Update only the attributes of a specific Product by ID
-    public Product updateProduct(Integer productId, ProductDto updatedProductDto, Category category) {
+    // Update only the attributes from a specific Product by ID
+    public Product updateProductOnly(Integer productId, ProductDto updatedProductDto, Category category) {
 
         // Retrieve the specific Product
         Product product = getProductById(productId);

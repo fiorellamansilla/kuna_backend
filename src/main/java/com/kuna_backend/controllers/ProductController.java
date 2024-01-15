@@ -75,7 +75,7 @@ public class ProductController {
     }
 
     // TODO: TEST THIS POST ENDPOINT TO VERIFY THAT ONLY ATTRIBUTES FROM THE PRODUCT HAVE BEEN UPDATED.
-    // UPDATE a specific Product by ID - Endpoint
+    // UPDATE only the attributes from a specific Product by ID - Endpoint
     @PostMapping(path = "/update/{productId}")
     public ResponseEntity<ApiResponse> updateProductOnly(@PathVariable("productId") Integer productId, @RequestBody ProductDto productDto) {
         Optional<Category> optionalCategory = categoryService.readCategory(productDto.getCategoryId());
@@ -83,7 +83,7 @@ public class ProductController {
             return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Category NOT found"), HttpStatus.NOT_FOUND);
         }
         Category category = optionalCategory.get();
-        productService.updateProduct(productId, productDto, category);
+        productService.updateProductOnly(productId, productDto, category);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "The Product has been updated"), HttpStatus.OK);
     }
 

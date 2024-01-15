@@ -145,7 +145,7 @@ public class ProductControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(new ApiResponse(true, "The Product has been updated"), response.getBody());
 
-        verify(productService, times(1)).updateProduct(eq(productId), eq(productDto), any(Category.class));
+        verify(productService, times(1)).updateProductOnly(eq(productId), eq(productDto), any(Category.class));
     }
 
     @Test
@@ -163,7 +163,7 @@ public class ProductControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals(new ApiResponse(false, "Category NOT found"), response.getBody());
 
-        verify(productService, never()).updateProduct(anyInt(), any(ProductDto.class), any(Category.class));
+        verify(productService, never()).updateProductOnly(anyInt(), any(ProductDto.class), any(Category.class));
     }
 
     @Test

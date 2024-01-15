@@ -214,7 +214,7 @@ public class ProductServiceTest {
         Optional<Product> optionalProduct = Optional.of(new Product(productId, productDto, category));
         when(productRepository.findById(productId)).thenReturn(optionalProduct);
 
-        productService.updateProduct(productId, productDto, category);
+        productService.updateProductOnly(productId, productDto, category);
 
         verify(productRepository).save(any(Product.class));
     }
