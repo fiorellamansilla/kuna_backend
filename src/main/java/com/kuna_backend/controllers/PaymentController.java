@@ -67,7 +67,7 @@ public class PaymentController {
 
     //GET a Payment by ID / Endpoint
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Payment> getPaymentById(@PathVariable ("id") Integer id, @RequestParam("stripe_id") String stripeToken)
+    public ResponseEntity<Payment> getPaymentById(@PathVariable ("id") long id, @RequestParam("stripe_id") String stripeToken)
         throws AuthenticationFailException {
 
         try {
