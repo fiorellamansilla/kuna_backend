@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ProductDto {
 
-    private Integer id;
+    private long id;
     private @NotNull String name;
     private @NotNull Double price;
     private @NotNull String description;
@@ -32,11 +32,11 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 

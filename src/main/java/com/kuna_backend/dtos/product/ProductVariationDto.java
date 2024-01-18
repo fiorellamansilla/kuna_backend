@@ -11,7 +11,7 @@ public class ProductVariationDto {
     private Integer quantityStock;
     private Size size;
     private Color color;
-    private Integer productId;
+    private long productId;
 
     public ProductVariationDto(ProductVariation productVariation) {
         this.setId(productVariation.getId());
@@ -21,7 +21,7 @@ public class ProductVariationDto {
         this.setProductId(productVariation.getProduct().getId());
     }
 
-    public ProductVariationDto(Integer quantityStock, Size size, Color color, Integer productId) {
+    public ProductVariationDto(Integer quantityStock, Size size, Color color, long productId) {
         this.quantityStock = quantityStock;
         this.size = size;
         this.color = color;
@@ -70,11 +70,11 @@ public class ProductVariationDto {
         this.quantityStock = quantityStock;
     }
 
-    public Integer getProductId() {
+    public long getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(long productId) {
         this.productId = productId;
     }
 

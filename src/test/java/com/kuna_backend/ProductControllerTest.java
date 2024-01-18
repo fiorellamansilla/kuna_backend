@@ -58,7 +58,7 @@ public class ProductControllerTest {
     @Test
     public void getProductByIdWithVariations_shouldReturnProductById() {
 
-        Integer productId = 1;
+        long productId = 1;
         Product product = new Product();
         when(productService.getProductByIdWithVariations(productId)).thenReturn(product);
 
@@ -71,7 +71,7 @@ public class ProductControllerTest {
     @Test
     public void getProductByIdWithVariations_shouldReturnNotFoundWhenNoSuchElementExceptionThrown() {
 
-        Integer productId = 1;
+        long productId = 1;
         when(productService.getProductByIdWithVariations(productId)).thenThrow(new NoSuchElementException());
 
         ResponseEntity<Product> response = productController.getProductByIdWithVariations(productId);
@@ -118,7 +118,7 @@ public class ProductControllerTest {
     @Test
     public void createProductVariationForProduct_shouldReturnSuccessResponse() {
 
-        Integer productId = 1;
+        long productId = 1;
         ProductVariationDto productVariationDto = new ProductVariationDto();
         Product updatedProduct = new Product();
 
@@ -133,7 +133,7 @@ public class ProductControllerTest {
     @Test
     public void updateProductOnly_shouldReturnSuccessResponse() {
 
-        Integer productId = 1;
+        long productId = 1;
         ProductDto productDto = new ProductDto();
         productDto.setCategoryId(1);
 
@@ -151,7 +151,7 @@ public class ProductControllerTest {
     @Test
     public void updateProductOnly_shouldReturnNotFoundResponseWhenInvalidCategory() {
 
-        Integer productId = 1;
+        long productId = 1;
         ProductDto productDto = new ProductDto();
         productDto.setCategoryId(99);
 
@@ -169,7 +169,7 @@ public class ProductControllerTest {
     @Test
     public void deleteProductById_shouldReturnSuccessResponse() {
 
-        Integer productId = 1;
+        long productId = 1;
 
         when(productService.deleteProduct(productId)).thenReturn(true);
 
@@ -184,7 +184,7 @@ public class ProductControllerTest {
     @Test
     public void deleteProductById_shouldReturnNotFoundResponseForNonExistingProduct() {
 
-        Integer productId = 2;
+        long productId = 2;
 
         when(productService.deleteProduct(productId)).thenReturn(false);
 
@@ -199,7 +199,7 @@ public class ProductControllerTest {
     @Test
     public void deleteProductById_shouldReturnBadRequestResponseForInvalidProductId() {
 
-        Integer productId = -90;
+        long productId = -90;
 
         ResponseEntity<ApiResponse> response = productController.deleteProductById(productId);
 
