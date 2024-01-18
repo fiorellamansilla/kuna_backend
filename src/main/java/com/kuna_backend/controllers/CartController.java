@@ -74,7 +74,7 @@ public class CartController {
                                                       @RequestParam("token") String token) throws AuthenticationFailException, CartItemNotExistException {
 
         authenticationService.authenticate(token);
-        int clientId = authenticationService.getClient(token).getId();
+        long clientId = authenticationService.getClient(token).getId();
         // Delete a cart Item
         cartService.deleteCartItem(itemID, clientId);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "The Item has been removed"), HttpStatus.OK);

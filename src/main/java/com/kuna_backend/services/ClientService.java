@@ -137,11 +137,11 @@ public class ClientService {
         return (List<Client>) clientRepository.findAll();
     }
 
-    public Client getClient (Integer id) {
+    public Client getClient (long id) {
         return clientRepository.findById(id).get();
     }
 
-    public void deleteClient (Integer id) {
+    public void deleteClient (long id) {
         clientRepository.deleteById(id);
     }
 }

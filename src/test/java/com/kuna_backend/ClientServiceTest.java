@@ -216,7 +216,7 @@ public class ClientServiceTest {
     @Test
     public void getClient_WithValidId_ShouldReturnClient() {
 
-        Integer clientId = 1;
+        long clientId = 1;
         Client client = new Client();
         when(clientRepository.findById(clientId)).thenReturn(Optional.of(client));
 
@@ -230,7 +230,7 @@ public class ClientServiceTest {
     @Test
     public void getClient_WithInvalidId_ShouldThrowNoSuchElementException() {
 
-        Integer clientId = 1;
+        long clientId = 1;
 
         when(clientRepository.findById(clientId)).thenReturn(Optional.empty());
 
@@ -242,7 +242,7 @@ public class ClientServiceTest {
     @Test
     public void deleteClient_WithValidId_ShouldDeleteClient() {
 
-        Integer clientId = 1;
+        long clientId = 1;
 
         clientService.deleteClient(clientId);
 
