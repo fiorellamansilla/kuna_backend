@@ -35,7 +35,7 @@ public class ShippingDetailController {
 
     // GET Shipping Detail for a Specific Client - Endpoint
     @GetMapping("/{id}")
-    public ResponseEntity<ShippingDetail> getShippingDetailById (@PathVariable ("id") Integer id, @RequestParam("token") String token)
+    public ResponseEntity<ShippingDetail> getShippingDetailById (@PathVariable ("id") long id, @RequestParam("token") String token)
             throws AuthenticationFailException, ClassNotFoundException {
 
         authenticationService.authenticate(token);

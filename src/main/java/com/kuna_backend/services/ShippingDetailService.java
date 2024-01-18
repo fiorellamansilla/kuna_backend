@@ -36,7 +36,7 @@ public class ShippingDetailService {
         return (List<ShippingDetail>) shippingDetailRepository.findAll();
     }
 
-    public ShippingDetail getShippingDetail (Integer id) throws ClassNotFoundException {
+    public ShippingDetail getShippingDetail (long id) throws ClassNotFoundException {
 
         Optional<ShippingDetail> shippingDetail = shippingDetailRepository.findById(id);
 
