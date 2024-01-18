@@ -18,10 +18,10 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long id;
 
     @Column (name = "quantity")
-    private Integer quantity;
+    private int quantity;
 
     @Column (name = "created_at")
     private Date createdAt;
@@ -37,7 +37,7 @@ public class Cart {
     @JsonIgnore
     private Client client;
 
-    public Cart(ProductVariation productVariation, Integer quantity, Client client) {
+    public Cart(ProductVariation productVariation, int quantity, Client client) {
         this.client = client;
         this.quantity = quantity;
         this.productVariation = productVariation;
@@ -47,19 +47,19 @@ public class Cart {
     public Cart() {
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

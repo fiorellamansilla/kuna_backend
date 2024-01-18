@@ -115,7 +115,7 @@ public class CartServiceTest {
     @Test
     public void testDeleteCartItem_Exists() throws CartItemNotExistException {
 
-        Integer id = 1;
+        long id = 1;
         when(cartRepository.existsById(id)).thenReturn(true);
 
         cartService.deleteCartItem(id, 123);
@@ -126,7 +126,7 @@ public class CartServiceTest {
     @Test
     public void testDeleteCartItem_NotExist() {
 
-        Integer id = 1;
+        long id = 1;
         when(cartRepository.existsById(id)).thenReturn(false);
 
         assertThrows(CartItemNotExistException.class, () -> cartService.deleteCartItem(id, 123));

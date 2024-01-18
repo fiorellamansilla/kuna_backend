@@ -70,7 +70,7 @@ public class CartController {
 
     // DELETE a cart Item for a Client endpoint
     @DeleteMapping("/delete/{cartItemId}")
-    public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable("cartItemId") Integer itemID,
+    public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable("cartItemId") long itemID,
                                                       @RequestParam("token") String token) throws AuthenticationFailException, CartItemNotExistException {
 
         authenticationService.authenticate(token);

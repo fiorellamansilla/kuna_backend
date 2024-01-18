@@ -58,7 +58,7 @@ public class CartService  {
         return new CartItemDto(cart);
     }
 
-    public void deleteCartItem(int id, long clientId) throws CartItemNotExistException {
+    public void deleteCartItem(long id, long clientId) throws CartItemNotExistException {
 
         if (!cartRepository.existsById(id))
             throw new CartItemNotExistException("The Product Id is invalid: " + id);
@@ -66,7 +66,7 @@ public class CartService  {
 
     }
 
-    public void deleteCartItems (int clientId) {
+    public void deleteCartItems (long clientId) {
         cartRepository.deleteAll();
     }
 

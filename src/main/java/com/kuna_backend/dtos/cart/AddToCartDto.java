@@ -1,9 +1,9 @@
 package com.kuna_backend.dtos.cart;
 
 public class AddToCartDto {
-    private Integer id;
-    private Integer productVariationId;
-    private Integer quantity;
+    private long id;
+    private long productVariationId;
+    private int quantity;
 
     public AddToCartDto() {
     }
@@ -17,27 +17,27 @@ public class AddToCartDto {
                 '}';
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Integer getProductVariationId() {
+    public long getProductVariationId() {
         return productVariationId;
     }
 
-    public void setProductVariationId(Integer productVariationId) {
+    public void setProductVariationId(long productVariationId) {
         this.productVariationId = productVariationId;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }
