@@ -46,7 +46,7 @@ public class Client {
     private boolean isBlocked;
 
     @Column(name = "failed_attempts")
-    private Integer failedAttempts = 0;
+    private int failedAttempts = 0;
 
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
@@ -138,11 +138,11 @@ public class Client {
         isBlocked = blocked;
     }
 
-    public Integer getFailedAttempts() {
+    public int getFailedAttempts() {
         return failedAttempts;
     }
 
-    public void setFailedAttempts(Integer failedAttempts) {
+    public void setFailedAttempts(int failedAttempts) {
         this.failedAttempts = failedAttempts;
     }
 
