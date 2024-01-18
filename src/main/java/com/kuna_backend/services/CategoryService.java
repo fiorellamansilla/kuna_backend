@@ -32,11 +32,11 @@ public class CategoryService {
         return categoryRepository.findByCategoryName(categoryName);
     }
 
-    public Optional<Category> readCategory(Integer categoryId) {
+    public Optional<Category> readCategory(long categoryId) {
         return categoryRepository.findById(categoryId);
     }
 
-    public void updateCategory(Integer categoryId, Category newCategory) {
+    public void updateCategory(long categoryId, Category newCategory) {
         Category category = categoryRepository.findById(categoryId).get();
         category.setCategoryName(newCategory.getCategoryName());
         category.setDescription(newCategory.getDescription());
