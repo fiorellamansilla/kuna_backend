@@ -3,12 +3,11 @@ package com.kuna_backend.dtos.product;
 import com.kuna_backend.enums.Color;
 import com.kuna_backend.enums.Size;
 import com.kuna_backend.models.ProductVariation;
-import org.jetbrains.annotations.NotNull;
 
 public class ProductVariationDto {
 
-    private @NotNull Integer id;
-    private Integer quantityStock;
+    private long id;
+    private int quantityStock;
     private Size size;
     private Color color;
     private long productId;
@@ -21,7 +20,7 @@ public class ProductVariationDto {
         this.setProductId(productVariation.getProduct().getId());
     }
 
-    public ProductVariationDto(Integer quantityStock, Size size, Color color, long productId) {
+    public ProductVariationDto(int quantityStock, Size size, Color color, long productId) {
         this.quantityStock = quantityStock;
         this.size = size;
         this.color = color;
@@ -29,7 +28,7 @@ public class ProductVariationDto {
     }
 
     // Constructor for partial updates
-    public ProductVariationDto(Integer id, Integer quantityStock, Color color) {
+    public ProductVariationDto(long id, int quantityStock, Color color) {
         this.id = id;
         this.quantityStock = quantityStock;
         this.color = color;
@@ -38,11 +37,11 @@ public class ProductVariationDto {
     public ProductVariationDto() {
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -62,11 +61,11 @@ public class ProductVariationDto {
         this.color = color;
     }
 
-    public Integer getQuantityStock() {
+    public int getQuantityStock() {
         return quantityStock;
     }
 
-    public void setQuantityStock(Integer quantityStock) {
+    public void setQuantityStock(int quantityStock) {
         this.quantityStock = quantityStock;
     }
 

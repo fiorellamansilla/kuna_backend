@@ -33,7 +33,7 @@ public class ProductVariationControllerTest {
     @Test
     public void getProductVariationById_shouldReturnProductVariationById() {
 
-        Integer productVariationId = 1;
+        long productVariationId = 1;
         ProductVariation productVariation = new ProductVariation();
         when(productVariationService.getProductVariationById(productVariationId)).thenReturn(productVariation);
 
@@ -46,7 +46,7 @@ public class ProductVariationControllerTest {
     @Test
     public void updateProductVariation_shouldReturnSuccessResponse() {
 
-        Integer productVariationId = 1;
+        long productVariationId = 1;
         ProductVariationDto updatedVariationDto = new ProductVariationDto();
 
         ProductVariation productVariation = new ProductVariation();
@@ -64,7 +64,7 @@ public class ProductVariationControllerTest {
     @Test
     public void updateProductVariation_shouldReturnBadRequestResponse() {
 
-        Integer productVariationId = 1;
+        long productVariationId = 1;
         ProductVariationDto updatedVariationDto = null;
 
         doThrow(new IllegalArgumentException("ProductVariationDto cannot be null for ID: " + productVariationId))
@@ -81,7 +81,7 @@ public class ProductVariationControllerTest {
     @Test
     public void deleteProductVariationById_shouldReturnSuccessResponse() {
 
-        Integer productVariationId = 1;
+        long productVariationId = 1;
 
         when(productVariationService.deleteProductVariation(productVariationId)).thenReturn(true);
 
@@ -96,7 +96,7 @@ public class ProductVariationControllerTest {
     @Test
     public void deleteProductVariationById_shouldReturnNotFoundResponseForNonExistingVariation() {
 
-        Integer productVariationId = 20;
+        long productVariationId = 20;
 
         when(productVariationService.deleteProductVariation(productVariationId)).thenReturn(false);
 
@@ -111,7 +111,7 @@ public class ProductVariationControllerTest {
     @Test
     public void deleteProductVariationById_shouldReturnBadRequestResponseForInvalidId() {
 
-        Integer productVariationId = -40;
+        long productVariationId = -40;
 
         ResponseEntity<ApiResponse> response = productVariationController.deleteProductVariationById(productVariationId);
 

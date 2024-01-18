@@ -21,7 +21,7 @@ public class ProductVariation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long id;
 
     @Column (name = "size", length = 64, nullable = false)
     @Enumerated(EnumType.STRING)
@@ -32,7 +32,7 @@ public class ProductVariation {
     private Color color;
 
     @Column(name = "quantity_stock", nullable = false)
-    private Integer quantityStock;
+    private int quantityStock;
 
     @JsonIgnore
     @ManyToOne()
@@ -45,7 +45,7 @@ public class ProductVariation {
         this.quantityStock = productVariationDto.getQuantityStock();
         this.product = product;
     }
-    public ProductVariation(Integer id, Size size, Color color, Integer quantityStock, Product product) {
+    public ProductVariation(long id, Size size, Color color, int quantityStock, Product product) {
         this.id = id;
         this.size = size;
         this.color = color;
@@ -56,11 +56,11 @@ public class ProductVariation {
     public ProductVariation() {
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -80,11 +80,11 @@ public class ProductVariation {
         this.color = color;
     }
 
-    public Integer getQuantityStock() {
+    public int getQuantityStock() {
         return quantityStock;
     }
 
-    public void setQuantityStock(Integer quantityStock) {
+    public void setQuantityStock(int quantityStock) {
         this.quantityStock = quantityStock;
     }
 
