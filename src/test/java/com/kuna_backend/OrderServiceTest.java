@@ -72,7 +72,7 @@ public class OrderServiceTest {
         when(cartService.listCartItems(client)).thenReturn(cartDto);
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> {
             Order order = invocation.getArgument(0);
-            if (order.getId() == null) {
+            if (order.getId() == 0) {
                 // Set the ID manually if it's not set (first invocation)
                 order.setId(1);
             }
@@ -167,7 +167,7 @@ public class OrderServiceTest {
     @Test
     public void testGetOrder_ShouldReturnOrderById() throws OrderNotFoundException {
 
-        Integer orderId = 1;
+        long orderId = 1;
         Order expectedOrder = new Order();
 
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(expectedOrder));
@@ -180,7 +180,7 @@ public class OrderServiceTest {
     @Test
     public void testGetOrder_ShouldThrowOrderNotFoundExceptionForInvalidId() {
 
-        Integer orderId = 1;
+        long orderId = 1;
 
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
@@ -190,7 +190,7 @@ public class OrderServiceTest {
     @Test
     public void testDeleteOrder_ShouldDeleteOrderById() {
 
-        Integer orderId = 1;
+        long orderId = 1;
 
         orderService.deleteOrder(orderId);
 

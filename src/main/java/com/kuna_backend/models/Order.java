@@ -28,7 +28,7 @@ import java.util.UUID;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long id;
     @Column (name = "total_amount", nullable = false)
     private double totalAmount;
     @Column (name = "order_status", length = 64)
@@ -67,11 +67,11 @@ public class Order {
     public Order() {
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
