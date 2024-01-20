@@ -34,10 +34,10 @@ public class ProductVariation {
     @Column(name = "quantity_stock", nullable = false)
     private Integer quantityStock;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    @JsonIgnore
-    protected Product product;
+    private Product product;
 
     public ProductVariation (ProductVariationDto productVariationDto, Product product) {
         this.size = productVariationDto.getSize();

@@ -12,6 +12,7 @@ import com.kuna_backend.services.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -26,10 +27,14 @@ import java.util.Optional;
 
 import static com.kuna_backend.enums.Color.BEIGE;
 import static com.kuna_backend.enums.Size.NEWBORN;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -202,27 +207,93 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void updateProduct_ShouldSaveModifiedProduct() {
+    public void updateProductOnly_ShouldSaveModifiedProduct() {
 
         Integer productId = 1;
-        ProductDto productDto = new ProductDto();
-        Category category = new Category();
 
-        Optional<Product> optionalProduct = Optional.of(new Product(productId, productDto, category));
-        when(productRepository.findById(productId)).thenReturn(optionalProduct);
+        Product originalProduct = new Product();
+        originalProduct.setId(productId);
+        originalProduct.setName("OriginalName");
+        originalProduct.setPrice(30.0);
+        originalProduct.setDescription("OriginalDescription");
+        originalProduct.setImageUrl("original_image_url");
 
-        productService.updateProduct(productId, productDto, category);
+        ProductDto updatedProductDto = new ProductDto();
+        updatedProductDto.setName("UpdatedName");
+        updatedProductDto.setPrice(50.0);
+        updatedProductDto.setDescription("UpdatedDescription");
+        updatedProductDto.setImageUrl("updated_image_url");
 
+        when(productRepository.findById(eq(productId))).thenReturn(Optional.of(originalProduct));
+        when(productRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
+
+        Product updatedProduct = productService.updateProductOnly(productId, updatedProductDto);
+
+        assertNotNull(updatedProduct);
+        assertEquals(updatedProductDto.getName(), updatedProduct.getName());
+        assertEquals(updatedProductDto.getPrice(), updatedProduct.getPrice());
+        assertEquals(updatedProductDto.getDescription(), updatedProduct.getDescription());
+        assertEquals(updatedProductDto.getImageUrl(), updatedProduct.getImageUrl());
+        assertNotNull(updatedProduct.getModifiedAt());
+
+        verify(productRepository, times(1)).findById(eq(productId));
         verify(productRepository).save(any(Product.class));
     }
 
     @Test
-    public void deleteProduct_ShouldCallRepositoryDeleteById() {
+    public void testUpdateProductOnly_ProductNotFound() {
+
+        Integer productId = 1;
+        ProductDto updatedProductDto = new ProductDto();
+
+        when(productRepository.findById(eq(productId))).thenReturn(Optional.empty());
+
+        assertThrows(ProductNotExistsException.class, () -> productService.updateProductOnly(productId, updatedProductDto));
+
+        verify(productRepository, times(1)).findById(eq(productId));
+        verify(productRepository, never()).save(any());
+    }
+
+    @Test
+    void deleteProduct_shouldReturnTrueForExistingProduct() {
+
+        Integer productId = 1;
+        Product mockProduct = new Product();
+
+        when(productRepository.findById(productId)).thenReturn(java.util.Optional.of(mockProduct));
+
+        boolean deletionSuccessful = productService.deleteProduct(productId);
+        assertTrue(deletionSuccessful);
+
+        // Verify that the productRepository.delete method was called with the correct argument
+        verify(productRepository, times(1)).delete(mockProduct);
+    }
+
+    @Test
+    void deleteProduct_shouldReturnFalseForNonExistingProduct() {
 
         Integer productId = 1;
 
-        productService.deleteProduct(productId);
+        when(productRepository.findById(productId)).thenReturn(java.util.Optional.empty());
 
-        verify(productRepository, times(1)).deleteById(productId);
+        boolean deletionSuccessful = productService.deleteProduct(productId);
+        assertFalse(deletionSuccessful);
+
+        // Verify that the productRepository.delete method was not called in this case
+        verify(productRepository, never()).delete(any());
     }
+
+    @Test
+    void deleteProduct_shouldReturnFalseForInvalidProductId() {
+
+        Integer invalidProductId = null; // Invalid product ID
+
+        boolean deletionSuccessful = productService.deleteProduct(invalidProductId);
+
+        assertFalse(deletionSuccessful);
+
+        // Verify that the productRepository.delete method was not called in this case
+        verify(productRepository, never()).delete(any());
+    }
+
 }

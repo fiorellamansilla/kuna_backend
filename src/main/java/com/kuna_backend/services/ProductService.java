@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +38,13 @@ public class ProductService {
         return product;
     }
 
-    //Get only a specific Product by ID without its Variations
+    // Creates only the Product with its respective Category
+    public void createProduct(ProductDto productDto, Category category) {
+        Product product = getProductFromDto(productDto, category);
+        productRepository.save(product);
+    }
+
+    // Retrieves a specific Product by ID without its Variations
     public Product getProductById(Integer productId) throws ProductNotExistsException {
         // Fetch the product by ID
         Optional<Product> optionalProduct = productRepository.findById(productId);
@@ -49,13 +55,7 @@ public class ProductService {
         return optionalProduct.get();
     }
 
-    // Creates a Product only with its respective Category
-    public void createProduct(ProductDto productDto, Category category) {
-        Product product = getProductFromDto(productDto, category);
-        productRepository.save(product);
-    }
-
-    //Method for GET all Products endpoint with Pagination
+    // Retrieves a List of all the Products with Pagination
     public List<ProductDto> listProducts(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Product> productPage = productRepository.findAll(pageable);
@@ -67,7 +67,44 @@ public class ProductService {
         return productDtos;
     }
 
-    // PRODUCT VARIATION
+    // Update only the attributes from a specific Product by ID
+    public Product updateProductOnly(Integer productId, ProductDto updatedProductDto) {
+
+        // Retrieve the specific Product
+        Product product = getProductById(productId);
+
+        if (updatedProductDto.getName() != null) {
+            product.setName(updatedProductDto.getName());
+        }
+        if (updatedProductDto.getPrice() != null) {
+            product.setPrice(updatedProductDto.getPrice());
+        }
+        if (updatedProductDto.getDescription() != null) {
+            product.setDescription(updatedProductDto.getDescription());
+        }
+        if (updatedProductDto.getImageUrl() != null) {
+            product.setImageUrl(updatedProductDto.getImageUrl());
+        }
+
+        // Update timestamp
+        product.setModifiedAt(LocalDateTime.now());
+
+        // Save and return the updated Product
+        return productRepository.save(product);
+    }
+
+    public boolean deleteProduct (Integer productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+
+        if(optionalProduct.isPresent()) {
+            productRepository.delete(optionalProduct.get());
+            return true; // Deletion successful
+        } else {
+            return false; // Product not found, deletion unsuccessful
+        }
+    }
+
+    // Product Variation Creation - as a Product update
     public static ProductVariation getProductVariationFromDto(ProductVariationDto productVariationDto, Product product) {
         ProductVariation productVariation = new ProductVariation(productVariationDto, product);
         return productVariation;
@@ -91,7 +128,8 @@ public class ProductService {
         // Save and return the updated Product
         return productRepository.save(product);
     }
-    //Get a specific Product by ID with its Variations
+
+    // Retrieves a specific Product by ID with its Variations
     public Product getProductByIdWithVariations(Integer productId) throws ProductNotExistsException {
         // Fetch the product by ID
         Optional<Product> optionalProduct = productRepository.findByIdWithVariations(productId);
@@ -101,27 +139,4 @@ public class ProductService {
         }
         return optionalProduct.get();
     }
-
-    // Update only the attributes of a specific Product by ID
-    public Product updateProduct(Integer productId, ProductDto updatedProductDto, Category category) {
-
-        // Retrieve the specific Product
-        Product product = getProductById(productId);
-
-        product.setName(updatedProductDto.getName());
-        product.setPrice(updatedProductDto.getPrice());
-        product.setDescription(updatedProductDto.getDescription());
-        product.setImageUrl(updatedProductDto.getImageUrl());
-        product.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-        product.setModifiedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-
-        // Save and return the updated Product
-        return productRepository.save(product);
-    }
-
-    // TODO: Evaluate what to do with these methods from Product.
-    public void deleteProduct (Integer id) {
-        productRepository.deleteById(id);
-    }
-
 }

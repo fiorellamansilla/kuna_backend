@@ -41,11 +41,11 @@ public class Product {
     @UpdateTimestamp
     private LocalDateTime modifiedAt;
     @OneToMany (mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    protected List<ProductVariation> productVariations; // Refactored Data Structure to ArrayList
+    private List<ProductVariation> productVariations;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false)
-    @JsonIgnore
     Category category;
 
     public Product(ProductDto productDto, Category category) {
