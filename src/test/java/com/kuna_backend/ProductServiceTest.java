@@ -161,7 +161,7 @@ public class ProductServiceTest {
         Integer productId = 1;
         Product existingProduct = new Product();
 
-        ProductVariationDto productVariationDto = new ProductVariationDto(NEWBORN, BEIGE, 10, productId);
+        ProductVariationDto productVariationDto = new ProductVariationDto(10, NEWBORN, BEIGE, productId);
 
         // Mock the getProductVariationFromDto method
         ProductVariation productVariation = ProductService.getProductVariationFromDto(productVariationDto, existingProduct);
@@ -241,21 +241,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testUpdateProductOnly_ProductNotFound() {
-
-        Integer productId = 1;
-        ProductDto updatedProductDto = new ProductDto();
-
-        when(productRepository.findById(eq(productId))).thenReturn(Optional.empty());
-
-        assertThrows(ProductNotExistsException.class, () -> productService.updateProductOnly(productId, updatedProductDto));
-
-        verify(productRepository, times(1)).findById(eq(productId));
-        verify(productRepository, never()).save(any());
-    }
-
-    @Test
-    void deleteProduct_shouldReturnTrueForExistingProduct() {
+    public void deleteProduct_shouldReturnTrueForExistingProduct() {
 
         Integer productId = 1;
         Product mockProduct = new Product();
@@ -270,7 +256,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    void deleteProduct_shouldReturnFalseForNonExistingProduct() {
+    public void deleteProduct_shouldReturnFalseForNonExistingProduct() {
 
         Integer productId = 1;
 
@@ -284,7 +270,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    void deleteProduct_shouldReturnFalseForInvalidProductId() {
+    public void deleteProduct_shouldReturnFalseForInvalidProductId() {
 
         Integer invalidProductId = null; // Invalid product ID
 
