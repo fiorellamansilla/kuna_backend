@@ -61,7 +61,7 @@ public class ProductVariationService {
         }
 
         /* Update only the attributes quantityStock or color from the existing Product Variation */
-        if (updatedVariationDto.getQuantityStock() != null){
+        if (updatedVariationDto.getQuantityStock() != 0){
             existingProductVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
         }
 
