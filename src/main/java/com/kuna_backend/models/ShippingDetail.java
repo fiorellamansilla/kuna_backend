@@ -19,7 +19,7 @@ public class ShippingDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "full_name", length = 64, nullable = false)
     private String fullName;
@@ -60,11 +60,11 @@ public class ShippingDetail {
     public ShippingDetail(String fullName, String address, String zipCode, String city, String country, String phone, LocalDateTime createdAt) {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

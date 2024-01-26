@@ -87,7 +87,7 @@ public class ShippingDetailServiceTest {
     public void testGetShippingDetail_ValidId() throws ClassNotFoundException {
 
         ShippingDetail shippingDetail = new ShippingDetail();
-        long shippingDetailId = 1;
+        Long shippingDetailId = 1L;
 
         when(shippingDetailRepository.findById(shippingDetailId)).thenReturn(Optional.of(shippingDetail));
 
@@ -101,7 +101,7 @@ public class ShippingDetailServiceTest {
     @Test
     public void testGetShippingDetail_InvalidId() {
 
-        long invalidId = 999;
+        Long invalidId = 999L;
 
         when(shippingDetailRepository.findById(invalidId)).thenReturn(Optional.empty());
 
