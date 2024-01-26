@@ -30,7 +30,7 @@ public class ProductVariationController {
 
     // GET a Product Variation by ID - Endpoint
     @GetMapping(path = "/{productVariationId}")
-    public ResponseEntity<ProductVariation> getProductVariationById(@PathVariable long productVariationId) {
+    public ResponseEntity<ProductVariation> getProductVariationById(@PathVariable Long productVariationId) {
         try {
             ProductVariation productVariation = productVariationService.getProductVariationById(productVariationId);
             return new ResponseEntity<ProductVariation>(productVariation, HttpStatus.OK);
@@ -48,7 +48,7 @@ public class ProductVariationController {
 
     //UPDATE a Product Variation by ID - Put Endpoint
     @PutMapping("/update/{productVariationId}")
-    public ResponseEntity<ApiResponse> updateProductVariation (@PathVariable("productVariationId") long productVariationId,
+    public ResponseEntity<ApiResponse> updateProductVariation (@PathVariable("productVariationId") Long productVariationId,
                                                                @RequestBody ProductVariationDto updatedVariationDto) {
         try{
             productVariationService.updateProductVariation(productVariationId, updatedVariationDto);
@@ -64,7 +64,7 @@ public class ProductVariationController {
 
     //DELETE one ProductVariation by ID / Endpoint
     @DeleteMapping(path = "/{productVariationId}")
-    public ResponseEntity<ApiResponse> deleteProductVariationById (@PathVariable("productVariationId") long productVariationId) {
+    public ResponseEntity<ApiResponse> deleteProductVariationById (@PathVariable("productVariationId") Long productVariationId) {
 
         if(productVariationId <= 0){
             return new ResponseEntity<>(new ApiResponse(false, "Invalid product Variation ID"), HttpStatus.BAD_REQUEST);

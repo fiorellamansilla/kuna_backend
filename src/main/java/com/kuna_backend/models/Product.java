@@ -25,7 +25,7 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column (name = "name_product", length = 128, nullable = false)
     private String name;
     @Column (name = "desc_product", length = 2048, nullable = false)
@@ -57,7 +57,7 @@ public class Product {
         productVariations = new ArrayList<>();
     }
 
-    public Product(long id, String name, String description, double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category) {
+    public Product(Long id, String name, String description, double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -73,15 +73,15 @@ public class Product {
         productVariations = new ArrayList<>();
     }
 
-    public Product(long productId, ProductDto productDto, Category category) {
+    public Product(Long productId, ProductDto productDto, Category category) {
         productVariations = new ArrayList<>();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

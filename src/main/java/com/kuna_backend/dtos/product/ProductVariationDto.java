@@ -6,11 +6,11 @@ import com.kuna_backend.models.ProductVariation;
 
 public class ProductVariationDto {
 
-    private long id;
+    private Long id;
     private int quantityStock;
     private Size size;
     private Color color;
-    private long productId;
+    private Long productId;
 
     public ProductVariationDto(ProductVariation productVariation) {
         this.setId(productVariation.getId());
@@ -20,7 +20,7 @@ public class ProductVariationDto {
         this.setProductId(productVariation.getProduct().getId());
     }
 
-    public ProductVariationDto(int quantityStock, Size size, Color color, long productId) {
+    public ProductVariationDto(int quantityStock, Size size, Color color, Long productId) {
         this.quantityStock = quantityStock;
         this.size = size;
         this.color = color;
@@ -28,7 +28,7 @@ public class ProductVariationDto {
     }
 
     // Constructor for partial updates
-    public ProductVariationDto(long id, int quantityStock, Color color) {
+    public ProductVariationDto(Long id, int quantityStock, Color color) {
         this.id = id;
         this.quantityStock = quantityStock;
         this.color = color;
@@ -37,11 +37,11 @@ public class ProductVariationDto {
     public ProductVariationDto() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -69,11 +69,11 @@ public class ProductVariationDto {
         this.quantityStock = quantityStock;
     }
 
-    public long getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(long productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 

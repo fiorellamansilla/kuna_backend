@@ -23,7 +23,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -58,7 +58,7 @@ public class ProductControllerTest {
     @Test
     public void getProductByIdWithVariations_shouldReturnProductById() {
 
-        long productId = 1;
+        Long productId = 1L;
         Product product = new Product();
         when(productService.getProductByIdWithVariations(productId)).thenReturn(product);
 
@@ -71,7 +71,7 @@ public class ProductControllerTest {
     @Test
     public void getProductByIdWithVariations_shouldReturnNotFoundWhenNoSuchElementExceptionThrown() {
 
-        long productId = 1;
+        Long productId = 1L;
         when(productService.getProductByIdWithVariations(productId)).thenThrow(new NoSuchElementException());
 
         ResponseEntity<Product> response = productController.getProductByIdWithVariations(productId);
@@ -83,7 +83,7 @@ public class ProductControllerTest {
     public void createProduct_shouldReturnSuccessResponse() {
 
         ProductDto productDto = new ProductDto();
-        productDto.setCategoryId(1);
+        productDto.setCategoryId(1L);
 
         Optional<Category> optionalCategory = Optional.of(new Category());
         when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
@@ -101,7 +101,7 @@ public class ProductControllerTest {
     public void createProduct_shouldReturnConflictResponseWhenInvalidCategory() {
 
         ProductDto productDto = new ProductDto();
-        productDto.setCategoryId(90);
+        productDto.setCategoryId(90L);
 
         Optional<Category> optionalCategory = Optional.empty();
         when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
@@ -118,7 +118,7 @@ public class ProductControllerTest {
     @Test
     public void createProductVariationForProduct_shouldReturnSuccessResponse() {
 
-        long productId = 1;
+        Long productId = 1L;
         ProductVariationDto productVariationDto = new ProductVariationDto();
         Product updatedProduct = new Product();
 
@@ -133,9 +133,9 @@ public class ProductControllerTest {
     @Test
     public void updateProductOnly_shouldReturnSuccessResponse() {
 
-        long productId = 1;
+        Long productId = 1L;
         ProductDto productDto = new ProductDto();
-        productDto.setCategoryId(1);
+        productDto.setCategoryId(1L);
 
         Optional<Category> optionalCategory = Optional.of(new Category());
         when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
@@ -151,9 +151,9 @@ public class ProductControllerTest {
     @Test
     public void updateProductOnly_shouldReturnNotFoundResponseWhenInvalidCategory() {
 
-        long productId = 1;
+        Long productId = 1L;
         ProductDto productDto = new ProductDto();
-        productDto.setCategoryId(99);
+        productDto.setCategoryId(99L);
 
         Optional<Category> optionalCategory = Optional.empty();
         when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
@@ -163,13 +163,13 @@ public class ProductControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals(new ApiResponse(false, "Category NOT found"), response.getBody());
 
-        verify(productService, never()).updateProductOnly(anyInt(), any(ProductDto.class));
+        verify(productService, never()).updateProductOnly(anyLong(), any(ProductDto.class));
     }
 
     @Test
     public void deleteProductById_shouldReturnSuccessResponse() {
 
-        long productId = 1;
+        Long productId = 1L;
 
         when(productService.deleteProduct(productId)).thenReturn(true);
 
@@ -184,7 +184,7 @@ public class ProductControllerTest {
     @Test
     public void deleteProductById_shouldReturnNotFoundResponseForNonExistingProduct() {
 
-        long productId = 2;
+        Long productId = 2L;
 
         when(productService.deleteProduct(productId)).thenReturn(false);
 
@@ -199,7 +199,7 @@ public class ProductControllerTest {
     @Test
     public void deleteProductById_shouldReturnBadRequestResponseForInvalidProductId() {
 
-        long productId = -90;
+        Long productId = -90L;
 
         ResponseEntity<ApiResponse> response = productController.deleteProductById(productId);
 
@@ -207,7 +207,7 @@ public class ProductControllerTest {
         assertEquals(new ApiResponse(false, "Invalid product ID"), response.getBody());
 
         // Verify that the productService.deleteProduct method was not called in this case
-        verify(productService, never()).deleteProduct(anyInt());
+        verify(productService, never()).deleteProduct(anyLong());
     }
 
 }

@@ -5,12 +5,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class ProductDto {
 
-    private long id;
+    private Long id;
     private @NotNull String name;
     private @NotNull double price;
     private @NotNull String description;
     private @NotNull String imageUrl;
-    private long categoryId;
+    private Long categoryId;
 
     public ProductDto(Product product) {
         this.setId(product.getId());
@@ -21,7 +21,7 @@ public class ProductDto {
         this.setCategoryId(product.getCategory().getId());
     }
 
-    public ProductDto(@NotNull String name, @NotNull double price, @NotNull String description, @NotNull String imageUrl, @NotNull long categoryId) {
+    public ProductDto(@NotNull String name, @NotNull double price, @NotNull String description, @NotNull String imageUrl, @NotNull Long categoryId) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -32,11 +32,11 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,11 +72,11 @@ public class ProductDto {
         this.imageUrl = imageUrl;
     }
 
-    public long getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 }

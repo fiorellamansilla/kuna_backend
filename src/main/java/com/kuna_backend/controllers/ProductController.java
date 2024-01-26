@@ -42,7 +42,7 @@ public class ProductController {
     // TODO: TEST GET ENDPOINT TO VERIFY IF THE PRODUCT VARIATION ARRAYLIST IS RETRIEVED
     //GET a Product by ID with its Variations / Endpoint
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Product> getProductByIdWithVariations(@PathVariable long id) {
+    public ResponseEntity<Product> getProductByIdWithVariations(@PathVariable Long id) {
         try {
             Product product = productService.getProductByIdWithVariations(id);
             return new ResponseEntity<Product>(product, HttpStatus.OK);
@@ -66,7 +66,7 @@ public class ProductController {
     // TODO: TEST THIS POST ENDPOINT TO VERIFY IF PRODUCT VARIATION HAS BEEN CORRECTLY ASSIGNED TO A PRODUCT.
     // CREATE a Product Variation for a specific Product when updating it - Endpoint
     @PostMapping(path = "/{productId}/variations")
-    public ResponseEntity<ApiResponse> createProductVariationForProduct(@PathVariable("productId") long productId,
+    public ResponseEntity<ApiResponse> createProductVariationForProduct(@PathVariable("productId") Long productId,
                                                                         @RequestBody ProductVariationDto productVariationDto) {
         Product updatedProduct = productService.createProductVariationForProduct(productId, productVariationDto);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true,
@@ -77,7 +77,7 @@ public class ProductController {
     // TODO: TEST THIS POST ENDPOINT TO VERIFY THAT ONLY ATTRIBUTES FROM THE PRODUCT HAVE BEEN UPDATED.
     // UPDATE only the attributes from a specific Product by ID - Endpoint
     @PostMapping(path = "/update/{productId}")
-    public ResponseEntity<ApiResponse> updateProductOnly(@PathVariable("productId") long productId, @RequestBody ProductDto productDto) {
+    public ResponseEntity<ApiResponse> updateProductOnly(@PathVariable("productId") Long productId, @RequestBody ProductDto productDto) {
         Optional<Category> optionalCategory = categoryService.readCategory(productDto.getCategoryId());
         if (!optionalCategory.isPresent()) {
             return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Category NOT found"), HttpStatus.NOT_FOUND);
@@ -90,7 +90,7 @@ public class ProductController {
 
     //DELETE one Product by ID / Endpoint
     @DeleteMapping(path = "/{productId}")
-    public ResponseEntity<ApiResponse> deleteProductById (@PathVariable("productId") long productId) {
+    public ResponseEntity<ApiResponse> deleteProductById (@PathVariable("productId") Long productId) {
 
         if(productId <= 0){
             return new ResponseEntity<>(new ApiResponse(false, "Invalid product ID"), HttpStatus.BAD_REQUEST);

@@ -94,7 +94,7 @@ public class ProductServiceTest {
     @Test
     public void testGetProductById() throws ProductNotExistsException {
 
-        long productId = 1;
+        Long productId = 1L;
         Product product = new Product();
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
@@ -158,7 +158,7 @@ public class ProductServiceTest {
     @Test
     public void testCreateProductVariationForProduct(){
 
-        long productId = 1;
+        Long productId = 1L;
         Product existingProduct = new Product();
 
         ProductVariationDto productVariationDto = new ProductVariationDto(10, NEWBORN, BEIGE, productId);
@@ -186,7 +186,7 @@ public class ProductServiceTest {
     @Test
     public void getProductByIdWithVariations_WithValidId_ShouldReturnProduct() throws ProductNotExistsException {
 
-        long productId = 1;
+        Long productId = 1L;
         Product product = new Product();
         when(productRepository.findByIdWithVariations(productId)).thenReturn(Optional.of(product));
 
@@ -198,7 +198,7 @@ public class ProductServiceTest {
     @Test
     public void getProductByIdWithVariations_WithInvalidId_ShouldThrowException() {
 
-        long productId = 1;
+        Long productId = 1L;
         when(productRepository.findByIdWithVariations(productId)).thenReturn(Optional.empty());
 
         assertThrows(ProductNotExistsException.class, () -> {
@@ -209,7 +209,7 @@ public class ProductServiceTest {
     @Test
     public void updateProductOnly_ShouldSaveModifiedProduct() {
 
-        long productId = 1;
+        Long productId = 1L;
 
         Product originalProduct = new Product();
         originalProduct.setId(productId);
@@ -243,7 +243,7 @@ public class ProductServiceTest {
     @Test
     public void deleteProduct_shouldReturnTrueForExistingProduct() {
 
-        long productId = 1;
+        Long productId = 1L;
         Product mockProduct = new Product();
 
         when(productRepository.findById(productId)).thenReturn(java.util.Optional.of(mockProduct));
@@ -258,7 +258,7 @@ public class ProductServiceTest {
     @Test
     public void deleteProduct_shouldReturnFalseForNonExistingProduct() {
 
-        long productId = 1;
+        Long productId = 1L;
 
         when(productRepository.findById(productId)).thenReturn(java.util.Optional.empty());
 
@@ -272,7 +272,7 @@ public class ProductServiceTest {
     @Test
     public void deleteProduct_shouldReturnFalseForInvalidProductId() {
 
-        long invalidProductId = 0; // Invalid product ID
+        Long invalidProductId = 0L; // Invalid product ID
 
         boolean deletionSuccessful = productService.deleteProduct(invalidProductId);
 
