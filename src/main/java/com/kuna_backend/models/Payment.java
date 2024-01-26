@@ -21,7 +21,7 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column (name = "amount")
     private float amount;
@@ -55,7 +55,7 @@ public class Payment {
     @OneToOne(mappedBy = "payment")
     private Order order;
 
-    public Payment(long id, float amount, String currency, String stripeToken, String paymentStatus, String provider, Date paymentDate, LocalDateTime lastUpdate, Client client, Order order) {
+    public Payment(Long id, float amount, String currency, String stripeToken, String paymentStatus, String provider, Date paymentDate, LocalDateTime lastUpdate, Client client, Order order) {
         this.id = id;
         this.amount = amount;
         this.currency = currency;
@@ -72,11 +72,11 @@ public class Payment {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

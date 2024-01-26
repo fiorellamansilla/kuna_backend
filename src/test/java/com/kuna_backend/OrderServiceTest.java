@@ -74,7 +74,7 @@ public class OrderServiceTest {
             Order order = invocation.getArgument(0);
             if (order.getId() == 0) {
                 // Set the ID manually if it's not set (first invocation)
-                order.setId(1);
+                order.setId(1L);
             }
             return order;
         });

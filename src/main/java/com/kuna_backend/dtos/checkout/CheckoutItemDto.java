@@ -5,13 +5,13 @@ public class CheckoutItemDto {
     private String productName;
     private int quantity;
     private double price;
-    private long productVariationId;
-    private long clientId;
+    private Long productVariationId;
+    private Long clientId;
 
     public CheckoutItemDto() {
     }
 
-    public CheckoutItemDto(String productName, int quantity, double price, long productVariationId, long clientId) {
+    public CheckoutItemDto(String productName, int quantity, double price, Long productVariationId, Long clientId) {
         this.productName = productName;
         this.quantity = quantity;
         this.price = price;
@@ -43,19 +43,19 @@ public class CheckoutItemDto {
         this.price = price;
     }
 
-    public long getProductVariationId() {
+    public Long getProductVariationId() {
         return productVariationId;
     }
 
-    public void setProductVariationId(long productVariationId) {
+    public void setProductVariationId(Long productVariationId) {
         this.productVariationId = productVariationId;
     }
 
-    public long getClientId() {
+    public Long getClientId() {
         return clientId;
     }
 
-    public void setClientId(long clientId) {
+    public void setClientId(Long clientId) {
         this.clientId = clientId;
     }
 }

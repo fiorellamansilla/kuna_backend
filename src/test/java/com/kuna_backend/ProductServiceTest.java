@@ -121,9 +121,9 @@ public class ProductServiceTest {
         int pageSize = 10;
 
         Category category1 = new Category();
-        category1.setId(1);
+        category1.setId(1L);
         Category category2 = new Category();
-        category2.setId(2);
+        category2.setId(2L);
 
         List<Product> products = new ArrayList<>();
         products.add(new Product(new ProductDto(), category1));
