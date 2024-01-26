@@ -167,7 +167,7 @@ public class OrderServiceTest {
     @Test
     public void testGetOrder_ShouldReturnOrderById() throws OrderNotFoundException {
 
-        long orderId = 1;
+        Long orderId = 1L;
         Order expectedOrder = new Order();
 
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(expectedOrder));
@@ -180,7 +180,7 @@ public class OrderServiceTest {
     @Test
     public void testGetOrder_ShouldThrowOrderNotFoundExceptionForInvalidId() {
 
-        long orderId = 1;
+        Long orderId = 1L;
 
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
@@ -190,7 +190,7 @@ public class OrderServiceTest {
     @Test
     public void testDeleteOrder_ShouldDeleteOrderById() {
 
-        long orderId = 1;
+        Long orderId = 1L;
 
         orderService.deleteOrder(orderId);
 

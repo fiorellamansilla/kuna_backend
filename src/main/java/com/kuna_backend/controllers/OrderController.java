@@ -77,7 +77,7 @@ public class OrderController {
 
     // GET Order Items for an Order / Endpoint
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Object> getOrderById(@PathVariable ("id") long id, @RequestParam ("token") String token)
+    public ResponseEntity<Object> getOrderById(@PathVariable ("id") Long id, @RequestParam ("token") String token)
             throws AuthenticationFailException {
         // Validate token
         try {
@@ -98,7 +98,7 @@ public class OrderController {
 
     //DELETE one Order by ID / Endpoint
     @DeleteMapping(path = "/{id}")
-    public void delete (@PathVariable long id) {
+    public void delete (@PathVariable Long id) {
         orderService.deleteOrder(id);
     }
 
