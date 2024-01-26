@@ -19,7 +19,7 @@ public class AuthenticationToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column (name = "token", length = 256)
     private String token;
     @Column (name = "created_at")
@@ -37,11 +37,11 @@ public class AuthenticationToken {
     public AuthenticationToken() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -69,7 +69,7 @@ public class AuthenticationToken {
         this.client = client;
     }
 
-    public AuthenticationToken(Integer id, String token, Date createdAt, Client client) {
+    public AuthenticationToken(Long id, String token, Date createdAt, Client client) {
         this.id = id;
         this.token = token;
         this.createdAt = createdAt;
