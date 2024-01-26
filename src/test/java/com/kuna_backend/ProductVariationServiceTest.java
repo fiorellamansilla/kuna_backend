@@ -49,7 +49,7 @@ public class ProductVariationServiceTest {
         ProductVariation productVariation = new ProductVariation();
         Product product = new Product();
 
-        productVariation.setId(1);
+        productVariation.setId(1L);
         productVariation.setSize(Size.NEWBORN);
         productVariation.setProduct(product);
 
@@ -64,10 +64,10 @@ public class ProductVariationServiceTest {
     public void listProductVariations_ShouldReturnListOfProductVariationDtos() {
 
         Product product1 = new Product();
-        product1.setId(1);
+        product1.setId(1L);
 
         Product product2 = new Product();
-        product2.setId(2);
+        product2.setId(2L);
 
         List<ProductVariation> productVariations = new ArrayList<>();
         productVariations.add(new ProductVariation(new ProductVariationDto(), product1));

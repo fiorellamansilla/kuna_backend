@@ -72,7 +72,7 @@ public class OrderServiceTest {
         when(cartService.listCartItems(client)).thenReturn(cartDto);
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> {
             Order order = invocation.getArgument(0);
-            if (order.getId() == 0) {
+            if (order.getId() == null) {
                 // Set the ID manually if it's not set (first invocation)
                 order.setId(1L);
             }

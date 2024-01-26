@@ -60,7 +60,7 @@ public class ProductServiceTest {
         Product product = new Product();
         Category category = new Category();
 
-        product.setId(1);
+        product.setId(1L);
         product.setName("Example Product");
         product.setPrice(9.99);
         product.setCategory(category);
