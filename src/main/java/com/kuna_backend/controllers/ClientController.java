@@ -41,7 +41,7 @@ public class ClientController {
 
     // GET a Client by ID / Endpoint
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Client> get(@PathVariable long id) {
+    public ResponseEntity<Client> get(@PathVariable Long id) {
         try {
             Client client = clientService.getClient(id);
             return new ResponseEntity<Client>(client, HttpStatus.OK);
@@ -78,7 +78,7 @@ public class ClientController {
 
     // GET all Orders for a Client / One-to-many relationship Endpoint
     @GetMapping(path = "/{id}/orders")
-    public List<Order> retrieveOrdersForClient(@PathVariable long id) {
+    public List<Order> retrieveOrdersForClient(@PathVariable Long id) {
 
         Client client = clientService.getClient(id);
 
@@ -90,7 +90,7 @@ public class ClientController {
 
     //DELETE one Client by ID / Endpoint
     @DeleteMapping(path = "/{id}")
-    public void delete (@PathVariable long id) {
+    public void delete (@PathVariable Long id) {
         clientService.deleteClient(id);
     }
 }
