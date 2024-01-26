@@ -71,7 +71,7 @@ public class CategoryServiceTest {
     @Test
     public void testReadCategoryByCategoryId() {
 
-        long categoryId = 1;
+        Long categoryId = 1L;
         Optional<Category> category = Optional.of(new Category());
         when(categoryRepository.findById(categoryId)).thenReturn(category);
 
@@ -84,7 +84,7 @@ public class CategoryServiceTest {
     @Test
     public void testUpdateCategory() {
 
-        long categoryId = 1;
+        Long categoryId = 1L;
         Category existingCategory = new Category();
         Category newCategory = new Category();
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(existingCategory));
