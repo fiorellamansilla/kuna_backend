@@ -5,7 +5,7 @@ import com.kuna_backend.models.Product;
 import com.kuna_backend.models.ProductVariation;
 
 public class CartItemDto {
-    private long id;
+    private Long id;
     private int quantity;
     private Product product;
     private ProductVariation productVariation;
@@ -33,11 +33,11 @@ public class CartItemDto {
                 '}';
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

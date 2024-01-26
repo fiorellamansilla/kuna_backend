@@ -29,7 +29,7 @@ public class OrderTestDataBuilder {
         return cartDto;
     }
 
-    public static CartItemDto buildCartItemDto(int id, Product product, ProductVariation variation, int quantity) {
+    public static CartItemDto buildCartItemDto(Long id, Product product, ProductVariation variation, int quantity) {
         CartItemDto cartItemDto = new CartItemDto();
         cartItemDto.setId(id);
         cartItemDto.setProduct(product);
@@ -44,19 +44,19 @@ public class OrderTestDataBuilder {
         Product product1 = new Product();
         product1.setPrice(10.0);
         ProductVariation variation1 = new ProductVariation();
-        variation1.setId(1);
+        variation1.setId(1L);
         variation1.setProduct(product1);
         variation1.setQuantityStock(5);
-        CartItemDto cartItemDto1 = buildCartItemDto(1, product1, variation1, 2);
+        CartItemDto cartItemDto1 = buildCartItemDto(1L, product1, variation1, 2);
         cartItems.add(cartItemDto1);
 
         Product product2 = new Product();
         product2.setPrice(15.0);
         ProductVariation variation2 = new ProductVariation();
-        variation2.setId(2);
+        variation2.setId(2L);
         variation2.setProduct(product2);
         variation2.setQuantityStock(5);
-        CartItemDto cartItemDto2 = buildCartItemDto(2, product2, variation2, 1);
+        CartItemDto cartItemDto2 = buildCartItemDto(2L, product2, variation2, 1);
         cartItems.add(cartItemDto2);
 
         return cartItems;
