@@ -1,7 +1,0 @@
-
-ALTER TABLE payment
-    ADD COLUMN currency VARCHAR(32) NOT NULL,
-    ADD COLUMN stripe_id VARCHAR(256) NOT NULL;
-
-ALTER TABLE payment
-    MODIFY amount INT NOT NULL;
