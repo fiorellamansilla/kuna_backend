@@ -40,6 +40,7 @@ flyway {
     user = 'root'
     password = '19293119'
     schemas = ['kuna_db']
+    cleanDisabled = false
 }
 
 tasks.named('test') {
