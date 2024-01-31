@@ -11,6 +11,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -43,6 +45,10 @@ public class ShippingDetail {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column(name = "modified_at")
+    @UpdateTimestamp
+    private LocalDateTime modifiedAt;
+
     // One-to-One relationship with Client //
     @OneToOne
     @JoinColumn (name = "client_id", referencedColumnName = "id")
@@ -56,8 +62,7 @@ public class ShippingDetail {
     public ShippingDetail() {
     }
 
-
-    public ShippingDetail(String fullName, String address, String zipCode, String city, String country, String phone, LocalDateTime createdAt) {
+    public ShippingDetail(String fullName, String address, String zipCode, String city, String country, String phone, LocalDateTime createdAt, LocalDateTime modifiedAt) {
     }
 
     public Long getId() {
@@ -122,6 +127,14 @@ public class ShippingDetail {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     public Client getClient() {
