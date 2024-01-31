@@ -24,7 +24,7 @@ import java.util.List;
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "first_name", length = 64, nullable = false)
     private String firstName;
@@ -46,7 +46,7 @@ public class Client {
     private boolean isBlocked;
 
     @Column(name = "failed_attempts")
-    private Integer failedAttempts = 0;
+    private int failedAttempts = 0;
 
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
@@ -82,11 +82,11 @@ public class Client {
     public Client(String email, String password) {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -138,11 +138,11 @@ public class Client {
         isBlocked = blocked;
     }
 
-    public Integer getFailedAttempts() {
+    public int getFailedAttempts() {
         return failedAttempts;
     }
 
-    public void setFailedAttempts(Integer failedAttempts) {
+    public void setFailedAttempts(int failedAttempts) {
         this.failedAttempts = failedAttempts;
     }
 

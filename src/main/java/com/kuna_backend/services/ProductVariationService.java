@@ -25,7 +25,7 @@ public class ProductVariationService {
     }
 
     // Get a specific Product Variation by ID method
-    public ProductVariation getProductVariationById(Integer productVariationId) throws ProductNotExistsException {
+    public ProductVariation getProductVariationById(Long productVariationId) throws ProductNotExistsException {
         Optional<ProductVariation> optionalProductVariation = productVariationRepository.findById(productVariationId);
         // Check if the product variation exists
         if (optionalProductVariation.isEmpty()) {
@@ -47,7 +47,7 @@ public class ProductVariationService {
 
     //Update only certain attributes of a specific Product Variation
     @Transactional
-    public ProductVariation updateProductVariation(Integer productVariationId, ProductVariationDto updatedVariationDto) {
+    public ProductVariation updateProductVariation(Long productVariationId, ProductVariationDto updatedVariationDto) {
 
         if (updatedVariationDto == null) {
             throw new IllegalArgumentException("ProductVariationDto cannot be null for ID: " + productVariationId);
@@ -61,7 +61,7 @@ public class ProductVariationService {
         }
 
         /* Update only the attributes quantityStock or color from the existing Product Variation */
-        if (updatedVariationDto.getQuantityStock() != null){
+        if (updatedVariationDto.getQuantityStock() != 0){
             existingProductVariation.setQuantityStock(updatedVariationDto.getQuantityStock());
         }
 
@@ -74,7 +74,7 @@ public class ProductVariationService {
     }
 
     // Delete a specific productVariation by Id
-    public boolean deleteProductVariation (Integer productVariationId) {
+    public boolean deleteProductVariation (Long productVariationId) {
         Optional<ProductVariation> optionalProductVariation = productVariationRepository.findById(productVariationId);
 
         if(optionalProductVariation.isPresent()) {

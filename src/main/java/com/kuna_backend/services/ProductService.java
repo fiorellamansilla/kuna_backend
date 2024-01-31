@@ -45,7 +45,7 @@ public class ProductService {
     }
 
     // Retrieves a specific Product by ID without its Variations
-    public Product getProductById(Integer productId) throws ProductNotExistsException {
+    public Product getProductById(Long productId) throws ProductNotExistsException {
         // Fetch the product by ID
         Optional<Product> optionalProduct = productRepository.findById(productId);
         // Check if the product exists
@@ -56,7 +56,7 @@ public class ProductService {
     }
 
     // Retrieves a List of all the Products with Pagination
-    public List<ProductDto> listProducts(Integer pageNumber, Integer pageSize) {
+    public List<ProductDto> listProducts(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Product> productPage = productRepository.findAll(pageable);
         List<ProductDto> productDtos = new ArrayList<>();
@@ -68,7 +68,7 @@ public class ProductService {
     }
 
     // Update only the attributes from a specific Product by ID
-    public Product updateProductOnly(Integer productId, ProductDto updatedProductDto) {
+    public Product updateProductOnly(Long productId, ProductDto updatedProductDto) {
 
         // Retrieve the specific Product
         Product product = getProductById(productId);
@@ -76,7 +76,7 @@ public class ProductService {
         if (updatedProductDto.getName() != null) {
             product.setName(updatedProductDto.getName());
         }
-        if (updatedProductDto.getPrice() != null) {
+        if (updatedProductDto.getPrice() != 0) {
             product.setPrice(updatedProductDto.getPrice());
         }
         if (updatedProductDto.getDescription() != null) {
@@ -93,7 +93,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public boolean deleteProduct (Integer productId) {
+    public boolean deleteProduct (Long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
 
         if(optionalProduct.isPresent()) {
@@ -111,7 +111,7 @@ public class ProductService {
     }
 
     // Creates a Product Variation assigned to a specific Product when updating it.
-    public Product createProductVariationForProduct (Integer productId, ProductVariationDto productVariationDto) {
+    public Product createProductVariationForProduct (Long productId, ProductVariationDto productVariationDto) {
 
         // Retrieve the specific Product based on the ID.
         Product product = getProductById(productId);
@@ -130,7 +130,7 @@ public class ProductService {
     }
 
     // Retrieves a specific Product by ID with its Variations
-    public Product getProductByIdWithVariations(Integer productId) throws ProductNotExistsException {
+    public Product getProductByIdWithVariations(Long productId) throws ProductNotExistsException {
         // Fetch the product by ID
         Optional<Product> optionalProduct = productRepository.findByIdWithVariations(productId);
         // Check if the product exists

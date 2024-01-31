@@ -98,7 +98,7 @@ public class OrderService {
         return orderRepository.findAllByOrderStatus(orderStatus);
     }
 
-    public Order getOrder (Integer orderId) throws OrderNotFoundException {
+    public Order getOrder (Long orderId) throws OrderNotFoundException {
         Optional<Order> order = orderRepository.findById(orderId);
         if (order.isPresent()) {
             return order.get();
@@ -106,7 +106,7 @@ public class OrderService {
         throw new OrderNotFoundException("Order not found");
     }
 
-    public void deleteOrder (Integer id) {
+    public void deleteOrder (Long id) {
         orderRepository.deleteById(id);
     }
 }

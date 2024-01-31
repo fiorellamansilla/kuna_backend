@@ -4,8 +4,8 @@ import com.kuna_backend.models.Order;
 import org.jetbrains.annotations.NotNull;
 
 public class OrderDto {
-    private Integer id;
-    private @NotNull Integer clientId;
+    private Long id;
+    private @NotNull Long clientId;
 
     public OrderDto() {
     }
@@ -14,19 +14,19 @@ public class OrderDto {
         this.setId(order.getId());
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getClientId() {
+    public Long getClientId() {
         return clientId;
     }
 
-    public void setClientId(Integer clientId) {
+    public void setClientId(Long clientId) {
         this.clientId = clientId;
     }
 }

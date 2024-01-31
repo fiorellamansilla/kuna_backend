@@ -74,7 +74,7 @@ public class OrderServiceTest {
             Order order = invocation.getArgument(0);
             if (order.getId() == null) {
                 // Set the ID manually if it's not set (first invocation)
-                order.setId(1);
+                order.setId(1L);
             }
             return order;
         });
@@ -167,7 +167,7 @@ public class OrderServiceTest {
     @Test
     public void testGetOrder_ShouldReturnOrderById() throws OrderNotFoundException {
 
-        Integer orderId = 1;
+        Long orderId = 1L;
         Order expectedOrder = new Order();
 
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(expectedOrder));
@@ -180,7 +180,7 @@ public class OrderServiceTest {
     @Test
     public void testGetOrder_ShouldThrowOrderNotFoundExceptionForInvalidId() {
 
-        Integer orderId = 1;
+        Long orderId = 1L;
 
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
 
@@ -190,7 +190,7 @@ public class OrderServiceTest {
     @Test
     public void testDeleteOrder_ShouldDeleteOrderById() {
 
-        Integer orderId = 1;
+        Long orderId = 1L;
 
         orderService.deleteOrder(orderId);
 

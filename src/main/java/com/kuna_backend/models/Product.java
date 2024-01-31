@@ -25,13 +25,13 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column (name = "name_product", length = 128, nullable = false)
     private String name;
     @Column (name = "desc_product", length = 2048, nullable = false)
     private String description;
     @Column (name = "price", nullable = false)
-    private Double price;
+    private double price;
     @Column (name = "image_url", length = 256, nullable = false)
     private String imageUrl;
     @Column (name = "created_at")
@@ -57,7 +57,7 @@ public class Product {
         productVariations = new ArrayList<>();
     }
 
-    public Product(Integer id, String name, String description, Double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category) {
+    public Product(Long id, String name, String description, double price, String imageUrl, LocalDateTime createdAt, LocalDateTime modifiedAt, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -73,15 +73,15 @@ public class Product {
         productVariations = new ArrayList<>();
     }
 
-    public Product(Integer productId, ProductDto productDto, Category category) {
+    public Product(Long productId, ProductDto productDto, Category category) {
         productVariations = new ArrayList<>();
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -101,11 +101,11 @@ public class Product {
         this.description = description;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

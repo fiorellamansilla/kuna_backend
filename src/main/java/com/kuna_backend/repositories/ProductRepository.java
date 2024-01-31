@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository <Product, Integer> {
+public interface ProductRepository extends JpaRepository <Product, Long> {
 
     //Fetches the product along with its variations, in a single query
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.productVariations WHERE p.id = :productId")
-    Optional<Product> findByIdWithVariations(@Param("productId") Integer productId);
+    Optional<Product> findByIdWithVariations(@Param("productId") Long productId);
 }

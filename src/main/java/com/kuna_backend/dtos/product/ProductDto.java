@@ -5,12 +5,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class ProductDto {
 
-    private Integer id;
+    private Long id;
     private @NotNull String name;
-    private @NotNull Double price;
+    private @NotNull double price;
     private @NotNull String description;
     private @NotNull String imageUrl;
-    private @NotNull Integer categoryId;
+    private Long categoryId;
 
     public ProductDto(Product product) {
         this.setId(product.getId());
@@ -21,7 +21,7 @@ public class ProductDto {
         this.setCategoryId(product.getCategory().getId());
     }
 
-    public ProductDto(@NotNull String name, @NotNull Double price, @NotNull String description, @NotNull String imageUrl, @NotNull Integer categoryId) {
+    public ProductDto(@NotNull String name, @NotNull double price, @NotNull String description, @NotNull String imageUrl, @NotNull Long categoryId) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -32,11 +32,11 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -48,11 +48,11 @@ public class ProductDto {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -72,11 +72,11 @@ public class ProductDto {
         this.imageUrl = imageUrl;
     }
 
-    public Integer getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 }

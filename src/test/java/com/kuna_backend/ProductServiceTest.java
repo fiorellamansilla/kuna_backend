@@ -60,7 +60,7 @@ public class ProductServiceTest {
         Product product = new Product();
         Category category = new Category();
 
-        product.setId(1);
+        product.setId(1L);
         product.setName("Example Product");
         product.setPrice(9.99);
         product.setCategory(category);
@@ -94,7 +94,7 @@ public class ProductServiceTest {
     @Test
     public void testGetProductById() throws ProductNotExistsException {
 
-        Integer productId = 1;
+        Long productId = 1L;
         Product product = new Product();
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
@@ -117,13 +117,13 @@ public class ProductServiceTest {
     @Test
     public void listProducts_ShouldReturnListOfProductDtos() {
 
-        Integer pageNumber = 0;
-        Integer pageSize = 10;
+        int pageNumber = 0;
+        int pageSize = 10;
 
         Category category1 = new Category();
-        category1.setId(1);
+        category1.setId(1L);
         Category category2 = new Category();
-        category2.setId(2);
+        category2.setId(2L);
 
         List<Product> products = new ArrayList<>();
         products.add(new Product(new ProductDto(), category1));
@@ -158,7 +158,7 @@ public class ProductServiceTest {
     @Test
     public void testCreateProductVariationForProduct(){
 
-        Integer productId = 1;
+        Long productId = 1L;
         Product existingProduct = new Product();
 
         ProductVariationDto productVariationDto = new ProductVariationDto(10, NEWBORN, BEIGE, productId);
@@ -186,7 +186,7 @@ public class ProductServiceTest {
     @Test
     public void getProductByIdWithVariations_WithValidId_ShouldReturnProduct() throws ProductNotExistsException {
 
-        Integer productId = 1;
+        Long productId = 1L;
         Product product = new Product();
         when(productRepository.findByIdWithVariations(productId)).thenReturn(Optional.of(product));
 
@@ -198,7 +198,7 @@ public class ProductServiceTest {
     @Test
     public void getProductByIdWithVariations_WithInvalidId_ShouldThrowException() {
 
-        Integer productId = 1;
+        Long productId = 1L;
         when(productRepository.findByIdWithVariations(productId)).thenReturn(Optional.empty());
 
         assertThrows(ProductNotExistsException.class, () -> {
@@ -209,7 +209,7 @@ public class ProductServiceTest {
     @Test
     public void updateProductOnly_ShouldSaveModifiedProduct() {
 
-        Integer productId = 1;
+        Long productId = 1L;
 
         Product originalProduct = new Product();
         originalProduct.setId(productId);
@@ -243,7 +243,7 @@ public class ProductServiceTest {
     @Test
     public void deleteProduct_shouldReturnTrueForExistingProduct() {
 
-        Integer productId = 1;
+        Long productId = 1L;
         Product mockProduct = new Product();
 
         when(productRepository.findById(productId)).thenReturn(java.util.Optional.of(mockProduct));
@@ -258,7 +258,7 @@ public class ProductServiceTest {
     @Test
     public void deleteProduct_shouldReturnFalseForNonExistingProduct() {
 
-        Integer productId = 1;
+        Long productId = 1L;
 
         when(productRepository.findById(productId)).thenReturn(java.util.Optional.empty());
 
@@ -272,7 +272,7 @@ public class ProductServiceTest {
     @Test
     public void deleteProduct_shouldReturnFalseForInvalidProductId() {
 
-        Integer invalidProductId = null; // Invalid product ID
+        Long invalidProductId = 0L; // Invalid product ID
 
         boolean deletionSuccessful = productService.deleteProduct(invalidProductId);
 

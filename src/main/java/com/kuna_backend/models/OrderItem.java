@@ -21,13 +21,13 @@ public class OrderItem {
     @Id
     @Column (name = "order_item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column (name = "quantity", nullable = false)
-    private Integer quantity;
+    private int quantity;
 
     @Column (name = "price", nullable = false)
-    private Double price;
+    private double price;
 
     @Column (name = "created_at", nullable = false)
     private Date createdAt;
@@ -46,7 +46,7 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem (ProductVariation productVariation,Integer quantity, Double price, Order order, Date createdAt) {
+    public OrderItem (ProductVariation productVariation, int quantity, double price, Order order, Date createdAt) {
         this.productVariation = productVariation;
         this.quantity = quantity;
         this.price = price;
@@ -62,19 +62,19 @@ public class OrderItem {
         this.productVariation = productVariation;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
@@ -33,7 +33,7 @@ public class ProductVariationControllerTest {
     @Test
     public void getProductVariationById_shouldReturnProductVariationById() {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
         ProductVariation productVariation = new ProductVariation();
         when(productVariationService.getProductVariationById(productVariationId)).thenReturn(productVariation);
 
@@ -46,7 +46,7 @@ public class ProductVariationControllerTest {
     @Test
     public void updateProductVariation_shouldReturnSuccessResponse() {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
         ProductVariationDto updatedVariationDto = new ProductVariationDto();
 
         ProductVariation productVariation = new ProductVariation();
@@ -64,7 +64,7 @@ public class ProductVariationControllerTest {
     @Test
     public void updateProductVariation_shouldReturnBadRequestResponse() {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
         ProductVariationDto updatedVariationDto = null;
 
         doThrow(new IllegalArgumentException("ProductVariationDto cannot be null for ID: " + productVariationId))
@@ -81,7 +81,7 @@ public class ProductVariationControllerTest {
     @Test
     public void deleteProductVariationById_shouldReturnSuccessResponse() {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
 
         when(productVariationService.deleteProductVariation(productVariationId)).thenReturn(true);
 
@@ -96,7 +96,7 @@ public class ProductVariationControllerTest {
     @Test
     public void deleteProductVariationById_shouldReturnNotFoundResponseForNonExistingVariation() {
 
-        Integer productVariationId = 20;
+        Long productVariationId = 20L;
 
         when(productVariationService.deleteProductVariation(productVariationId)).thenReturn(false);
 
@@ -111,14 +111,14 @@ public class ProductVariationControllerTest {
     @Test
     public void deleteProductVariationById_shouldReturnBadRequestResponseForInvalidId() {
 
-        Integer productVariationId = -40;
+        Long productVariationId = -40L;
 
         ResponseEntity<ApiResponse> response = productVariationController.deleteProductVariationById(productVariationId);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(new ApiResponse(false, "Invalid product Variation ID"), response.getBody());
 
-        verify(productVariationService, never()).deleteProductVariation(anyInt());
+        verify(productVariationService, never()).deleteProductVariation(anyLong());
     }
 
 }

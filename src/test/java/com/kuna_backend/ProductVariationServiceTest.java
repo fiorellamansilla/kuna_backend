@@ -49,7 +49,7 @@ public class ProductVariationServiceTest {
         ProductVariation productVariation = new ProductVariation();
         Product product = new Product();
 
-        productVariation.setId(1);
+        productVariation.setId(1L);
         productVariation.setSize(Size.NEWBORN);
         productVariation.setProduct(product);
 
@@ -64,10 +64,10 @@ public class ProductVariationServiceTest {
     public void listProductVariations_ShouldReturnListOfProductVariationDtos() {
 
         Product product1 = new Product();
-        product1.setId(1);
+        product1.setId(1L);
 
         Product product2 = new Product();
-        product2.setId(2);
+        product2.setId(2L);
 
         List<ProductVariation> productVariations = new ArrayList<>();
         productVariations.add(new ProductVariation(new ProductVariationDto(), product1));
@@ -83,7 +83,7 @@ public class ProductVariationServiceTest {
     @Test
     public void getProductVariationById_WithValidId_ShouldReturnProductVariation() throws ProductNotExistsException {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
         ProductVariation productVariation = new ProductVariation();
 
         when(productVariationRepository.findById(productVariationId)).thenReturn(Optional.of(productVariation));
@@ -96,7 +96,7 @@ public class ProductVariationServiceTest {
     @Test
     public void getProductVariationById_WithInvalidId_ShouldThrowException() {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
 
         when(productVariationRepository.findById(productVariationId)).thenReturn(Optional.empty());
 
@@ -107,7 +107,7 @@ public class ProductVariationServiceTest {
     @Test
     public void updateProductVariation_SuccessfulUpdate() {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
         ProductVariation existingProductVariation = new ProductVariation();
         existingProductVariation.setId(productVariationId);
         existingProductVariation.setQuantityStock(5);
@@ -134,7 +134,7 @@ public class ProductVariationServiceTest {
     @Test
     public void updateProductVariation_ProductNotExistsException() {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
         ProductVariationDto updatedVariationDto = new ProductVariationDto();
 
         when(productVariationRepository.findById(productVariationId)).thenReturn(Optional.empty());
@@ -151,7 +151,7 @@ public class ProductVariationServiceTest {
     @Test
     void updateProductVariation_NullProductVariationDto() {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
 
         assertThrows(IllegalArgumentException.class, () -> {
             productVariationService.updateProductVariation(productVariationId, null);
@@ -162,7 +162,7 @@ public class ProductVariationServiceTest {
     @Test
     public void deleteProductVariation_shouldReturnTrueForExistingProductVariation() {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
         ProductVariation productVariation = new ProductVariation();
 
         when(productVariationRepository.findById(productVariationId)).thenReturn(java.util.Optional.of(productVariation));
@@ -177,7 +177,7 @@ public class ProductVariationServiceTest {
     @Test
     public void deleteProductVariation_shouldReturnFalseForNonExistingProduct() {
 
-        Integer productVariationId = 1;
+        Long productVariationId = 1L;
 
         when(productVariationRepository.findById(productVariationId)).thenReturn(java.util.Optional.empty());
 
@@ -191,7 +191,7 @@ public class ProductVariationServiceTest {
     @Test
     public void deleteProductVariation_shouldReturnFalseForInvalidProductVariationId() {
 
-        Integer invalidProductVariationId = null;
+        Long invalidProductVariationId = 0L;
 
         boolean deletionSuccessful = productVariationService.deleteProductVariation(invalidProductVariationId);
         assertFalse(deletionSuccessful);

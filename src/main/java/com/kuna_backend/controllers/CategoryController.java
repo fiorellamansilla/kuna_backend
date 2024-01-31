@@ -47,7 +47,7 @@ public class CategoryController {
 
     // UPDATE a specific category by ID -POST Endpoint//
     @PostMapping("/update/{categoryId}")
-    public ResponseEntity<ApiResponse> updateCategory(@PathVariable("categoryId") Integer categoryId, @RequestBody Category category) {
+    public ResponseEntity<ApiResponse> updateCategory(@PathVariable("categoryId") Long categoryId, @RequestBody Category category) {
 
         // Check if the category exists.
         if (Helper.notNull(categoryService.readCategory(categoryId))) {
