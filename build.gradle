@@ -1,6 +1,15 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.flywaydb:flyway-mysql:9.11.0'
+    }
+}
+
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.0.0'
+    id 'org.springframework.boot' version '3.2.0'
     id 'io.spring.dependency-management' version '1.1.0'
     id "org.flywaydb.flyway" version "9.11.0"
 }
@@ -14,23 +23,24 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.4'
-    implementation 'org.springframework.boot:spring-boot-starter-web:3.1.0'
-    implementation group: 'org.flywaydb', name: 'flyway-mysql', version: '9.8.1'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.2.0'
     implementation 'com.stripe:stripe-java:22.13.0'
     implementation 'org.jetbrains:annotations:24.0.1'
     implementation 'org.springframework.security:spring-security-crypto:6.0.2'
-    implementation 'junit:junit-dep:4.11'
     runtimeOnly 'mysql:mysql-connector-java:8.0.32'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.0'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.2.0'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+
 }
 
 flyway {
     url = 'jdbc:mysql://localhost:3306/kuna_db'
     user = 'root'
     password = '19293119'
-    schemas = ['kuna_database']
+    schemas = ['kuna_db']
+    cleanDisabled = false
 }
 
 tasks.named('test') {
