@@ -39,7 +39,6 @@ public class ProductController {
         return new ResponseEntity<List<ProductDto>>(body, HttpStatus.OK);
     }
 
-    // TODO: TEST GET ENDPOINT TO VERIFY IF THE PRODUCT VARIATION ARRAYLIST IS RETRIEVED
     //GET a Product by ID with its Variations / Endpoint
     @GetMapping(path = "/{id}")
     public ResponseEntity<Product> getProductByIdWithVariations(@PathVariable Long id) {
@@ -63,7 +62,6 @@ public class ProductController {
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "The Product has been created"), HttpStatus.CREATED);
     }
 
-    // TODO: TEST THIS POST ENDPOINT TO VERIFY IF PRODUCT VARIATION HAS BEEN CORRECTLY ASSIGNED TO A PRODUCT.
     // CREATE a Product Variation for a specific Product when updating it - Endpoint
     @PostMapping(path = "/{productId}/variations")
     public ResponseEntity<ApiResponse> createProductVariationForProduct(@PathVariable("productId") Long productId,
