@@ -61,7 +61,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void listProductVariations_ShouldReturnListOfProductVariationDtos() {
+    public void listProductVariations_ShouldReturnListOfProductVariations() {
 
         Product product1 = new Product();
         product1.setId(1L);
@@ -69,15 +69,15 @@ public class ProductVariationServiceTest {
         Product product2 = new Product();
         product2.setId(2L);
 
-        List<ProductVariation> productVariations = new ArrayList<>();
-        productVariations.add(new ProductVariation(new ProductVariationDto(), product1));
-        productVariations.add(new ProductVariation(new ProductVariationDto(), product2));
+        List<ProductVariation> mockedProductVariations = new ArrayList<>();
+        mockedProductVariations.add(new ProductVariation(new ProductVariationDto(), product1));
+        mockedProductVariations.add(new ProductVariation(new ProductVariationDto(), product2));
 
-        when(productVariationRepository.findAll()).thenReturn(productVariations);
+        when(productVariationRepository.findAll()).thenReturn(mockedProductVariations);
 
-        List<ProductVariationDto> productVariationDtos = productVariationService.listProductVariations();
+        List<ProductVariation> productVariations = productVariationService.listProductVariations();
 
-        assertEquals(productVariations.size(), productVariationDtos.size());
+        assertEquals(mockedProductVariations.size(), productVariations.size());
     }
 
     @Test
