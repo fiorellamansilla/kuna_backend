@@ -1,14 +1,15 @@
 package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 import java.util.Date;
 
@@ -26,13 +27,13 @@ public class Cart {
     @Column (name = "created_at")
     private Date createdAt;
 
-    // Many-to-one relationship with Product
+    // Many-to-one relationship with Product Variation
     @ManyToOne
     @JoinColumn (name = "product_variation_id", referencedColumnName = "id")
     private ProductVariation productVariation;
 
-    // Many-to-one relationship with Client
-    @ManyToOne
+    // One-to-one relationship with Client
+    @OneToOne
     @JoinColumn (name = "client_id")
     @JsonIgnore
     private Client client;

@@ -1,0 +1,14 @@
+
+CREATE TABLE client (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    first_name VARCHAR (64) NOT NULL,
+    last_name VARCHAR (64) NOT NULL,
+    password VARCHAR(256) NOT NULL,
+    email VARCHAR(64) NOT NULL,
+    role VARCHAR (64),
+    is_blocked TINYINT(1),
+    failed_attempts INT DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);

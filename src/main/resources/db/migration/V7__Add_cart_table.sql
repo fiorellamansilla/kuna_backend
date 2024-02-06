@@ -1,0 +1,11 @@
+
+CREATE TABLE cart (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    client_id BIGINT NOT NULL,
+    product_variation_id BIGINT NOT NULL,
+    quantity INT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (client_id) REFERENCES client (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (product_variation_id) REFERENCES product_variation (id) ON DELETE CASCADE ON UPDATE CASCADE
+);

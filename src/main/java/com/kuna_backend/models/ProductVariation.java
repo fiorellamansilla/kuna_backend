@@ -16,7 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "product_variations")
+@Table(name = "product_variation")
 public class ProductVariation {
 
     @Id
@@ -34,9 +34,9 @@ public class ProductVariation {
     @Column(name = "quantity_stock", nullable = false)
     private int quantityStock;
 
-    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JsonIgnore
     private Product product;
 
     public ProductVariation (ProductVariationDto productVariationDto, Product product) {

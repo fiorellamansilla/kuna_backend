@@ -9,11 +9,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "category")
 public class Category {
 
     @Id
@@ -28,6 +30,10 @@ public class Category {
 
     @Column(name = "image_url", length = 256)
     private String imageUrl;
+
+    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     Set<Product> products;
@@ -74,6 +80,14 @@ public class Category {
         this.imageUrl = imageUrl;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public Set<Product> getProducts() {
         return products;
     }
@@ -81,5 +95,4 @@ public class Category {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
-
 }

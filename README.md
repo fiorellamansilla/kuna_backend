@@ -67,7 +67,7 @@ To set up and run the application, follow the instructions below:
     url = 'jdbc:mysql://localhost:3306/kuna_db'
     user = 'root'
     password = 'your_password'
-    schemas = ['kuna_database']
+    schemas = ['kuna_db']
    }
    ```
    
@@ -94,15 +94,15 @@ The application requires the configuration specified in the application.properti
 
 The application uses the following libraries and frameworks:
 
-- Spring Boot: 3.0.0
-- Spring Boot Starter Data JPA: 3.0.4
-- Spring Boot Starter Web: 3.1.0
+- Spring Boot: 3.2.0
+- Spring Boot Starter Data JPA: 3.2.0
+- Spring Boot Starter Web: 3.2.0
 - Flyway: 9.11.0
-- Flyway MySQL: 9.8.1
+- Flyway MySQL: 9.11.0
 - Stripe Java: 22.13.0
 - Jetbrains Annotations: 24.0.1
 - Spring Security Crypto: 6.0.2
-- JUnit: 4.11
+- JUnit: 4.13.2
 - Mockito Core: 5.2.0
 - MySQL Connector/J: 8.0.32
 
