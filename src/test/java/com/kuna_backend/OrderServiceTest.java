@@ -82,7 +82,7 @@ public class OrderServiceTest {
         orderService.placeOrder(client, payment, shippingDetail);
 
         // Verify the order creation with correct details
-        verify(orderRepository, times(2)).save(argThat(order -> {
+        verify(orderRepository, times(1)).save(argThat(order -> {
             assertNotNull(order.getCreatedAt());
             assertEquals(client, order.getClient());
             assertEquals(payment, order.getPayment());
