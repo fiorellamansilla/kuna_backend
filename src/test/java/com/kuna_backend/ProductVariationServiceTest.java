@@ -105,7 +105,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void updateProductVariationSuccessfulUpdate() {
+    public void updateProductVariationWithSuccessfulUpdate() {
 
         Long productVariationId = 1L;
         ProductVariation existingProductVariation = new ProductVariation();
@@ -160,7 +160,7 @@ public class ProductVariationServiceTest {
 
 
     @Test
-    public void deleteProductVariationShouldReturnTrueForExistingProductVariation() {
+    public void deleteProductVariationShouldReturnTrueForExistingVariation() {
 
         Long productVariationId = 1L;
         ProductVariation productVariation = new ProductVariation();
@@ -175,7 +175,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void deleteProductVariationShouldReturnFalseForNonExistingProduct() {
+    public void deleteProductVariationShouldReturnFalseForNonExistingVariation() {
 
         Long productVariationId = 1L;
 
@@ -189,7 +189,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void deleteProductVariationWithInvalidProductVariationId() {
+    public void deleteProductVariationWithInvalidId() {
 
         Long invalidProductVariationId = 0L;
 
