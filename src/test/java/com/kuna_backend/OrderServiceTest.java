@@ -60,7 +60,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testPlaceOrder_ShouldCreateNewOrderWithCorrectDetails() {
+    public void placeOrderShouldCreateNewOrder() {
 
         Client client = new Client();
         Payment payment = new Payment();
@@ -94,7 +94,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testPlaceOrder_ShouldCreateOrderItemsForCartItems() {
+    public void placeOrderShouldCreateOrderItemsForCartItems() {
 
         Client client = new Client();
         Payment payment = new Payment();
@@ -122,7 +122,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testPlaceOrder_ShouldDeleteCartItemsAfterOrderPlacement() {
+    public void placeOrderShouldDeleteCartItemsAfterOrderPlacement() {
 
         Client client = new Client();
         Payment payment = new Payment();
@@ -139,7 +139,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testListOrders_ShouldReturnAllOrdersForClient() {
+    public void listOrdersForClient() {
 
         Client client = new Client();
         List<Order> expectedOrders = new ArrayList<>();
@@ -152,7 +152,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testListOrdersByStatus_ShouldReturnAllOrdersWithGivenStatus() {
+    public void listOrdersByStatus() {
 
         OrderStatus orderStatus = OrderStatus.CONFIRMED;
         List<Order> expectedOrders = new ArrayList<>();
@@ -165,7 +165,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testGetOrder_ShouldReturnOrderById() throws OrderNotFoundException {
+    public void getOrderWithValidId() throws OrderNotFoundException {
 
         Long orderId = 1L;
         Order expectedOrder = new Order();
@@ -178,7 +178,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testGetOrder_ShouldThrowOrderNotFoundExceptionForInvalidId() {
+    public void getOrderWithInvalidId() {
 
         Long orderId = 1L;
 
@@ -188,7 +188,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void testDeleteOrder_ShouldDeleteOrderById() {
+    public void deleteOrderById() {
 
         Long orderId = 1L;
 

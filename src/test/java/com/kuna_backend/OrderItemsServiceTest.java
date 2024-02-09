@@ -29,7 +29,7 @@ public class OrderItemsServiceTest {
     }
 
     @Test
-    public void testAddOrderedItems() {
+    public void addOrderedItems() {
 
         OrderItem orderItem = new OrderItem();
 
