@@ -34,8 +34,6 @@ public class OrderService {
     @Autowired
     ProductVariationRepository productVariationRepository;
 
-
-    @Transactional
     public void placeOrder (Client client, Payment payment, ShippingDetail shippingDetail) {
 
         CartDto cartDto = cartService.listCartItems(client);
@@ -46,9 +44,9 @@ public class OrderService {
         newOrder.setPayment(payment);
         newOrder.setTotalAmount(cartDto.getTotalCost());
         newOrder.setOrderStatus(OrderStatus.CONFIRMED);
-        // Generate a tracking number for the Order
+        // Generate tracking number
         newOrder.generateTrackingNumber();
-        // Set the shipping details of a specific Client for the Order
+        // Set the shipping detail of the Client who places the Order
         newOrder.setShippingDetail(shippingDetail);
 
         orderRepository.save(newOrder);
@@ -67,7 +65,7 @@ public class OrderService {
             orderItemsRepository.save(orderItem);
         }
 
-        // Update the quantity stock of each product variation when the order is placed
+        // Update the quantity stock of each product variation after the order is placed
         updateProductVariationQuantityStock(cartDto);
 
         // Delete items from cart after the client has placed the order
