@@ -31,7 +31,7 @@ public class ProductVariationControllerTest {
     private ProductVariationController productVariationController;
 
     @Test
-    public void getProductVariationById_shouldReturnProductVariationById() {
+    public void getProductVariationById() {
 
         Long productVariationId = 1L;
         ProductVariation productVariation = new ProductVariation();
@@ -44,7 +44,7 @@ public class ProductVariationControllerTest {
     }
 
     @Test
-    public void updateProductVariation_shouldReturnSuccessResponse() {
+    public void updateProductVariationShouldReturnSuccessResponse() {
 
         Long productVariationId = 1L;
         ProductVariationDto updatedVariationDto = new ProductVariationDto();
@@ -62,7 +62,7 @@ public class ProductVariationControllerTest {
     }
 
     @Test
-    public void updateProductVariation_shouldReturnBadRequestResponse() {
+    public void updateProductVariationShouldReturnBadRequestResponse() {
 
         Long productVariationId = 1L;
         ProductVariationDto updatedVariationDto = null;
@@ -79,7 +79,7 @@ public class ProductVariationControllerTest {
     }
 
     @Test
-    public void deleteProductVariationById_shouldReturnSuccessResponse() {
+    public void deleteProductVariationByValidId() {
 
         Long productVariationId = 1L;
 
@@ -94,7 +94,7 @@ public class ProductVariationControllerTest {
     }
 
     @Test
-    public void deleteProductVariationById_shouldReturnNotFoundResponseForNonExistingVariation() {
+    public void deleteProductVariationByIdShouldReturnNotFoundResponse() {
 
         Long productVariationId = 20L;
 
@@ -109,7 +109,7 @@ public class ProductVariationControllerTest {
     }
 
     @Test
-    public void deleteProductVariationById_shouldReturnBadRequestResponseForInvalidId() {
+    public void deleteProductVariationByInvalidId() {
 
         Long productVariationId = -40L;
 
