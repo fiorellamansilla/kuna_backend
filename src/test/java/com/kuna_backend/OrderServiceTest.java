@@ -178,7 +178,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void getOrderWithInvalidId() {
+    public void getOrderWithInvalidId() throws OrderNotFoundException {
 
         Long orderId = 1L;
 
