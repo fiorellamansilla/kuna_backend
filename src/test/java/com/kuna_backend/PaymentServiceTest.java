@@ -54,7 +54,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    void createPriceData_ShouldCreatePriceDataSuccessfully() {
+    void createPriceData() {
 
         CheckoutItemDto checkoutItemDto = new CheckoutItemDto();
         checkoutItemDto.setProductName("Product 1");
@@ -69,7 +69,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    void createSessionLineItem_ShouldCreateSessionLineItemSuccessfully() {
+    void createSessionLineItem() {
 
         CheckoutItemDto checkoutItemDto = new CheckoutItemDto();
         checkoutItemDto.setProductName("Product 1");
@@ -84,7 +84,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void createSession_ShouldCreateSessionSuccessfully() throws StripeException {
+    public void createCheckoutSession() throws StripeException {
 
         String successURL = paymentService.baseURL + "payment/success";
         String failureURL = paymentService.baseURL + "payment/failed";
@@ -128,7 +128,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void savePaymentFromSession_ShouldSavePaymentSuccessfully() throws StripeException {
+    public void savePaymentFromCheckoutSession() throws StripeException {
 
         String stripeToken = "cs_test_a14LmWmbRX68zuH7z45k2cosRfWoq5sTE1srkhuekLlzhHzgI1Hu6Dqh9M";
 
@@ -158,7 +158,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void testGetAllPayments() {
+    public void getAllPayments() {
 
         List<Payment> paymentList = new ArrayList<>();
         when(paymentRepository.findAll()).thenReturn(paymentList);
@@ -170,7 +170,7 @@ public class PaymentServiceTest {
     }
 
     @Test
-    public void testGetPaymentById() {
+    public void getPaymentById() {
 
         String stripeToken = "test_token";
         Payment payment = new Payment();
