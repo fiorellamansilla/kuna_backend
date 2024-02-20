@@ -45,7 +45,7 @@ public class CartServiceTest {
     }
 
     @Test
-    public void testAddToCart() {
+    public void addToCart() {
 
         AddToCartDto addToCartDto = new AddToCartDto();
         ProductVariation productVariation = new ProductVariation();
@@ -63,7 +63,7 @@ public class CartServiceTest {
     }
 
     @Test
-    public void testListCartItems() {
+    public void listCartItems() {
 
         Client client = new Client();
 
@@ -113,7 +113,7 @@ public class CartServiceTest {
     }
 
     @Test
-    public void testDeleteCartItem_Exists() throws CartItemNotExistException {
+    public void deleteCartItemIfExist() throws CartItemNotExistException {
 
         Long id = 1L;
         when(cartRepository.existsById(id)).thenReturn(true);
@@ -124,7 +124,7 @@ public class CartServiceTest {
     }
 
     @Test
-    public void testDeleteCartItem_NotExist() {
+    public void deleteCartItemIfNotExist() {
 
         Long id = 1L;
         when(cartRepository.existsById(id)).thenReturn(false);
@@ -135,7 +135,7 @@ public class CartServiceTest {
     }
 
     @Test
-    public void testDeleteCartItems() {
+    public void deleteCartItems() {
 
         cartService.deleteCartItems(123L);
 
@@ -143,7 +143,7 @@ public class CartServiceTest {
     }
 
     @Test
-    public void testDeleteClientCartItems() {
+    public void deleteClientCartItems() {
 
         Client client = new Client();
 

@@ -32,7 +32,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void testListCategories() {
+    public void listCategories() {
 
         Category category1 = new Category();
         Category category2 = new Category();
@@ -46,7 +46,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void testCreateCategory() {
+    public void createCategory() {
 
         Category category = new Category();
 
@@ -56,7 +56,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void testReadCategoryByCategoryName() {
+    public void readCategoryByCategoryName() {
 
         String categoryName = "exampleCategoryName";
         Category category = new Category();
@@ -69,7 +69,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void testReadCategoryByCategoryId() {
+    public void readCategoryById() {
 
         Long categoryId = 1L;
         Optional<Category> category = Optional.of(new Category());
@@ -82,7 +82,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void testUpdateCategory() {
+    public void updateCategory() {
 
         Long categoryId = 1L;
         Category existingCategory = new Category();

@@ -72,7 +72,6 @@ public class ProductController {
 
     }
 
-    // TODO: TEST THIS POST ENDPOINT TO VERIFY THAT ONLY ATTRIBUTES FROM THE PRODUCT HAVE BEEN UPDATED.
     // UPDATE only the attributes from a specific Product by ID - Endpoint
     @PostMapping(path = "/update/{productId}")
     public ResponseEntity<ApiResponse> updateProductOnly(@PathVariable("productId") Long productId, @RequestBody ProductDto productDto) {

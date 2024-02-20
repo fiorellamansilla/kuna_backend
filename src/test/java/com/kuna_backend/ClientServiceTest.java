@@ -54,7 +54,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void signUp_WithNonExistingEmail_ShouldRegisterClientAndReturnSuccessResponse() throws CustomException {
+    public void signUpWithNonExistingEmail() throws CustomException {
 
         SignupDto signupDto = new SignupDto("John", "Doe", "john@example.com", "password");
 
@@ -74,7 +74,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void signUp_WithExistingEmail_ShouldThrowCustomException() {
+    public void signUpWithExistingEmail() {
 
         String existingEmail = "existing@example.com";
         Client existingClient = new Client("John", "Doe", existingEmail, "password");
@@ -90,7 +90,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void signUp_WithExceptionOnSave_ShouldThrowCustomException() {
+    public void signUpWithExceptionOnSave() {
 
         SignupDto signupDto = new SignupDto("John", "Doe", "john@example.com", "password");
 
@@ -106,7 +106,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    void signIn_WithValidCredentials_ReturnsToken() {
+    void signInWithValidCredentials() {
 
         String email = "example@test.com";
         String password = "password_test";
@@ -137,7 +137,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void signIn_WithInvalidEmail_ShouldThrowAuthenticationFailException() {
+    public void signInWithInvalidEmail() {
 
         // Create a test SignInDto with an invalid email
         SignInDto signInDto = new SignInDto("invalid_email@example.com", "password");
@@ -153,7 +153,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void signIn_WithInvalidPassword_ShouldThrowAuthenticationFailException() {
+    public void signInWithInvalidPassword() {
 
         SignInDto signInDto = new SignInDto("john@example.com", "invalid_password");
 
@@ -181,7 +181,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void hashPassword_WithBlankPassword_ShouldThrowIllegalArgumentException() {
+    public void hashPasswordWithBlankPassword() {
 
         String password = "";
 
@@ -190,7 +190,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void hashPassword_WithValidPassword_ShouldReturnHashedPassword() {
+    public void hashPasswordWithValidPassword() {
 
         String password = "password";
         String hashedPassword = clientService.hashPassword(password);
@@ -202,7 +202,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void getAllClients_ShouldReturnListOfClients() {
+    public void getAllClients() {
 
         when(clientRepository.findAll()).thenReturn(java.util.List.of(new Client(), new Client()));
 
@@ -214,7 +214,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void getClient_WithValidId_ShouldReturnClient() {
+    public void getClientWithValidId() {
 
         Long clientId = 1L;
         Client client = new Client();
@@ -228,7 +228,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void getClient_WithInvalidId_ShouldThrowNoSuchElementException() {
+    public void getClientWithInvalidId() {
 
         Long clientId = 1L;
 
@@ -240,7 +240,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void deleteClient_WithValidId_ShouldDeleteClient() {
+    public void deleteClientWithValidId() {
 
         Long clientId = 1L;
 

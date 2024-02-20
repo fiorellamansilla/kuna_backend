@@ -34,7 +34,7 @@ public class ShippingDetailServiceTest {
     }
 
     @Test
-    public void testAddShippingDetail() {
+    public void addShippingDetail() {
 
         ShippingDetailDto shippingDetailDto = new ShippingDetailDto();
         shippingDetailDto.setFullName("John Doe");
@@ -71,7 +71,7 @@ public class ShippingDetailServiceTest {
     }
 
     @Test
-    public void testGetAllShippingDetails() {
+    public void getAllShippingDetails() {
 
         List<ShippingDetail> shippingDetails = new ArrayList<>();
         when(shippingDetailRepository.findAll()).thenReturn(shippingDetails);
@@ -84,7 +84,7 @@ public class ShippingDetailServiceTest {
     }
 
     @Test
-    public void testGetShippingDetail_ValidId() throws ClassNotFoundException {
+    public void getShippingDetailWithValidId() throws ClassNotFoundException {
 
         ShippingDetail shippingDetail = new ShippingDetail();
         Long shippingDetailId = 1L;
@@ -99,7 +99,7 @@ public class ShippingDetailServiceTest {
     }
 
     @Test
-    public void testGetShippingDetail_InvalidId() {
+    public void getShippingDetailWithInvalidId() {
 
         Long invalidId = 999L;
 

@@ -34,27 +34,27 @@ public class OrderService {
     @Autowired
     ProductVariationRepository productVariationRepository;
 
-
     public void placeOrder (Client client, Payment payment, ShippingDetail shippingDetail) {
 
-        // Retrieve cart items for the Client
         CartDto cartDto = cartService.listCartItems(client);
-        List<CartItemDto> cartItemDtoList = cartDto.getCartItems();
 
-        // Create the Order and Save it
         Order newOrder = new Order();
         newOrder.setCreatedAt(new Date());
         newOrder.setClient(client);
         newOrder.setPayment(payment);
         newOrder.setTotalAmount(cartDto.getTotalCost());
         newOrder.setOrderStatus(OrderStatus.CONFIRMED);
-
         // Generate tracking number
         newOrder.generateTrackingNumber();
+        // Set the shipping detail of the Client who places the Order
+        newOrder.setShippingDetail(shippingDetail);
+
         orderRepository.save(newOrder);
 
+        List<CartItemDto> cartItemDtoList = cartDto.getCartItems();
+
         for (CartItemDto cartItemDto : cartItemDtoList) {
-            // Create OrderItem and Save each one
+
             OrderItem orderItem = new OrderItem();
             orderItem.setCreatedAt(new Date());
             orderItem.setPrice(cartItemDto.getProduct().getPrice());
@@ -65,11 +65,7 @@ public class OrderService {
             orderItemsRepository.save(orderItem);
         }
 
-        // Set the shipping details for the Order
-        newOrder.setShippingDetail(shippingDetail);
-        orderRepository.save(newOrder);
-
-        // Update the quantity stock of each product variation when the order is placed
+        // Update the quantity stock of each product variation after the order is placed
         updateProductVariationQuantityStock(cartDto);
 
         // Delete items from cart after the client has placed the order

@@ -43,7 +43,7 @@ public class ProductControllerTest {
     private ProductController productController;
 
     @Test
-    public void getProducts_ShouldReturnProductList() {
+    public void listProducts() {
 
         List<ProductDto> productList = new ArrayList<>();
         when(productService.listProducts(0,10)).thenReturn(productList);
@@ -56,7 +56,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void getProductByIdWithVariations_shouldReturnProductById() {
+    public void getProductByValidIdWithVariations() {
 
         Long productId = 1L;
         Product product = new Product();
@@ -69,7 +69,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void getProductByIdWithVariations_shouldReturnNotFoundWhenNoSuchElementExceptionThrown() {
+    public void getProductByInvalidIdWithVariations() {
 
         Long productId = 1L;
         when(productService.getProductByIdWithVariations(productId)).thenThrow(new NoSuchElementException());
@@ -80,7 +80,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void createProduct_shouldReturnSuccessResponse() {
+    public void createProductShouldReturnSuccessResponse() {
 
         ProductDto productDto = new ProductDto();
         productDto.setCategoryId(1L);
@@ -98,7 +98,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void createProduct_shouldReturnConflictResponseWhenInvalidCategory() {
+    public void createProductShouldReturnConflictResponse() {
 
         ProductDto productDto = new ProductDto();
         productDto.setCategoryId(90L);
@@ -116,7 +116,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void createProductVariationForProduct_shouldReturnSuccessResponse() {
+    public void createProductVariationForProduct() {
 
         Long productId = 1L;
         ProductVariationDto productVariationDto = new ProductVariationDto();
@@ -131,7 +131,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void updateProductOnly_shouldReturnSuccessResponse() {
+    public void updateProductAttributesOnly() {
 
         Long productId = 1L;
         ProductDto productDto = new ProductDto();
@@ -149,7 +149,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void updateProductOnly_shouldReturnNotFoundResponseWhenInvalidCategory() {
+    public void updateProductOnlyWithInvalidCategory() {
 
         Long productId = 1L;
         ProductDto productDto = new ProductDto();
@@ -167,7 +167,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void deleteProductById_shouldReturnSuccessResponse() {
+    public void deleteProductByValidId() {
 
         Long productId = 1L;
 
@@ -182,7 +182,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void deleteProductById_shouldReturnNotFoundResponseForNonExistingProduct() {
+    public void deleteProductByIdShouldReturnNotFoundResponse() {
 
         Long productId = 2L;
 
@@ -197,7 +197,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void deleteProductById_shouldReturnBadRequestResponseForInvalidProductId() {
+    public void deleteProductWithInvalidId() {
 
         Long productId = -90L;
 

@@ -41,9 +41,9 @@ public class ProductVariationController {
 
     // GET All Product Variations - Endpoint
     @GetMapping(path = "/all")
-    public ResponseEntity<List<ProductVariationDto>> getProductVariations() {
-        List<ProductVariationDto> body = productVariationService.listProductVariations();
-        return new ResponseEntity<List<ProductVariationDto>>(body, HttpStatus.OK);
+    public ResponseEntity<List<ProductVariation>> getProductVariations() {
+        List<ProductVariation> body = productVariationService.listProductVariations();
+        return new ResponseEntity<List<ProductVariation>>(body, HttpStatus.OK);
     }
 
     //UPDATE a Product Variation by ID - Put Endpoint

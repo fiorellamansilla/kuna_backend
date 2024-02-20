@@ -14,6 +14,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "product_variation")
@@ -34,6 +38,14 @@ public class ProductVariation {
     @Column(name = "quantity_stock", nullable = false)
     private int quantityStock;
 
+    @Column (name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column (name = "modified_at")
+    @UpdateTimestamp
+    private LocalDateTime modifiedAt;
+
     @ManyToOne()
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @JsonIgnore
@@ -45,11 +57,13 @@ public class ProductVariation {
         this.quantityStock = productVariationDto.getQuantityStock();
         this.product = product;
     }
-    public ProductVariation(Long id, Size size, Color color, int quantityStock, Product product) {
+    public ProductVariation(Long id, Size size, Color color, int quantityStock, LocalDateTime createdAt, LocalDateTime modifiedAt, Product product) {
         this.id = id;
         this.size = size;
         this.color = color;
         this.quantityStock = quantityStock;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
         this.product = product;
     }
 
@@ -86,6 +100,22 @@ public class ProductVariation {
 
     public void setQuantityStock(int quantityStock) {
         this.quantityStock = quantityStock;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     public Product getProduct() {

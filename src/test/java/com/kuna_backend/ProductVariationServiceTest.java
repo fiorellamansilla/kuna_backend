@@ -44,7 +44,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void testGetDtoFromProductVariation() {
+    public void getDtoFromProductVariation() {
 
         ProductVariation productVariation = new ProductVariation();
         Product product = new Product();
@@ -61,7 +61,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void listProductVariations_ShouldReturnListOfProductVariationDtos() {
+    public void listProductVariations() {
 
         Product product1 = new Product();
         product1.setId(1L);
@@ -69,19 +69,19 @@ public class ProductVariationServiceTest {
         Product product2 = new Product();
         product2.setId(2L);
 
-        List<ProductVariation> productVariations = new ArrayList<>();
-        productVariations.add(new ProductVariation(new ProductVariationDto(), product1));
-        productVariations.add(new ProductVariation(new ProductVariationDto(), product2));
+        List<ProductVariation> mockedProductVariations = new ArrayList<>();
+        mockedProductVariations.add(new ProductVariation(new ProductVariationDto(), product1));
+        mockedProductVariations.add(new ProductVariation(new ProductVariationDto(), product2));
 
-        when(productVariationRepository.findAll()).thenReturn(productVariations);
+        when(productVariationRepository.findAll()).thenReturn(mockedProductVariations);
 
-        List<ProductVariationDto> productVariationDtos = productVariationService.listProductVariations();
+        List<ProductVariation> productVariations = productVariationService.listProductVariations();
 
-        assertEquals(productVariations.size(), productVariationDtos.size());
+        assertEquals(mockedProductVariations.size(), productVariations.size());
     }
 
     @Test
-    public void getProductVariationById_WithValidId_ShouldReturnProductVariation() throws ProductNotExistsException {
+    public void getProductVariationByValidId() throws ProductNotExistsException {
 
         Long productVariationId = 1L;
         ProductVariation productVariation = new ProductVariation();
@@ -94,7 +94,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void getProductVariationById_WithInvalidId_ShouldThrowException() {
+    public void getProductVariationByInvalidId() {
 
         Long productVariationId = 1L;
 
@@ -105,7 +105,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void updateProductVariation_SuccessfulUpdate() {
+    public void updateProductVariationWithSuccessfulUpdate() {
 
         Long productVariationId = 1L;
         ProductVariation existingProductVariation = new ProductVariation();
@@ -132,7 +132,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void updateProductVariation_ProductNotExistsException() {
+    public void updateProductVariationReturnProductNotExistsException() {
 
         Long productVariationId = 1L;
         ProductVariationDto updatedVariationDto = new ProductVariationDto();
@@ -149,7 +149,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    void updateProductVariation_NullProductVariationDto() {
+    void updateProductVariationWhenNullProductVariationDto() {
 
         Long productVariationId = 1L;
 
@@ -160,7 +160,7 @@ public class ProductVariationServiceTest {
 
 
     @Test
-    public void deleteProductVariation_shouldReturnTrueForExistingProductVariation() {
+    public void deleteProductVariationShouldReturnTrueForExistingVariation() {
 
         Long productVariationId = 1L;
         ProductVariation productVariation = new ProductVariation();
@@ -175,7 +175,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void deleteProductVariation_shouldReturnFalseForNonExistingProduct() {
+    public void deleteProductVariationShouldReturnFalseForNonExistingVariation() {
 
         Long productVariationId = 1L;
 
@@ -189,7 +189,7 @@ public class ProductVariationServiceTest {
     }
 
     @Test
-    public void deleteProductVariation_shouldReturnFalseForInvalidProductVariationId() {
+    public void deleteProductVariationWithInvalidId() {
 
         Long invalidProductVariationId = 0L;
 

@@ -38,7 +38,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void testSaveConfirmationToken() {
+    public void saveConfirmationToken() {
         AuthenticationToken authenticationToken = new AuthenticationToken();
         when(repository.save(authenticationToken)).thenReturn(authenticationToken);
 
@@ -48,7 +48,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void testGetToken() {
+    public void getToken() {
         Client client = new Client();
         AuthenticationToken expectedToken = new AuthenticationToken();
         when(repository.findTokenByClient(client)).thenReturn(expectedToken);
@@ -60,7 +60,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void testGetClientWhenTokenExists() {
+    public void getClientWhenTokenExists() {
         String token = "validToken";
         Client expectedClient = new Client();
 
@@ -77,7 +77,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void testGetClientWhenTokenDoesNotExist() {
+    public void getClientWhenTokenDoesNotExist() {
         String token = "invalidToken";
 
         when(repository.findTokenByToken(token)).thenReturn(null);
@@ -89,7 +89,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void testAuthenticateWithValidToken() {
+    public void authenticateWithValidToken() {
         String token = "validToken";
         Client client = new Client();
 
@@ -106,7 +106,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void testAuthenticateWithNullToken() {
+    public void authenticateWithNullToken() {
         String token = null;
 
         AuthenticationFailException exception = assertThrows(AuthenticationFailException.class, () -> authenticationService.authenticate(token));
@@ -118,7 +118,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    public void testAuthenticateWithInvalidToken() {
+    public void authenticateWithInvalidToken() {
         String token = "invalidToken";
 
         when(repository.findTokenByToken(token)).thenReturn(null);
