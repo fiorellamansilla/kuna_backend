@@ -1,6 +1,5 @@
 package com.kuna_backend.controllers;
 
-import com.kuna_backend.dtos.checkout.CheckoutItemDto;
 import com.kuna_backend.dtos.checkout.StripeResponse;
 import com.kuna_backend.exceptions.AuthenticationFailException;
 import com.kuna_backend.models.Client;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,9 +32,13 @@ public class PaymentController {
 
     // Stripe Create Session Api
     @PostMapping("/create-checkout-session")
-    public ResponseEntity<StripeResponse> checkoutList(@RequestBody List<CheckoutItemDto> checkoutItemDtoList) throws StripeException {
+    public ResponseEntity<StripeResponse> checkoutList(@RequestParam("token") String token) throws AuthenticationFailException, StripeException {
+
+        authenticationService.authenticate(token);
+        Client client = authenticationService.getClient(token);
+
         // Create the Stripe session
-        Session session = paymentService.createSession(checkoutItemDtoList);
+        Session session = paymentService.createSession(client);
         StripeResponse stripeResponse = new StripeResponse(session.getId());
         // Send the Stripe session id in response
         return new ResponseEntity<StripeResponse>(stripeResponse, HttpStatus.OK);
