@@ -1,5 +1,7 @@
 package com.kuna_backend.dtos.checkout;
 
+import com.kuna_backend.models.Cart;
+
 public class CheckoutItemDto {
 
     private String productName;
@@ -11,12 +13,12 @@ public class CheckoutItemDto {
     public CheckoutItemDto() {
     }
 
-    public CheckoutItemDto(String productName, int quantity, double price, Long productVariationId, Long clientId) {
-        this.productName = productName;
-        this.quantity = quantity;
-        this.price = price;
-        this.productVariationId = productVariationId;
-        this.clientId = clientId;
+    public CheckoutItemDto(Cart cart) {
+        this.productName = cart.getProductVariation().getProduct().getName();
+        this.quantity = cart.getQuantity();
+        this.price = cart.getProductVariation().getProduct().getPrice();
+        this.productVariationId = cart.getProductVariation().getId();
+        this.clientId = cart.getClient().getId();
     }
 
     public String getProductName() {
