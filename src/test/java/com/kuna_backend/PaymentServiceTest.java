@@ -151,13 +151,9 @@ public class PaymentServiceTest {
         productVariation.setId(1L);
         productVariation.setProduct(product);
 
-        Client client = new Client();
-        client.setId(1L);
-
         Cart cart = new Cart();
         cart.setQuantity(4);
         cart.setProductVariation(productVariation);
-        cart.setClient(client);
 
         CheckoutItemDto checkoutItemDto = PaymentService.getDtoFromCart(cart);
 
@@ -165,7 +161,6 @@ public class PaymentServiceTest {
         assertEquals(cart.getQuantity(), checkoutItemDto.getQuantity());
         assertEquals(cart.getProductVariation().getProduct().getPrice(), checkoutItemDto.getPrice());
         assertEquals(cart.getProductVariation().getId(), checkoutItemDto.getProductVariationId());
-        assertEquals(cart.getClient().getId(), checkoutItemDto.getClientId());
 
     }
 

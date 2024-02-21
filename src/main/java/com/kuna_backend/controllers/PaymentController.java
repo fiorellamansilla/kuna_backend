@@ -32,7 +32,7 @@ public class PaymentController {
 
     // Stripe Create Session Api
     @PostMapping("/create-checkout-session")
-    public ResponseEntity<StripeResponse> checkoutList(@RequestParam("token") String token) throws AuthenticationFailException, StripeException {
+    public ResponseEntity<StripeResponse> checkoutList(@RequestParam("token") String token) throws AuthenticationFailException,  StripeException {
 
         authenticationService.authenticate(token);
         Client client = authenticationService.getClient(token);

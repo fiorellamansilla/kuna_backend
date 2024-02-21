@@ -90,7 +90,7 @@ public class PaymentService {
 
     }
 
-    public static CheckoutItemDto getDtoFromCart (Cart cart) {
+    public static CheckoutItemDto getDtoFromCart(Cart cart) {
         return new CheckoutItemDto(cart);
     }
 

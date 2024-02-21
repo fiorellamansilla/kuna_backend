@@ -8,7 +8,6 @@ public class CheckoutItemDto {
     private int quantity;
     private double price;
     private Long productVariationId;
-    private Long clientId;
 
     public CheckoutItemDto() {
     }
@@ -18,7 +17,6 @@ public class CheckoutItemDto {
         this.quantity = cart.getQuantity();
         this.price = cart.getProductVariation().getProduct().getPrice();
         this.productVariationId = cart.getProductVariation().getId();
-        this.clientId = cart.getClient().getId();
     }
 
     public String getProductName() {
@@ -53,11 +51,4 @@ public class CheckoutItemDto {
         this.productVariationId = productVariationId;
     }
 
-    public Long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
-    }
 }

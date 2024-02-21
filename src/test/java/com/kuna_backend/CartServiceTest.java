@@ -77,7 +77,7 @@ public class CartServiceTest {
         productVariation1.setProduct(product1);
 
         ProductVariation productVariation2 = new ProductVariation();
-        productVariation2.setProduct(product2);;
+        productVariation2.setProduct(product2);
 
         Cart cart1 = new Cart();
         cart1.setProductVariation(productVariation1);
