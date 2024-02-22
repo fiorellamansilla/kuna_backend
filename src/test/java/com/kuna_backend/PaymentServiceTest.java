@@ -1,6 +1,7 @@
 package com.kuna_backend;
 
 import com.kuna_backend.dtos.checkout.CheckoutItemDto;
+import com.kuna_backend.enums.PaymentStatus;
 import com.kuna_backend.models.Cart;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Payment;
@@ -175,7 +176,7 @@ public class PaymentServiceTest {
             when(session.getAmountTotal()).thenReturn(1000L);
             when(session.getCurrency()).thenReturn("usd");
             when(session.getId()).thenReturn(stripeToken);
-            when(session.getPaymentStatus()).thenReturn("paid");
+            when(session.getPaymentStatus()).thenReturn("PAID");
             when(session.getCreated()).thenReturn(System.currentTimeMillis() / 1000L);
 
             Client clientMock = mock(Client.class);
@@ -187,7 +188,7 @@ public class PaymentServiceTest {
                     payment.getAmount() == 10.0f &&
                             payment.getCurrency().equals("USD") &&
                             payment.getStripeToken().equals(stripeToken) &&
-                            payment.getPaymentStatus().equals("PAID") &&
+                            payment.getPaymentStatus().equals(PaymentStatus.PAID) &&
                             payment.getProvider().equals("Stripe") &&
                             payment.getClient() == clientMock
             ));
