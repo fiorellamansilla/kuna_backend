@@ -1,6 +1,7 @@
 package com.kuna_backend.services;
 
 import com.kuna_backend.dtos.checkout.CheckoutItemDto;
+import com.kuna_backend.enums.PaymentStatus;
 import com.kuna_backend.models.Cart;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Payment;
@@ -105,7 +106,7 @@ public class PaymentService {
         payment.setAmount(session.getAmountTotal() / 100.0f);
         payment.setCurrency(session.getCurrency().toUpperCase());
         payment.setStripeToken(session.getId());
-        payment.setPaymentStatus(session.getPaymentStatus().toUpperCase());
+        payment.setPaymentStatus(PaymentStatus.PAID);
         payment.setProvider("Stripe");
         payment.setPaymentDate(new Date(session.getCreated() * 1000L));
         payment.setClient(client);

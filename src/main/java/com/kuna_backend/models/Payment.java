@@ -1,7 +1,10 @@
 package com.kuna_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kuna_backend.enums.PaymentStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -33,7 +36,8 @@ public class Payment {
     private String stripeToken;
 
     @Column (name = "payment_status", length = 64)
-    private String paymentStatus;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
 
     @Column (name = "provider", length = 64)
     private String provider;
@@ -55,7 +59,7 @@ public class Payment {
     @OneToOne(mappedBy = "payment")
     private Order order;
 
-    public Payment(Long id, float amount, String currency, String stripeToken, String paymentStatus, String provider, Date paymentDate, LocalDateTime lastUpdate, Client client, Order order) {
+    public Payment(Long id, float amount, String currency, String stripeToken, PaymentStatus paymentStatus, String provider, Date paymentDate, LocalDateTime lastUpdate, Client client, Order order) {
         this.id = id;
         this.amount = amount;
         this.currency = currency;
@@ -104,11 +108,11 @@ public class Payment {
         this.stripeToken = stripeToken;
     }
 
-    public String getPaymentStatus() {
+    public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
