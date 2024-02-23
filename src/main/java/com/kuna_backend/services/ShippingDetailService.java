@@ -18,32 +18,52 @@ public class ShippingDetailService {
 
     public ShippingDetail addShippingDetail(ShippingDetailDto shippingDetailDto, Client client) {
 
-        ShippingDetail shippingDetail = new ShippingDetail();
+        // Check if the client has a shipping detail
+        Optional<ShippingDetail> optionalShippingDetail = getShippingDetail(client);
 
-        shippingDetail.setFullName(shippingDetailDto.getFullName());
-        shippingDetail.setAddress(shippingDetailDto.getAddress());
-        shippingDetail.setCity(shippingDetailDto.getCity());
-        shippingDetail.setZipCode(shippingDetailDto.getZipCode());
-        shippingDetail.setCountry(shippingDetailDto.getCountry());
-        shippingDetail.setPhone(shippingDetailDto.getPhone());
-        shippingDetail.setClient(client);
+        if(optionalShippingDetail.isPresent()){
+            // Update the existing shipping detail in case there is new information
+            ShippingDetail existingShippingDetail = optionalShippingDetail.get();
 
-        return shippingDetailRepository.save(shippingDetail);
+            existingShippingDetail.setFullName(shippingDetailDto.getFullName());
+            existingShippingDetail.setAddress(shippingDetailDto.getAddress());
+            existingShippingDetail.setCity(shippingDetailDto.getCity());
+            existingShippingDetail.setZipCode(shippingDetailDto.getZipCode());
+            existingShippingDetail.setCountry(shippingDetailDto.getCountry());
+            existingShippingDetail.setPhone(shippingDetailDto.getPhone());
 
+            return shippingDetailRepository.save(existingShippingDetail);
+
+        } else {
+            // Create a new shipping detail for the Client
+            ShippingDetail newShippingDetail = createNewShippingDetail(shippingDetailDto, client);
+
+            return shippingDetailRepository.save(newShippingDetail);
+        }
+    }
+
+    private ShippingDetail createNewShippingDetail(ShippingDetailDto shippingDetailDto, Client client) {
+
+        ShippingDetail newShippingDetail = new ShippingDetail();
+
+        newShippingDetail.setFullName(shippingDetailDto.getFullName());
+        newShippingDetail.setAddress(shippingDetailDto.getAddress());
+        newShippingDetail.setCity(shippingDetailDto.getCity());
+        newShippingDetail.setZipCode(shippingDetailDto.getZipCode());
+        newShippingDetail.setCountry(shippingDetailDto.getCountry());
+        newShippingDetail.setPhone(shippingDetailDto.getPhone());
+        newShippingDetail.setClient(client);
+        return newShippingDetail;
     }
 
     public List<ShippingDetail> getAllShippingDetails() {
-        return (List<ShippingDetail>) shippingDetailRepository.findAll();
+        return shippingDetailRepository.findAll();
     }
 
-    public ShippingDetail getShippingDetail (Long id) throws ClassNotFoundException {
-
-        Optional<ShippingDetail> shippingDetail = shippingDetailRepository.findById(id);
-
-        if (shippingDetail.isPresent()) {
-            return shippingDetail.get();
+    public Optional<ShippingDetail> getShippingDetail(Client client) {
+        if (client != null && client.getShippingDetail() != null) {
+           return shippingDetailRepository.findById(client.getShippingDetail().getId());
         }
-        throw new ClassNotFoundException("Shipping detail not found");
+        return Optional.empty();
     }
-
 }
