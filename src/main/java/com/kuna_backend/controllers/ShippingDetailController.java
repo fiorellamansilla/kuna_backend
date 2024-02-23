@@ -1,9 +1,11 @@
 package com.kuna_backend.controllers;
 
 import com.kuna_backend.exceptions.AuthenticationFailException;
+import com.kuna_backend.models.Client;
 import com.kuna_backend.models.ShippingDetail;
 import com.kuna_backend.services.AuthenticationService;
 import com.kuna_backend.services.ShippingDetailService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/shippingdetail")
@@ -35,15 +38,31 @@ public class ShippingDetailController {
 
     // GET Shipping Detail for a Specific Client - Endpoint
     @GetMapping("/{id}")
-    public ResponseEntity<ShippingDetail> getShippingDetailById (@PathVariable ("id") Long id, @RequestParam("token") String token)
-            throws AuthenticationFailException, ClassNotFoundException {
+    public ResponseEntity<ShippingDetail> getShippingDetailById (
+            @PathVariable ("id") Long id,
+            @RequestParam("token") String token
+    ) throws AuthenticationFailException, EntityNotFoundException {
 
-        authenticationService.authenticate(token);
+        try {
+            authenticationService.authenticate(token);
+            Client client = authenticationService.getClient(token);
 
-        authenticationService.getClient(token);
+            Optional<ShippingDetail> shippingDetailOptional = shippingDetailService.getShippingDetail(client);
 
-        ShippingDetail shippingDetail = shippingDetailService.getShippingDetail(id);
+            if (shippingDetailOptional.isPresent()) {
+                ShippingDetail shippingDetail = shippingDetailOptional.get();
 
-        return new ResponseEntity<>(shippingDetail, HttpStatus.OK);
+                // Check if the retrieved shipping detail belongs to the authenticated client
+                if (shippingDetail.getClient().equals(client)) {
+                    return ResponseEntity.ok(shippingDetail);
+                } else {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
