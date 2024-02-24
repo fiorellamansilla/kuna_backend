@@ -1,8 +1,12 @@
 package com.kuna_backend;
 
 import com.kuna_backend.dtos.checkout.CheckoutItemDto;
+import com.kuna_backend.models.Cart;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Payment;
+import com.kuna_backend.models.Product;
+import com.kuna_backend.models.ProductVariation;
+import com.kuna_backend.repositories.CartRepository;
 import com.kuna_backend.repositories.PaymentRepository;
 import com.kuna_backend.services.PaymentService;
 import com.stripe.Stripe;
@@ -41,7 +45,13 @@ public class PaymentServiceTest {
     private PaymentRepository paymentRepository;
 
     @Mock
+    private CartRepository cartRepository;
+
+    @Mock
     public Session session;
+
+    @Mock
+    public Client client;
 
     @InjectMocks
     private PaymentService paymentService;
@@ -89,10 +99,13 @@ public class PaymentServiceTest {
         String successURL = paymentService.baseURL + "payment/success";
         String failureURL = paymentService.baseURL + "payment/failed";
 
+        List<Cart> cartList = new ArrayList<>();
+
+        when(cartRepository.findAllByClientOrderByCreatedAtDesc(client)).thenReturn(cartList);
+
         SessionCreateParams.Builder paramsBuilder = mock(SessionCreateParams.Builder.class);
         SessionCreateParams params = mock(SessionCreateParams.class);
         Session session = mock(Session.class);
-        List<CheckoutItemDto> checkoutItemDtoList = new ArrayList<>();
 
         // Mock the static methods
         try (MockedStatic<SessionCreateParams> sessionBuilderMock = mockStatic(SessionCreateParams.class);
@@ -111,7 +124,7 @@ public class PaymentServiceTest {
             // Stub the Session.create method
             sessionMock.when(() -> Session.create(params)).thenReturn(session);
 
-            Session result = paymentService.createSession(checkoutItemDtoList);
+            Session result = paymentService.createSession(client);
 
             assertEquals(session, result);
             verify(paramsBuilder).addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD);
@@ -120,11 +133,35 @@ public class PaymentServiceTest {
             verify(paramsBuilder).addAllLineItem(any());
             verify(paramsBuilder).setSuccessUrl(successURL);
             verify(paramsBuilder).build();
+            verify(cartRepository).findAllByClientOrderByCreatedAtDesc(client);
 
             // Verify the static method call
             sessionMock.verify(() -> Session.create(params));
-
         }
+    }
+
+    @Test
+    public void getDtoFromCart() {
+
+        Product product = new Product();
+        product.setName("Body");
+        product.setPrice(20.0);
+
+        ProductVariation productVariation = new ProductVariation();
+        productVariation.setId(1L);
+        productVariation.setProduct(product);
+
+        Cart cart = new Cart();
+        cart.setQuantity(4);
+        cart.setProductVariation(productVariation);
+
+        CheckoutItemDto checkoutItemDto = PaymentService.getDtoFromCart(cart);
+
+        assertEquals(cart.getProductVariation().getProduct().getName(), checkoutItemDto.getProductName());
+        assertEquals(cart.getQuantity(), checkoutItemDto.getQuantity());
+        assertEquals(cart.getProductVariation().getProduct().getPrice(), checkoutItemDto.getPrice());
+        assertEquals(cart.getProductVariation().getId(), checkoutItemDto.getProductVariationId());
+
     }
 
     @Test

@@ -1,8 +1,10 @@
 package com.kuna_backend.services;
 
 import com.kuna_backend.dtos.checkout.CheckoutItemDto;
+import com.kuna_backend.models.Cart;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.models.Payment;
+import com.kuna_backend.repositories.CartRepository;
 import com.kuna_backend.repositories.PaymentRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -23,6 +25,9 @@ public class PaymentService {
 
     @Autowired
     public PaymentRepository paymentRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     @Value("${BASE_URL}")
     public String baseURL;
@@ -55,7 +60,7 @@ public class PaymentService {
     }
 
     // Create Session from list of Checkout items
-    public Session createSession(List<CheckoutItemDto> checkoutItemDtoList) throws StripeException {
+    public Session createSession(Client client) throws StripeException {
 
         // Supply Success and Failure url for Stripe
         String successURL = baseURL + "payment/success";
@@ -65,9 +70,11 @@ public class PaymentService {
         Stripe.apiKey = apiKey;
 
         List<SessionCreateParams.LineItem> sessionItemList = new ArrayList<>();
+        List<Cart> cartList = cartRepository.findAllByClientOrderByCreatedAtDesc(client);
 
         // For each product compute SessionCreateParams.LineItem
-        for (CheckoutItemDto checkoutItemDto : checkoutItemDtoList) {
+        for (Cart cart : cartList){
+            CheckoutItemDto checkoutItemDto = getDtoFromCart(cart);
             sessionItemList.add(createSessionLineItem(checkoutItemDto));
         }
 
@@ -81,6 +88,10 @@ public class PaymentService {
                 .build();
         return Session.create(params);
 
+    }
+
+    public static CheckoutItemDto getDtoFromCart(Cart cart) {
+        return new CheckoutItemDto(cart);
     }
 
     // Save Payment after Checkout session
