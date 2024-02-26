@@ -15,6 +15,7 @@ import com.kuna_backend.repositories.OrderRepository;
 import com.kuna_backend.repositories.ProductVariationRepository;
 import com.kuna_backend.services.CartService;
 import com.kuna_backend.services.OrderService;
+import com.kuna_backend.services.ShippingDetailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,13 +44,16 @@ public class OrderServiceTest {
     private CartService cartService;
 
     @Mock
+    private ShippingDetailService shippingDetailService;
+
+    @Mock
     private OrderRepository orderRepository;
 
     @Mock
-    private ProductVariationRepository productVariationRepository;
+    private OrderItemsRepository orderItemsRepository;
 
     @Mock
-    private OrderItemsRepository orderItemsRepository;
+    private ProductVariationRepository productVariationRepository;
 
     @InjectMocks
     private OrderService orderService;
@@ -78,6 +82,8 @@ public class OrderServiceTest {
             }
             return order;
         });
+
+        when(shippingDetailService.getShippingDetail(client)).thenReturn(Optional.of(shippingDetail));
 
         orderService.placeOrder(client, payment, shippingDetail);
 

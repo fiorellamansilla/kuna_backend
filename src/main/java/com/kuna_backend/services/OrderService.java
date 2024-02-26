@@ -27,12 +27,16 @@ public class OrderService {
 
     @Autowired
     private CartService cartService;
+
     @Autowired
     private ShippingDetailService shippingDetailService;
+
     @Autowired
     OrderRepository orderRepository;
+
     @Autowired
     OrderItemsRepository orderItemsRepository;
+
     @Autowired
     ProductVariationRepository productVariationRepository;
 
