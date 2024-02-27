@@ -27,10 +27,16 @@ public class OrderService {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private ShippingDetailService shippingDetailService;
+
     @Autowired
     OrderRepository orderRepository;
+
     @Autowired
     OrderItemsRepository orderItemsRepository;
+
     @Autowired
     ProductVariationRepository productVariationRepository;
 
@@ -46,8 +52,16 @@ public class OrderService {
         newOrder.setOrderStatus(OrderStatus.CONFIRMED);
         // Generate tracking number
         newOrder.generateTrackingNumber();
-        // Set the shipping detail of the Client who places the Order
-        newOrder.setShippingDetail(shippingDetail);
+
+        // Check if the client has an existing shipping detail
+        Optional<ShippingDetail> existingShippingDetail = shippingDetailService.getShippingDetail(client);
+
+        existingShippingDetail.ifPresentOrElse(
+                // If present, set the shipping detail from the Optional existingShippingDetail
+                newOrder::setShippingDetail,
+                // if absent, set the provided shippingDetail
+                () -> newOrder.setShippingDetail(shippingDetail)
+        );
 
         orderRepository.save(newOrder);
 

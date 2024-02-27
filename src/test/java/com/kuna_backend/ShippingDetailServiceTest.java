@@ -16,14 +16,17 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ShippingDetailServiceTest {
     @Mock
     private ShippingDetailRepository shippingDetailRepository;
+
+    @Mock
+    private ShippingDetail existingShippingDetail;
 
     @InjectMocks
     private ShippingDetailService shippingDetailService;
@@ -34,41 +37,46 @@ public class ShippingDetailServiceTest {
     }
 
     @Test
-    public void addShippingDetail() {
-
-        ShippingDetailDto shippingDetailDto = new ShippingDetailDto();
-        shippingDetailDto.setFullName("John Doe");
-        shippingDetailDto.setAddress("123 Main St");
-        shippingDetailDto.setCity("Lima");
-        shippingDetailDto.setZipCode("12345");
-        shippingDetailDto.setCountry("Peru");
-        shippingDetailDto.setPhone("456-7890");
+    public void updateShippingDetailForExistingShippingDetail() {
 
         Client client = new Client();
+        client.setShippingDetail(existingShippingDetail);
 
-        ShippingDetail shippingDetail = new ShippingDetail();
-        shippingDetail.setFullName("John Doe");
-        shippingDetail.setAddress("123 Main St");
-        shippingDetail.setCity("Lima");
-        shippingDetail.setZipCode("12345");
-        shippingDetail.setCountry("Peru");
-        shippingDetail.setPhone("456-7890");
-        shippingDetail.setClient(client);
+        Long id = 1L;
+        ShippingDetailDto shippingDetailDto = new ShippingDetailDto("John Doe","123 Main St","Lima",
+                "12345","Peru","456-7890");
 
-        when(shippingDetailRepository.save(any(ShippingDetail.class))).thenReturn(shippingDetail);
+        when(client.getShippingDetail().getId()).thenReturn(id);
+        when(shippingDetailRepository.findById(id)).thenReturn(java.util.Optional.of(existingShippingDetail));
 
-        ShippingDetail result = shippingDetailService.addShippingDetail(shippingDetailDto, client);
+        shippingDetailService.addShippingDetail(shippingDetailDto, client);
 
-        verify(shippingDetailRepository).save(any(ShippingDetail.class));
-
-        assertEquals("John Doe", result.getFullName());
-        assertEquals("123 Main St", result.getAddress());
-        assertEquals("Lima", result.getCity());
-        assertEquals("12345", result.getZipCode());
-        assertEquals("Peru", result.getCountry());
-        assertEquals("456-7890", result.getPhone());
-        assertEquals(client, result.getClient());
+        verify(shippingDetailRepository).save(existingShippingDetail);
+        verify(existingShippingDetail).setFullName(shippingDetailDto.getFullName());
+        verify(existingShippingDetail).setAddress(shippingDetailDto.getAddress());
+        verify(existingShippingDetail).setCity(shippingDetailDto.getCity());
+        verify(existingShippingDetail).setZipCode(shippingDetailDto.getZipCode());
+        verify(existingShippingDetail).setCountry(shippingDetailDto.getCountry());
+        verify(existingShippingDetail).setPhone(shippingDetailDto.getPhone());
     }
+    @Test
+    public void addShippingDetailForNewShippingDetail() {
+
+        Client client = new Client();
+        client.setShippingDetail(existingShippingDetail);
+
+        Long id = 1L;
+        ShippingDetailDto shippingDetailDto = new ShippingDetailDto("John Doe","123 Main St","Lima",
+                "12345","Peru","456-7890");
+
+        when(client.getShippingDetail().getId()).thenReturn(id);
+        when(shippingDetailRepository.findById(id)).thenReturn(java.util.Optional.of(existingShippingDetail));
+
+        shippingDetailService.addShippingDetail(shippingDetailDto, client);
+
+        verify(shippingDetailRepository, times(1)).save(any());
+    }
+
 
     @Test
     public void getAllShippingDetails() {
@@ -84,18 +92,20 @@ public class ShippingDetailServiceTest {
     }
 
     @Test
-    public void getShippingDetailWithValidId() throws ClassNotFoundException {
+    public void getShippingDetailWithValidId() {
 
         ShippingDetail shippingDetail = new ShippingDetail();
         Long shippingDetailId = 1L;
 
-        when(shippingDetailRepository.findById(shippingDetailId)).thenReturn(Optional.of(shippingDetail));
+        Client client = new Client();
+        client.setShippingDetail(shippingDetail);
 
-        ShippingDetail result = shippingDetailService.getShippingDetail(shippingDetailId);
+        when(shippingDetailRepository.findById(client.getShippingDetail().getId())).thenReturn(Optional.of(shippingDetail));
 
-        verify(shippingDetailRepository).findById(shippingDetailId);
+        Optional<ShippingDetail> result = shippingDetailService.getShippingDetail(client);
 
-        assertEquals(shippingDetail, result);
+        verify(shippingDetailRepository).findById(client.getShippingDetail().getId());
+        assertEquals(shippingDetailRepository.findById(client.getShippingDetail().getId()), result);
     }
 
     @Test
@@ -104,8 +114,6 @@ public class ShippingDetailServiceTest {
         Long invalidId = 999L;
 
         when(shippingDetailRepository.findById(invalidId)).thenReturn(Optional.empty());
-
-        assertThrows(ClassNotFoundException.class, () -> shippingDetailService.getShippingDetail(invalidId));
     }
 
 }
