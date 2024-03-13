@@ -6,11 +6,11 @@ import com.kuna_backend.models.AuthenticationToken;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.repositories.TokenRepository;
 import com.kuna_backend.services.AuthenticationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
-
+@ExtendWith(MockitoExtension.class)
 public class AuthenticationServiceTest {
 
     @Mock
@@ -31,11 +31,6 @@ public class AuthenticationServiceTest {
 
     @InjectMocks
     private AuthenticationService authenticationService;
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     private AuthenticationToken createAuthenticationToken(String token, Client client){
         AuthenticationToken authenticationToken = new AuthenticationToken();

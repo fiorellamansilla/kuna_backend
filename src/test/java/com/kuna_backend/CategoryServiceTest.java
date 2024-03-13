@@ -3,11 +3,11 @@ package com.kuna_backend;
 import com.kuna_backend.models.Category;
 import com.kuna_backend.repositories.CategoryRepository;
 import com.kuna_backend.services.CategoryService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
+@ExtendWith(MockitoExtension.class)
 public class CategoryServiceTest {
 
     @Mock
@@ -25,11 +26,6 @@ public class CategoryServiceTest {
 
     @InjectMocks
     private CategoryService categoryService;
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     public void listCategories_WhenCategoriesExist_ReturnsListOfCategories() {
