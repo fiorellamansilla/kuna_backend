@@ -13,9 +13,9 @@ import java.util.Optional;
 @Transactional
 public class CategoryService {
 
-    @Autowired
     private final CategoryRepository categoryRepository;
 
+    @Autowired
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
@@ -45,5 +45,4 @@ public class CategoryService {
 
         categoryRepository.save(category);
     }
-
 }

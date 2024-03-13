@@ -32,7 +32,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void listCategories() {
+    public void listCategories_WhenCategoriesExist_ReturnsListOfCategories() {
 
         Category category1 = new Category();
         Category category2 = new Category();
@@ -46,7 +46,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void createCategory() {
+    public void createCategory_WhenCalled_SavesCategory() {
 
         Category category = new Category();
 
@@ -56,9 +56,9 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void readCategoryByCategoryName() {
+    public void readCategoryByName_WhenCategoryExists_ReturnsCategory() {
 
-        String categoryName = "exampleCategoryName";
+        String categoryName = "testCategoryName";
         Category category = new Category();
         when(categoryRepository.findByCategoryName(categoryName)).thenReturn(category);
 
@@ -69,7 +69,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void readCategoryById() {
+    public void readCategoryById_WhenCategoryExists_ReturnsCategory() {
 
         Long categoryId = 1L;
         Optional<Category> category = Optional.of(new Category());
@@ -82,7 +82,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void updateCategory() {
+    public void updateCategory_WhenCategoryExists_UpdatesCategory() {
 
         Long categoryId = 1L;
         Category existingCategory = new Category();
