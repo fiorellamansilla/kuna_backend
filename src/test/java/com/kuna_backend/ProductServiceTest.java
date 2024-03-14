@@ -1,5 +1,6 @@
 package com.kuna_backend;
 
+import com.kuna_backend.builders.ProductTestDataBuilder;
 import com.kuna_backend.dtos.product.ProductDto;
 import com.kuna_backend.dtos.product.ProductVariationDto;
 import com.kuna_backend.exceptions.ProductNotExistsException;
@@ -25,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kuna_backend.enums.Color.BEIGE;
-import static com.kuna_backend.enums.Size.NEWBORN;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,12 +41,14 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
 
-    @InjectMocks
-    private ProductService productService;
     @Mock
     private ProductRepository productRepository;
+
     @Mock
     private ProductVariationRepository productVariationRepository;
+
+    @InjectMocks
+    private ProductService productService;
 
     @BeforeEach
     public void setUp() {
@@ -55,20 +56,14 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void getDtoFromProduct() {
+    public void givenProduct_whenGetDtoFromProduct_returnCorrectDto() {
 
-        Product product = new Product();
-        Category category = new Category();
-
-        product.setId(1L);
-        product.setName("Example Product");
-        product.setPrice(9.99);
+        Category category = ProductTestDataBuilder.buildSampleCategory(1L);
+        Product product = ProductTestDataBuilder.buildSampleProduct();
         product.setCategory(category);
 
-        // Call the getDtoFromProduct method
-        ProductDto productDto = ProductService.getDtoFromProduct(product);
+        ProductDto productDto = productService.getDtoFromProduct(product);
 
-        // Verify that the returned ProductDto has the expected properties
         assertEquals(product.getId(), productDto.getId());
         assertEquals(product.getName(), productDto.getName());
         assertEquals(product.getPrice(), productDto.getPrice());
@@ -76,15 +71,12 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void getProductFromDto() {
+    public void givenProductDtoAndCategory_whenGetProductFromDto_returnCorrectProduct() {
 
-        ProductDto productDto = new ProductDto();
-        productDto.setName("Example Product");
-        productDto.setPrice(9.99);
+        ProductDto productDto = ProductTestDataBuilder.buildSampleProductDto();
+        Category category = ProductTestDataBuilder.buildSampleCategory(1L);
 
-        Category category = new Category();
-
-        Product product = ProductService.getProductFromDto(productDto, category);
+        Product product = productService.getProductFromDto(productDto, category);
 
         assertEquals(productDto.getName(), product.getName());
         assertEquals(productDto.getPrice(), product.getPrice());
@@ -92,10 +84,10 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void getProductById() throws ProductNotExistsException {
+    public void givenValidProductId_whenGetProductById_returnProduct() throws ProductNotExistsException {
 
         Long productId = 1L;
-        Product product = new Product();
+        Product product = ProductTestDataBuilder.buildSampleProduct();
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
         Product result = productService.getProductById(productId);
@@ -104,10 +96,10 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void createProduct() {
+    public void givenProductDtoAndCategory_whenCreateProduct_thenProductSaved() {
 
-        ProductDto productDto = new ProductDto();
-        Category category = new Category();
+        ProductDto productDto = ProductTestDataBuilder.buildSampleProductDto();
+        Category category = ProductTestDataBuilder.buildSampleCategory(1L);
 
         productService.createProduct(productDto, category);
 
@@ -115,15 +107,13 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void listProducts() {
+    public void givenPageNumberAndPageSize_whenListProducts_returnProductDtoList() {
 
         int pageNumber = 0;
         int pageSize = 10;
 
-        Category category1 = new Category();
-        category1.setId(1L);
-        Category category2 = new Category();
-        category2.setId(2L);
+        Category category1 = ProductTestDataBuilder.buildSampleCategory(1L);
+        Category category2 = ProductTestDataBuilder.buildSampleCategory(2L);
 
         List<Product> products = new ArrayList<>();
         products.add(new Product(new ProductDto(), category1));
@@ -140,12 +130,9 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void getProductVariationFromDto() {
+    public void getProductVariationFromDto_ShouldMapDtoToProductVariation() {
 
-        ProductVariationDto productVariationDto = new ProductVariationDto();
-        productVariationDto.setSize(NEWBORN);
-        productVariationDto.setColor(BEIGE);
-
+        ProductVariationDto productVariationDto = ProductTestDataBuilder.buildSampleProductVariationDto(1L);
         Product product = new Product();
 
         ProductVariation productVariation = ProductService.getProductVariationFromDto(productVariationDto, product);
@@ -156,38 +143,32 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void createProductVariationForProduct(){
+    public void createProductVariationForProduct_ShouldCreateProductVariationAndUpdateProduct(){
 
         Long productId = 1L;
-        Product existingProduct = new Product();
-
-        ProductVariationDto productVariationDto = new ProductVariationDto(10, NEWBORN, BEIGE, productId);
-
-        // Mock the getProductVariationFromDto method
-        ProductVariation productVariation = ProductService.getProductVariationFromDto(productVariationDto, existingProduct);
+        Product existingProduct = ProductTestDataBuilder.buildSampleProduct();
+        ProductVariationDto productVariationDto = ProductTestDataBuilder.buildSampleProductVariationDto(1L);
+        ProductVariation productVariation = productService.getProductVariationFromDto(productVariationDto, existingProduct);
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
         when(productRepository.save(any(Product.class))).thenReturn(existingProduct);
         when(productVariationRepository.save(any(ProductVariation.class))).thenReturn(productVariation);
 
-        // Call the method under test
         Product updatedProduct = productService.createProductVariationForProduct(productId, productVariationDto);
 
-        // Verify the interactions
+        assertNotNull(updatedProduct);
+        assertEquals(existingProduct, updatedProduct);
+
         verify(productRepository, times(1)).findById(productId);
         verify(productVariationRepository, times(1)).save(any(ProductVariation.class));
         verify(productRepository, times(1)).save(any(Product.class));
-
-        // Assert the updatedProduct
-        assertNotNull(updatedProduct);
-        assertEquals(existingProduct, updatedProduct);
     }
 
     @Test
-    public void getProductByValidIdWithVariations() throws ProductNotExistsException {
+    public void getProductByValidIdWithVariations_ShouldReturnProductWithVariations() throws ProductNotExistsException {
 
         Long productId = 1L;
-        Product product = new Product();
+        Product product = ProductTestDataBuilder.buildSampleProduct();
         when(productRepository.findByIdWithVariations(productId)).thenReturn(Optional.of(product));
 
         Product result = productService.getProductByIdWithVariations(productId);
@@ -196,7 +177,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void getProductByInvalidIdWithVariations() throws ProductNotExistsException {
+    public void getProductByInvalidIdWithVariations_ShouldThrowProductNotExistsException() throws ProductNotExistsException {
 
         Long productId = 1L;
         when(productRepository.findByIdWithVariations(productId)).thenReturn(Optional.empty());
@@ -207,23 +188,11 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void updateProductOnly() {
+    public void updateProductOnly_ShouldUpdateProductAttributesWithNewData() {
 
         Long productId = 1L;
-
-        Product originalProduct = new Product();
-        originalProduct.setId(productId);
-        originalProduct.setName("OriginalName");
-        originalProduct.setPrice(30.0);
-        originalProduct.setDescription("OriginalDescription");
-        originalProduct.setImageUrl("original_image_url");
-
-        ProductDto updatedProductDto = new ProductDto();
-        updatedProductDto.setName("UpdatedName");
-        updatedProductDto.setPrice(50.0);
-        updatedProductDto.setDescription("UpdatedDescription");
-        updatedProductDto.setImageUrl("updated_image_url");
-
+        Product originalProduct = ProductTestDataBuilder.buildSampleProduct();
+        ProductDto updatedProductDto = ProductTestDataBuilder.buildSampleProductDto();
         when(productRepository.findById(eq(productId))).thenReturn(Optional.of(originalProduct));
         when(productRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
 
@@ -241,44 +210,38 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void deleteExistingProduct() {
+    public void deleteExistingProduct_ShouldReturnTrue() {
 
         Long productId = 1L;
-        Product mockProduct = new Product();
-
+        Product mockProduct = ProductTestDataBuilder.buildSampleProduct();
         when(productRepository.findById(productId)).thenReturn(java.util.Optional.of(mockProduct));
 
         boolean deletionSuccessful = productService.deleteProduct(productId);
-        assertTrue(deletionSuccessful);
 
-        // Verify that the productRepository.delete method was called with the correct argument
+        assertTrue(deletionSuccessful);
         verify(productRepository, times(1)).delete(mockProduct);
     }
 
     @Test
-    public void deleteNonExistingProduct() {
+    public void deleteNonExistingProduct_ShouldReturnFalse() {
 
         Long productId = 1L;
-
         when(productRepository.findById(productId)).thenReturn(java.util.Optional.empty());
 
         boolean deletionSuccessful = productService.deleteProduct(productId);
-        assertFalse(deletionSuccessful);
 
-        // Verify that the productRepository.delete method was not called in this case
+        assertFalse(deletionSuccessful);
         verify(productRepository, never()).delete(any());
     }
 
     @Test
-    public void deleteProductInvalidProductId() {
+    public void deleteProductInvalidProductId_ShouldReturnFalse() {
 
-        Long invalidProductId = 0L; // Invalid product ID
+        Long invalidProductId = 0L;
 
         boolean deletionSuccessful = productService.deleteProduct(invalidProductId);
 
         assertFalse(deletionSuccessful);
-
-        // Verify that the productRepository.delete method was not called in this case
         verify(productRepository, never()).delete(any());
     }
 
