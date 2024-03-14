@@ -44,7 +44,6 @@ import static org.mockito.Mockito.when;
 public class PaymentServiceTest {
     @Mock
     private PaymentRepository paymentRepository;
-
     @Mock
     private CartRepository cartRepository;
 
