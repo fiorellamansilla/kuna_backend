@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,16 +48,18 @@ public class ClientServiceTest {
     @InjectMocks
     private ClientService clientService;
 
+    private final String testEmail = "john@example.com";
+    private final String testPassword = "password";
+
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        Mockito.reset(clientRepository, authenticationService, passwordEncoder);
     }
 
     @Test
     public void signUpWithNonExistingEmail() throws CustomException {
 
-        SignupDto signupDto = new SignupDto("John", "Doe", "john@example.com", "password");
-
+        SignupDto signupDto = new SignupDto("John", "Doe", testEmail, testPassword);
         when(clientRepository.findByEmail(signupDto.getEmail())).thenReturn(null);
         when(clientRepository.save(any(Client.class))).thenReturn(new Client());
         doNothing().when(authenticationService).saveConfirmationToken(any(AuthenticationToken.class));
@@ -67,8 +69,7 @@ public class ClientServiceTest {
         assertNotNull(responseDto);
         assertEquals("success", responseDto.getStatus());
         assertEquals("The user has been successfully created.", responseDto.getMessage());
-
-        verify(clientRepository).findByEmail(signupDto.getEmail());
+        verify(clientRepository).findByEmail(testEmail);
         verify(clientRepository).save(any(Client.class));
         verify(authenticationService).saveConfirmationToken(any(AuthenticationToken.class));
     }
@@ -76,129 +77,96 @@ public class ClientServiceTest {
     @Test
     public void signUpWithExistingEmail() {
 
-        String existingEmail = "existing@example.com";
-        Client existingClient = new Client("John", "Doe", existingEmail, "password");
-
-        when(clientRepository.findByEmail(existingEmail)).thenReturn(existingClient);
-
-        SignupDto signupDto = new SignupDto("John", "Doe", existingEmail, "password");
+        Client existingClient = new Client("John", "Doe", testEmail, testPassword);
+        when(clientRepository.findByEmail(testEmail)).thenReturn(existingClient);
+        SignupDto signupDto = new SignupDto("John", "Doe", testEmail, testPassword);
 
         assertThrows(CustomException.class, () -> clientService.signUp(signupDto));
-
-        verify(clientRepository).findByEmail(signupDto.getEmail());
+        verify(clientRepository).findByEmail(testEmail);
         verify(clientRepository, never()).save(any(Client.class));
     }
 
     @Test
     public void signUpWithExceptionOnSave() {
 
-        SignupDto signupDto = new SignupDto("John", "Doe", "john@example.com", "password");
-
+        SignupDto signupDto = new SignupDto("John", "Doe", testEmail, testPassword);
         when(clientRepository.findByEmail(signupDto.getEmail())).thenReturn(null);
-
         doThrow(new RuntimeException("Failed to save")).when(clientRepository).save(any(Client.class));
 
         assertThrows(CustomException.class, () -> clientService.signUp(signupDto));
-
-        verify(clientRepository).findByEmail(signupDto.getEmail());
+        verify(clientRepository).findByEmail(testEmail);
         verify(clientRepository).save(any(Client.class));
         verify(authenticationService, never()).saveConfirmationToken(any(AuthenticationToken.class));
     }
 
     @Test
-    void signInWithValidCredentials() {
-
-        String email = "example@test.com";
-        String password = "password_test";
+    public void signInWithValidCredentials() {
 
         Client client = new Client();
-        client.setEmail(email);
-        client.setPassword(passwordEncoder.encode(password));
+        client.setEmail(testEmail);
+        client.setPassword(passwordEncoder.encode(testPassword));
 
         SignInDto signInDto = new SignInDto();
-        signInDto.setEmail(email);
-        signInDto.setPassword(password);
-
-        when(clientRepository.findByEmail(signInDto.getEmail())).thenReturn(client);
-        when(passwordEncoder.matches(signInDto.getPassword(), client.getPassword())).thenReturn(true);
+        signInDto.setEmail(testEmail);
+        signInDto.setPassword(testPassword);
 
         AuthenticationToken token = new AuthenticationToken();
         token.setToken("token");
+
+        when(clientRepository.findByEmail(testEmail)).thenReturn(client);
+        when(passwordEncoder.matches(testPassword, client.getPassword())).thenReturn(true);
         when(authenticationService.getToken(client)).thenReturn(token);
 
         SignInResponseDto response = clientService.signIn(signInDto);
 
         assertEquals("Success", response.getStatus());
         assertEquals(token.getToken(), response.getToken());
-
-        verify(clientRepository).findByEmail(signInDto.getEmail());
-        verify(passwordEncoder).matches(signInDto.getPassword(), client.getPassword());
+        verify(clientRepository).findByEmail(testEmail);
+        verify(passwordEncoder).matches(testPassword, client.getPassword());
         verify(authenticationService).getToken(client);
     }
 
     @Test
     public void signInWithInvalidEmail() {
 
-        // Create a test SignInDto with an invalid email
-        SignInDto signInDto = new SignInDto("invalid_email@example.com", "password");
-
-        // Mock the behavior of the clientRepository.findByEmail() method to return null
+        SignInDto signInDto = new SignInDto("invalid_email@example.com", testPassword);
         when(clientRepository.findByEmail(signInDto.getEmail())).thenReturn(null);
 
-        // Assert that invoking the signIn() method with the test SignInDto should throw an AuthenticationFailException
         assertThrows(AuthenticationFailException.class, () -> clientService.signIn(signInDto));
-
-        // Verify that the clientRepository.findByEmail() method was called with the specified email
         verify(clientRepository).findByEmail(signInDto.getEmail());
     }
 
     @Test
     public void signInWithInvalidPassword() {
 
-        SignInDto signInDto = new SignInDto("john@example.com", "invalid_password");
-
-        // Create a mock Client object to be returned by the clientRepository.findByEmail() method
+        SignInDto signInDto = new SignInDto(testEmail, "invalid_password");
         Client mockClient = new Client();
         mockClient.setPassword("$2a$10$OrsbB5HilcA8TubrEm9nCOB9TQ/NPlUhCjSdcBxEnEX9TN1pL7ehG");
-
-        // Mock the behavior of the clientRepository.findByEmail() method to return the mockClient
         when(clientRepository.findByEmail(signInDto.getEmail())).thenReturn(mockClient);
-
-        // Mock the behavior of the passwordEncoder.matches() method to return false
         when(passwordEncoder.matches(signInDto.getPassword(), mockClient.getPassword())).thenReturn(false);
 
-        // Assert that invoking the signIn() method with the test SignInDto should throw an exception
         AuthenticationFailException exception = assertThrows(AuthenticationFailException.class, () -> clientService.signIn(signInDto));
-
-        // Assert the error message of the thrown exception
         assertEquals("This password is invalid. Please, try again.", exception.getMessage());
-
-        // Verify that the clientRepository.findByEmail() method was called with the specified email
         verify(clientRepository).findByEmail(signInDto.getEmail());
-
-        // Verify that the passwordEncoder.matches() method was called with the specified password and client's hashed password
         verify(passwordEncoder).matches(signInDto.getPassword(), mockClient.getPassword());
-    }
-
-    @Test
-    public void hashPasswordWithBlankPassword() {
-
-        String password = "";
-
-        assertThrows(IllegalArgumentException.class, () -> clientService.hashPassword(password));
-
     }
 
     @Test
     public void hashPasswordWithValidPassword() {
 
-        String password = "password";
-        String hashedPassword = clientService.hashPassword(password);
-
+        String hashedPassword = clientService.hashPassword(testPassword);
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
         Assertions.assertNotNull(hashedPassword);
-        Assertions.assertTrue(passwordEncoder.matches(password, hashedPassword));
+        Assertions.assertTrue(passwordEncoder.matches(testPassword, hashedPassword));
+    }
+
+    @Test
+    public void hashPasswordWithBlankPassword() {
+
+        String blank_password = "";
+
+        assertThrows(IllegalArgumentException.class, () -> clientService.hashPassword(blank_password));
     }
 
     @Test
@@ -231,11 +199,9 @@ public class ClientServiceTest {
     public void getClientWithInvalidId() {
 
         Long clientId = 1L;
-
         when(clientRepository.findById(clientId)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () -> clientService.getClient(clientId));
-
         verify(clientRepository).findById(clientId);
     }
 
