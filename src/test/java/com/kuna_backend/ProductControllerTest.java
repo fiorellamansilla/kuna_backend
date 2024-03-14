@@ -1,5 +1,6 @@
 package com.kuna_backend;
 
+import com.kuna_backend.builders.ProductTestDataBuilder;
 import com.kuna_backend.common.ApiResponse;
 import com.kuna_backend.controllers.ProductController;
 import com.kuna_backend.dtos.product.ProductDto;
@@ -43,7 +44,7 @@ public class ProductControllerTest {
     private ProductController productController;
 
     @Test
-    public void listProducts() {
+    public void listProducts_ShouldReturnListOfProducts() {
 
         List<ProductDto> productList = new ArrayList<>();
         when(productService.listProducts(0,10)).thenReturn(productList);
@@ -56,7 +57,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void getProductByValidIdWithVariations() {
+    public void getProductByValidId_ShouldReturnProductWithVariations() {
 
         Long productId = 1L;
         Product product = new Product();
@@ -69,7 +70,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void getProductByInvalidIdWithVariations() {
+    public void getProductByInvalidIdWithVariations_ShouldReturnNotFound() {
 
         Long productId = 1L;
         when(productService.getProductByIdWithVariations(productId)).thenThrow(new NoSuchElementException());
@@ -80,29 +81,25 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void createProductShouldReturnSuccessResponse() {
+    public void createProduct_ShouldReturnSuccessResponse() {
 
-        ProductDto productDto = new ProductDto();
-        productDto.setCategoryId(1L);
-
-        Optional<Category> optionalCategory = Optional.of(new Category());
+        ProductDto productDto = ProductTestDataBuilder.buildSampleProductDto();
+        Category category = ProductTestDataBuilder.buildSampleCategory(1L);
+        Optional<Category> optionalCategory = Optional.of(category);
         when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
 
         ResponseEntity<ApiResponse> response = productController.createProduct(productDto);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(new ApiResponse(true, "The Product has been created"), response.getBody());
-
-        // Verify that the productService.createProduct method was called with the correct arguments
         verify(productService, times(1)).createProduct(eq(productDto), any(Category.class));
     }
 
     @Test
-    public void createProductShouldReturnConflictResponse() {
+    public void createProduct_ShouldReturnConflictResponse() {
 
-        ProductDto productDto = new ProductDto();
+        ProductDto productDto = ProductTestDataBuilder.buildSampleProductDto();
         productDto.setCategoryId(90L);
-
         Optional<Category> optionalCategory = Optional.empty();
         when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
 
@@ -110,18 +107,15 @@ public class ProductControllerTest {
 
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertEquals(new ApiResponse(false, "The category is invalid"), response.getBody());
-
-        // Verify that the productService.createProduct method was not called in this case
         verify(productService, never()).createProduct(any(ProductDto.class), any(Category.class));
     }
 
     @Test
-    public void createProductVariationForProduct() {
+    public void createProductVariationForProduct_ShouldReturnSuccessResponse() {
 
         Long productId = 1L;
-        ProductVariationDto productVariationDto = new ProductVariationDto();
-        Product updatedProduct = new Product();
-
+        ProductVariationDto productVariationDto = ProductTestDataBuilder.buildSampleProductVariationDto(1L);
+        Product updatedProduct = ProductTestDataBuilder.buildSampleProduct();
         when(productService.createProductVariationForProduct(productId, productVariationDto)).thenReturn(updatedProduct);
 
         ResponseEntity<ApiResponse> response = productController.createProductVariationForProduct(productId, productVariationDto);
@@ -131,30 +125,28 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void updateProductAttributesOnly() {
+    public void updateProductAttributesOnly_ShouldReturnSuccessResponse() {
 
         Long productId = 1L;
-        ProductDto productDto = new ProductDto();
+        ProductDto productDto = ProductTestDataBuilder.buildSampleProductDto();
         productDto.setCategoryId(1L);
-
-        Optional<Category> optionalCategory = Optional.of(new Category());
+        Category category = ProductTestDataBuilder.buildSampleCategory(1L);
+        Optional<Category> optionalCategory = Optional.of(category);
         when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
 
         ResponseEntity<ApiResponse> response = productController.updateProductOnly(productId, productDto);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(new ApiResponse(true, "The Product has been updated"), response.getBody());
-
         verify(productService, times(1)).updateProductOnly(eq(productId), eq(productDto));
     }
 
     @Test
-    public void updateProductOnlyWithInvalidCategory() {
+    public void updateProductOnlyWithInvalidCategory_ShouldReturnNotFoundResponse() {
 
         Long productId = 1L;
-        ProductDto productDto = new ProductDto();
+        ProductDto productDto = ProductTestDataBuilder.buildSampleProductDto();
         productDto.setCategoryId(99L);
-
         Optional<Category> optionalCategory = Optional.empty();
         when(categoryService.readCategory(productDto.getCategoryId())).thenReturn(optionalCategory);
 
@@ -162,42 +154,37 @@ public class ProductControllerTest {
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals(new ApiResponse(false, "Category NOT found"), response.getBody());
-
         verify(productService, never()).updateProductOnly(anyLong(), any(ProductDto.class));
     }
 
     @Test
-    public void deleteProductByValidId() {
+    public void deleteProductByValidId_ShouldReturnSuccessResponse() {
 
         Long productId = 1L;
-
         when(productService.deleteProduct(productId)).thenReturn(true);
 
         ResponseEntity<ApiResponse> response = productController.deleteProductById(productId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(new ApiResponse(true, "The Product has been successfully deleted"), response.getBody());
-
         verify(productService, times(1)).deleteProduct(eq(productId));
     }
 
     @Test
-    public void deleteProductByIdShouldReturnNotFoundResponse() {
+    public void deleteProductById_ShouldReturnNotFoundResponse() {
 
         Long productId = 2L;
-
         when(productService.deleteProduct(productId)).thenReturn(false);
 
         ResponseEntity<ApiResponse> response = productController.deleteProductById(productId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals(new ApiResponse(false, "Product not found"), response.getBody());
-
         verify(productService, times(1)).deleteProduct(eq(productId));
     }
 
     @Test
-    public void deleteProductWithInvalidId() {
+    public void deleteProductWithInvalidId_ShouldReturnBadRequestResponse() {
 
         Long productId = -90L;
 
@@ -205,8 +192,6 @@ public class ProductControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals(new ApiResponse(false, "Invalid product ID"), response.getBody());
-
-        // Verify that the productService.deleteProduct method was not called in this case
         verify(productService, never()).deleteProduct(anyLong());
     }
 
