@@ -3,11 +3,11 @@ package com.kuna_backend;
 import com.kuna_backend.models.Category;
 import com.kuna_backend.repositories.CategoryRepository;
 import com.kuna_backend.services.CategoryService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
+@ExtendWith(MockitoExtension.class)
 public class CategoryServiceTest {
 
     @Mock
@@ -26,13 +27,8 @@ public class CategoryServiceTest {
     @InjectMocks
     private CategoryService categoryService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    public void listCategories() {
+    public void listCategories_WhenCategoriesExist_ReturnsListOfCategories() {
 
         Category category1 = new Category();
         Category category2 = new Category();
@@ -46,7 +42,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void createCategory() {
+    public void createCategory_WhenCalled_SavesCategory() {
 
         Category category = new Category();
 
@@ -56,9 +52,9 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void readCategoryByCategoryName() {
+    public void readCategoryByName_WhenCategoryExists_ReturnsCategory() {
 
-        String categoryName = "exampleCategoryName";
+        String categoryName = "testCategoryName";
         Category category = new Category();
         when(categoryRepository.findByCategoryName(categoryName)).thenReturn(category);
 
@@ -69,7 +65,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void readCategoryById() {
+    public void readCategoryById_WhenCategoryExists_ReturnsCategory() {
 
         Long categoryId = 1L;
         Optional<Category> category = Optional.of(new Category());
@@ -82,7 +78,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void updateCategory() {
+    public void updateCategory_WhenCategoryExists_UpdatesCategory() {
 
         Long categoryId = 1L;
         Category existingCategory = new Category();

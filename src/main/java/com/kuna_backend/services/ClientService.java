@@ -24,13 +24,17 @@ import static com.kuna_backend.config.MessageStrings.USER_CREATED;
 
 @Service
 public class ClientService {
-    @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private AuthenticationService authenticationService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
+    private final ClientRepository clientRepository;
+    private final AuthenticationService authenticationService;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public ClientService(ClientRepository clientRepository, AuthenticationService authenticationService, PasswordEncoder passwordEncoder) {
+        this.clientRepository = clientRepository;
+        this.authenticationService = authenticationService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     // Register a Client method
     public ResponseDto signUp(SignupDto signupDto) throws CustomException {

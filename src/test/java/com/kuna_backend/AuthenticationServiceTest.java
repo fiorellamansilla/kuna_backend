@@ -6,11 +6,11 @@ import com.kuna_backend.models.AuthenticationToken;
 import com.kuna_backend.models.Client;
 import com.kuna_backend.repositories.TokenRepository;
 import com.kuna_backend.services.AuthenticationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,111 +23,110 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
-
+@ExtendWith(MockitoExtension.class)
 public class AuthenticationServiceTest {
 
     @Mock
-    private TokenRepository repository;
+    private TokenRepository tokenRepository;
 
     @InjectMocks
     private AuthenticationService authenticationService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    public void saveConfirmationToken() {
+    private AuthenticationToken createAuthenticationToken(String token, Client client){
         AuthenticationToken authenticationToken = new AuthenticationToken();
-        when(repository.save(authenticationToken)).thenReturn(authenticationToken);
-
-        assertDoesNotThrow(() -> authenticationService.saveConfirmationToken(authenticationToken));
-
-        verify(repository, times(1)).save(authenticationToken);
+        authenticationToken.setToken(token);
+        authenticationToken.setClient(client);
+        return authenticationToken;
     }
 
     @Test
-    public void getToken() {
+    public void saveConfirmationToken_WhenValidTokenProvided_ShouldSaveTokenSuccessfully() {
+
+        AuthenticationToken authenticationToken = new AuthenticationToken();
+        when(tokenRepository.save(authenticationToken)).thenReturn(authenticationToken);
+
+        authenticationService.saveConfirmationToken(authenticationToken);
+
+        verify(tokenRepository, times(1)).save(authenticationToken);
+    }
+
+    @Test
+    public void getToken_WhenClientExists_ShouldReturnToken() {
+
         Client client = new Client();
         AuthenticationToken expectedToken = new AuthenticationToken();
-        when(repository.findTokenByClient(client)).thenReturn(expectedToken);
+        when(tokenRepository.findTokenByClient(client)).thenReturn(expectedToken);
 
         AuthenticationToken actualToken = authenticationService.getToken(client);
 
         assertEquals(expectedToken, actualToken);
-        verify(repository, times(1)).findTokenByClient(client);
+        verify(tokenRepository, times(1)).findTokenByClient(client);
     }
 
     @Test
-    public void getClientWhenTokenExists() {
+    public void getClient_WhenTokenExists_ShouldReturnClient() {
+
         String token = "validToken";
         Client expectedClient = new Client();
-
-        AuthenticationToken authenticationToken = new AuthenticationToken();
-        authenticationToken.setToken(token);
-        authenticationToken.setClient(expectedClient);
-
-        when(repository.findTokenByToken(token)).thenReturn(authenticationToken);
+        AuthenticationToken authenticationToken = createAuthenticationToken(token, expectedClient);
+        when(tokenRepository.findTokenByToken(token)).thenReturn(authenticationToken);
 
         Client actualClient = authenticationService.getClient(token);
 
         assertEquals(expectedClient, actualClient);
-        verify(repository, times(1)).findTokenByToken(token);
+        verify(tokenRepository, times(1)).findTokenByToken(token);
     }
 
     @Test
-    public void getClientWhenTokenDoesNotExist() {
-        String token = "invalidToken";
+    public void getClient_WhenTokenDoesNotExist_ShouldReturnNull() {
 
-        when(repository.findTokenByToken(token)).thenReturn(null);
+        String token = "invalidToken";
+        when(tokenRepository.findTokenByToken(token)).thenReturn(null);
 
         Client actualClient = authenticationService.getClient(token);
 
         assertNull(actualClient);
-        verify(repository, times(1)).findTokenByToken(token);
+        verify(tokenRepository, times(1)).findTokenByToken(token);
     }
 
     @Test
-    public void authenticateWithValidToken() {
+    public void authenticateClient_WithValidToken_ShouldNotThrowException() {
+
         String token = "validToken";
         Client client = new Client();
-
-        AuthenticationToken authenticationToken = new AuthenticationToken();
-        authenticationToken.setToken(token);
-        authenticationToken.setClient(client);
-
-        when(repository.findTokenByToken(token)).thenReturn(authenticationToken);
+        AuthenticationToken authenticationToken = createAuthenticationToken(token, client);
+        when(tokenRepository.findTokenByToken(token)).thenReturn(authenticationToken);
 
         assertDoesNotThrow(() -> authenticationService.authenticate(token));
 
-        verify(repository, times(1)).findTokenByToken(token);
-        verify(repository, never()).findTokenByClient(any(Client.class));
+        verify(tokenRepository, times(1)).findTokenByToken(token);
+        verify(tokenRepository, never()).findTokenByClient(any(Client.class));
     }
 
     @Test
-    public void authenticateWithNullToken() {
+    public void authenticateClient_WithNullToken_ShouldThrowAuthenticationFailException() {
+
         String token = null;
 
         AuthenticationFailException exception = assertThrows(AuthenticationFailException.class, () -> authenticationService.authenticate(token));
 
         assertEquals(MessageStrings.AUTH_TOKEN_NOT_PRESENT, exception.getMessage());
 
-        verify(repository, never()).findTokenByToken(anyString());
-        verify(repository, never()).findTokenByClient(any(Client.class));
+        verify(tokenRepository, never()).findTokenByToken(anyString());
+        verify(tokenRepository, never()).findTokenByClient(any(Client.class));
     }
 
     @Test
-    public void authenticateWithInvalidToken() {
-        String token = "invalidToken";
+    public void authenticateClient_WithInvalidToken_ShouldThrowAuthenticationFailException() {
 
-        when(repository.findTokenByToken(token)).thenReturn(null);
+        String token = "invalidToken";
+        when(tokenRepository.findTokenByToken(token)).thenReturn(null);
 
         AuthenticationFailException exception = assertThrows(AuthenticationFailException.class, () -> authenticationService.authenticate(token));
 
         assertEquals(MessageStrings.AUTH_TOKEN_NOT_VALID, exception.getMessage());
 
-        verify(repository, times(1)).findTokenByToken(token);
-        verify(repository, never()).findTokenByClient(any(Client.class));
+        verify(tokenRepository, times(1)).findTokenByToken(token);
+        verify(tokenRepository, never()).findTokenByClient(any(Client.class));
     }
 }
